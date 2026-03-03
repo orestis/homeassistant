@@ -31,19 +31,25 @@
   "scenes": [
     {
       "name": "Πρωί",
-      "icon": "☀️",
+      "icon": "sunrise",
       "entity_id": "scene.morning",
       "color": "#FFA500"
     },
     {
+      "name": "Απόγευμα",
+      "icon": "sunset",
+      "entity_id": "scene.afternoon",
+      "color": "#D84315"
+    },
+    {
       "name": "Χαλάρωση",
-      "icon": "🌙",
+      "icon": "moon",
       "entity_id": "scene.relax",
       "color": "#6A5ACD"
     },
     {
       "name": "Σβήσιμο",
-      "icon": "⚫",
+      "icon": "power-off",
       "entity_id": "scene.lights_off",
       "color": "#333333"
     }

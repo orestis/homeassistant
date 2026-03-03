@@ -256,15 +256,20 @@ _CONDITION_PRIORITY = [
 def _pick_forecast_icon(conditions: list[str]) -> str:
     """Pick the most severe weather icon from a list of HA conditions.
 
-    clear-night is mapped to sunny so nighttime hours don't
-    override actual weather information.
+    Severity-based: the worst upcoming condition wins.
+    For the clear-sky fallback, we check whether the majority of forecast
+    hours are nighttime (clear-night) and return 🌙 instead of ☀️.
     """
-    # Normalise night → day equivalent
+    # Normalise night → day for severity comparison only
     cond_set = {("sunny" if c == "clear-night" else c) for c in conditions}
     for cond, icon in _CONDITION_PRIORITY:
         if cond in cond_set:
             return icon
-    return "☀️"  # default: sunny
+    # Clear sky fallback — pick moon or sun based on forecast hours
+    night_count = sum(1 for c in conditions if c == "clear-night")
+    if night_count > len(conditions) / 2:
+        return "🌙"
+    return "☀️"
 
 
 _DAYS_EL = ["Δευ", "Τρι", "Τετ", "Πεμ", "Παρ", "Σαβ", "Κυρ"]

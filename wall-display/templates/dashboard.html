@@ -112,7 +112,7 @@
     }
     .scene-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px;
       width: 100%;
     }
@@ -142,14 +142,25 @@
     }
 
     .scene-tile {
-      padding: 20px 8px;
-      min-height: 90px;
+      padding: 16px 6px;
+      min-height: 80px;
     }
     .scene-tile.active {
       box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
     }
-    .tile-icon { font-size: 2rem; margin-bottom: 6px; }
-    .tile-label { font-size: 0.9rem; font-weight: 600; }
+    .tile-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      margin-bottom: 6px;
+    }
+    .tile-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    .tile-label { font-size: 0.85rem; font-weight: 600; }
 
     /* --- Water Heater Row --- */
     .water-heater-row {
