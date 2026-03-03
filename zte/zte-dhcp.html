@@ -1,0 +1,5431 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<link rel="shortcut icon" href="/img/favicon.ico">
+
+<title>F670L</title>
+<style type="text/css">
+﻿html, body {
+min-height:101%;
+}
+body {
+text-align: center;
+background: #F2F2F2;
+overflow-y: scroll;
+}
+body, input, textarea, select, label, td, th {
+font-size: 12px;
+color: #313131;
+font-family: "Microsoft YaHei",Arial,SimSun,Verdana,Helvetica,Sans-Serif,Geneva;
+}
+body, form, h1, h3, h4, p, ul, ol {
+margin: 0;
+}
+ul, ol {
+padding-left: 0;
+list-style-type: none;
+}
+a img {border: 0;}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+#page_container {
+position: relative;
+width: 960px;
+margin: 0 auto;
+padding: 0 30px 15px 30px;
+text-align: left;
+background: url(../img/site_holder.gif) repeat-y scroll center top;
+}
+#page_header {
+padding-bottom: 20px;
+}
+#banner {
+position: relative;
+width: 100%;
+height: 74px;
+overflow: hidden;
+padding-bottom: 5px;
+}
+#mainNavigator {
+width: 100%;
+height: 38px;
+text-align: center;
+margin: 0 auto;
+overflow:hidden;
+background: #737373;
+}
+#page_content {
+position: relative;
+min-height: 510px;
+height: auto !important;
+height: 480px;
+overflow: visible;
+text-align: center;
+}
+#page_footer {
+height: 43px;
+line-height: 43px;
+text-align: left;
+background-color: #F4F4F4;
+margin-top: 15px;
+padding: 0 10px;
+border-top: 1px solid #D7D7D7;
+}
+.logo {
+width: 110px;
+height: 72px;
+float: left;
+background: url(../img/Logo_ZTE.png) no-repeat 5px 30px;
+}
+#banner_switchArea {
+width: 500px;
+height: 25px;
+line-height: 25px;
+position: absolute;
+bottom: 2px;
+right: 0px;
+}
+.timeArea {
+width: 300px;
+height: 25px;
+line-height: 25px;
+position: absolute;
+bottom: 2px;
+left: 140px;
+}
+#banner_switchArea div {
+float: right;
+text-align: center;
+margin: 0 8px;
+}
+#banner_switchArea div.logUser{
+padding: 0px;
+text-align: right;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+max-width: 180px;
+}
+.clickable {
+cursor: pointer;
+}
+#mainNavigator ul,li {
+margin:0;
+padding:0;
+list-style: none;
+}
+#mainNavigator {
+position: relative;
+}
+#mainNavigator ul {
+position: relative;
+left: 50%;
+float: left;
+}
+#mainNavigator li {
+float: left;
+position: relative;
+right: 50%;
+line-height: 34px;
+}
+#homeLi {
+}
+#mainNavigator a {
+display: block;
+width: 100%;
+height: 100%;
+background: url(../img/nv_middle.gif) repeat-x;
+text-decoration: none;
+}
+#mainNavigator a:link,
+#mainNavigator a:visited {
+color: #FFFFFF;
+}
+#mainNavigator a.SelectMenuItem {
+color: #FFFFFF;
+background: url(../img/nv_s.gif) repeat-x;
+}
+#mn_first, #mn_last {
+height: 100%;
+width: 5px;
+position: absolute;
+}
+#mn_li {
+background: url(../img/nv_middle.gif) repeat-x;
+height: 100%;
+}
+#mn_first {
+background: url(../img/nv_left.gif) no-repeat;
+top: 0px;
+left: 0px;
+}
+#mn_last {
+background: url(../img/nv_right.gif) no-repeat;
+top: 0px;
+right: 0px;
+}
+#slogan {
+width: 200px;
+float: right;
+margin: 0px;
+text-align: right;
+}
+.caption2,
+h1 {
+border-bottom: 1px dotted #313131;
+font-size: 16px;
+font-weight: normal;
+padding-bottom: 8px;
+margin-bottom: 10px;
+}
+input[type="text"],
+input[type="password"],
+input[type="file"],
+textarea,
+select {
+-moz-box-sizing: border-box;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
+height: 26px;
+*height: 20px;
+padding: 2px;
+margin: 2px 0;
+border: 1px solid;
+border-color: #AAAAAA #CCCCCC #CCCCCC #AAAAAA;
+border-radius: 3px;
+box-shadow: 0 1px 2px #CCCCCC inset;
+}
+select {
+*height: 26px;
+}
+textarea {
+margin: 0;
+width: 100%;
+*width: 99%;
+resize: none;
+height: 180px;
+overflow: auto;
+}
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="file"]:focus,
+textarea:focus {
+border-color: #FF8040;
+-webkit-box-shadow: 0 0 3px rgba(255, 128, 64, 0.7);
+-moz-box-shadow: 0 0 3px rgba(255, 128, 64, 0.7);
+box-shadow: 0 0 3px rgba(255, 128, 64, 0.7);
+}
+select:focus {
+border-color: #FF8040;
+}
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+input[type="file"]:disabled,
+textarea:disabled,
+select:disabled {
+color: #898989;
+background-color: #ECE9D8;
+}
+input[type="checkbox"] {
+margin-left: 0;
+margin-top: 9px;
+}
+input[type="radio"] {
+margin-left: 0;
+}
+.Button,
+.button,
+.longBtn ,
+.disableBtn,
+.disableLongBtn,
+.BrowseBtn {
+cursor: pointer;
+height: 28px;
+border: none;
+padding: 0 15px;
+min-width: 100px;
+border-radius: 3px;
+}
+.Button,
+.button,
+.longBtn  {
+background-color: #0099cc;
+background-image: -moz-linear-gradient(top , #34c3f9, #0099cc);
+background-image: -webkit-gradient(linear,0% 0%, 0% 100%, from(#34c3f9), to(#0099cc));
+background-image: -webkit-linear-gradient(top, #34c3f9, #0099cc);
+background-image: -o-linear-gradient(top, #34c3f9, #0099cc);
+background-image: -ms-linear-gradient(top, #34c3f9, #0099cc);
+background-image: linear-gradient(top, #34c3f9, #0099cc);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#34c3f9', endColorstr='#0099cc', GradientType=0);
+color: #fff;
+}
+.Button:hover,
+.button:hover,
+.longBtn:hover,
+.Button:focus,
+.button:focus,
+.longBtn:focus {
+font-weight: bold;
+font-style: oblique;
+}
+.disableBtn,
+.disableLongBtn,
+.BrowseBtn {
+border: 1px solid #878889;
+background-color: #ddd;
+background-image: -moz-linear-gradient(top , #ebebeb 15%, #ddd 45%, #cdcdcd 85%);
+background-image: -webkit-gradient(linear,0% 0%, 0% 100%, from(#ebebeb), to(#cdcdcd),color-stop(45%,#ddd));
+background-image: -webkit-linear-gradient(top, #ebebeb 15%, #ddd 45%, #cdcdcd 85%);
+background-image: -o-linear-gradient(top, #ebebeb 15%, #ddd 45%, #cdcdcd 85%);
+background-image: -ms-linear-gradient(top, #ebebeb, #cdcdcd);
+background-image: linear-gradient(top, #ebebeb, #cdcdcd);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ebebeb', endColorstr='#cdcdcd', GradientType=0);
+}
+.BrowseBtn
+{
+color: #000;
+}
+.disableBtn,
+.disableLongBtn {
+cursor: default;
+color: #898989;
+}
+.disableBtn:hover,
+.disableBtn:focus,
+.disableLongBtn:hover,
+.disableLongBtn:focus {
+font-weight: normal;
+font-style: normal;
+}
+.mac {
+width: 23px;
+}
+.ip {
+width: 32px;
+}
+.port {
+width: 67px;
+}
+.w37 {
+width: 37px;
+}
+.w40 {
+width: 40px;
+}
+.w45 {
+width: 45px;
+}
+.w50 {
+width: 50px;
+}
+.w60 {
+width: 60px;
+}
+.w70 {
+width: 70px;
+}
+.w75 {
+width: 75px;
+}
+.w80 {
+width: 80px;
+}
+.w100, .inputShort {
+width: 100px;
+}
+.w120 {
+width: 120px;
+}
+.w130 {
+width: 130px;
+}
+.w140 {
+width: 140px;
+}
+.w150, .inputNorm , .selectNorm {
+width: 150px;
+}
+.w160 {
+width: 160px;
+}
+.w165 {
+width: 165px;
+}
+.w170 {
+width: 170px;
+}
+.w175 {
+width: 175px;
+}
+.w180 {
+width: 180px;
+}
+.w200 {
+width: 200px;
+}
+.w210 {
+width: 210px;
+}
+.w217 {
+width: 217px;
+}
+.w220 {
+width: 220px;
+}
+.w230 {
+width: 230px;
+}
+.w250, .inputNormLong, .selectNormLong {
+width: 250px;
+}
+.w280 {
+width: 280px;
+}
+.w330, .inputLong, .selectLong {
+width: 330px;
+}
+.w400 {
+width: 400px;
+}
+.emColor {
+color: #0099cc;
+}
+.bgColorRow {
+background-color: #F2F2F2;
+}
+.green {
+color:#385401;
+font-weight: bold;
+}
+.red {
+color:#6c0101;
+font-weight: bold;
+}
+.emFont {
+font-weight: bold;
+}
+.ctrlFont,
+.link2More {
+text-decoration: underline;
+cursor: pointer;
+}
+.ctrlFont {
+text-decoration: none;
+}
+.sdRightPos{
+float:right;
+margin-right:10px;
+}
+.disableFont {
+cursor: default;
+text-decoration: none;
+color: #898989;
+}
+.readonlyInputBg {
+background-color: #ECE9D8;
+}
+.alignLeft {
+text-align: left;
+}
+.alignRight {
+text-align: right;
+}
+.alignCenter {
+text-align: center;
+}
+.caption1 {
+font-size: 1.1em;
+font-weight: bold;
+}
+.caption3 {
+font-size: 1em;
+font-weight: bold;
+}
+.statusRow {
+width: 100%;
+height: 24px;
+}
+.statusRow div {
+float: left;
+border: 1px solid #BDBDBD;
+padding: 3px;
+text-align: center;
+overflow: hidden;
+}
+.redFont {
+color: red;
+}
+.instCfgArea {
+margin: 0;
+padding: 0 0 50px 0;
+}
+.buttongroup,
+.unfloatBtnGroup {
+padding: 25px 25px 20px 25px;
+height: 30px;
+}
+.buttongroup input {
+float: right;
+margin-left: 15px;
+}
+.unfloatBtnGroup input {
+margin: 0;
+}
+.radioInput {
+width: auto;
+float: left;
+}
+.submitArea {
+text-align: right;
+padding: 20px 0;
+}
+.externErrorHint,
+.succHint,
+.errorHint,
+.warnHint,
+.infoHint,
+.waitHint {
+margin: 30px 0;
+text-align: left;
+padding: 10px 10px 10px 70px;
+}
+.externErrorHint,
+.errorHint {
+color: #6c0101;
+background: #FFEBE4 url(../img/err_m.png) no-repeat 15px;
+}
+.succHint {
+color: #385401;
+background: #E7FFE4 url(../img/succ_m.png) no-repeat 15px;
+}
+.warnHint {
+color: #443500;
+background: #FFF9E4 url(../img/warn_m.png) no-repeat 15px;
+}
+.infoHint {
+color: #012f4c;
+background: #E4EFFF url(../img/info_m.png) no-repeat 15px;
+}
+.waitHint {
+color: #012f4c;
+background: #E7FFE4 url(../img/waiting_Small.gif) no-repeat 15px;
+}
+.staticInfoHint,
+.staticInfoHintReal {
+display: block;
+background: url(../img/info_s.png) no-repeat 25px 1px;
+margin-bottom: 20px;
+text-align: left;
+padding: 0 25px;
+}
+.staticInfoHintReal {
+background: url(../img/info_s.png) no-repeat 0px 1px;
+padding: 0;
+}
+.staticInfoHint p,
+.staticInfoHintReal p {
+line-height: 18px;
+text-align: justify;
+text-indent: 2em;
+margin-bottom: 5px;
+}
+.sceneTip {
+padding: 0 0 10px 0;
+margin: 0;
+text-align: justify;
+}
+.sceneTipLink {
+padding: 0;
+}
+.sceneTip a,
+.sceneTipLink a,
+.sceneTip_close a {
+color: #0099CC;
+text-decoration: underline;
+cursor: pointer;
+}
+.sceneTip_close a {
+text-decoration: none;
+padding-right: 5px;
+}
+.help_content,
+.sceneTip_container {
+background-color: #EFF8FF;
+padding: 5px 0;
+}
+.help_close,
+.sceneTip_close {
+text-align: right;
+}
+.inlineTip {
+float: left;
+padding-left: 60px;
+line-height: 30px;
+}
+.black_overlay
+{
+position: fixed;
+_position: absolute;
+top: 0%;
+left: 0%;
+width: 100%;
+height: 100%;
+background-color: #A7A7A7;
+z-index: 100;
+-moz-opacity: 0.5;
+-khtml-opacity: 0.5;
+opacity: 0.5;
+filter: alpha(opacity=50);
+}
+.white_content
+{
+display: none;
+width: 365px;
+min-height: 195px;
+height: auto !important;
+height: 195px;
+background:  url(../img/waiting.gif) no-repeat center center;
+z-index: 101;
+overflow: auto;
+position: fixed;
+_position: absolute;
+}
+.white_content_Qos
+{
+display: none;
+width: 775px;
+height: auto !important;
+background: #FFFFFF;
+z-index: 101;
+overflow: auto;
+position: fixed;
+left: 25%;
+top: 80px;
+}
+#confirmLayer {
+border: 8px solid #7D7D7D;
+text-align: left;
+padding: 0 10px;
+background: #FFFFFF;
+}
+#confirmMsg {
+min-height: 32px;
+height: auto !important;
+height: 32px;
+padding: 25px 0;
+background: url("../img/info_m.png") no-repeat 20px 50%;
+}
+#confirmMsg p {
+padding-left: 60px;
+font-size: 1.2em;
+line-height: 24px;
+}
+#waitingImgArea {
+height: 50px;
+padding-bottom: 25px;
+background:  url(../img/waiting_w.gif) no-repeat top center;
+}
+#confirmBtnArea {
+height: 28px;
+border-top: 1px dotted #313131;
+padding: 10px;
+}
+#confirmBtnArea input {
+float: right;
+margin-left: 20px;
+}
+#dynamicTip {
+position: absolute;
+display: none;
+font-size: 11px;
+}
+#dynamicTip div {
+float: left;
+height: 34px;
+padding-top: 5px;
+}
+#dTip_l {
+width: 16px;
+background: url(../img/dTip_l.gif) no-repeat left top;
+}
+#dTip_m {
+padding: 2px 8px 0 5px;
+background: url(../img/dTip_m.gif) repeat-x;
+}
+#dTip_r {
+width: 6px;
+background: url(../img/dTip_r.gif) no-repeat left top;
+}
+div.errorLabelWraper{
+background: url(../img/fail_s.png) no-repeat 5px 6px;
+display:inline-block;
+padding-left: 23px;
+line-height: 30px;
+}
+label.error{
+color: #FF0000;
+}
+.expandArrow {
+background: url(../img/expandArrow.png) no-repeat 0px 8px;
+}
+.collapseArrow {
+background: url(../img/collapseArrow.png) no-repeat 0px 8px;
+}
+.apStatusRow {
+cursor:pointer
+}
+.apConnectting {
+background: url(../img/waiting_Small.gif) no-repeat 0px 8px;
+}
+.qrCodeContainer {
+bottom: 160px;
+position: fixed;
+right: 0;
+z-index: 1;
+}
+@media screen and (max-width: 1100px) {
+.qrCodeContainer {
+display: none;
+}
+}
+.captchaImg {
+vertical-align: middle;
+}
+.bannerswtch {
+color: #0099cc;
+}
+#commLeft {
+width: 197px;
+margin: 0;
+padding:0;
+float: left;
+background-color: #EEEFF5;
+}
+#commRight {
+min-height:415px;
+height:auto !important;
+height: 415px;
+margin-left: 215px;
+margin-right: 0;
+padding-left: 0px;
+text-align: left;
+}
+#class2MenuItem {
+width: 100%;
+margin: 0px;
+padding: 0px;
+}
+#class2MenuItem li {
+display: block;
+margin: -1px 0 0 0;
+}
+#class2MenuItem a {
+display: block;
+height: 30px;
+line-height: 30px;
+text-align: left;
+text-decoration: none;
+color: #000;
+padding: 0 20px;
+background-color: #fbfbfb;
+border: 1px solid #d0d0d0;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+#class2MenuItem a.selectClass2Menu {
+background-color: #eee;
+background-image: -moz-linear-gradient(top , #f7f7f7, #e6e6e6);
+background-image: -webkit-gradient(linear,0% 0%, 0% 100%, from(#f7f7f7), to(#e6e6e6));
+background-image: -webkit-linear-gradient(top, #f7f7f7, #e6e6e6);
+background-image: -o-linear-gradient(top, #f7f7f7, #e6e6e6);
+background-image: -ms-linear-gradient(top, #f7f7f7, #e6e6e6);
+background-image: linear-gradient(top, #f7f7f7, #e6e6e6);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f7f7', endColorstr='#e6e6e6', GradientType=0);
+color: #0099CC;
+}
+#class3Menu {
+height:30px;
+margin-bottom: 30px;
+border-bottom: 1px solid #0099CC;
+}
+#scrollLeftBtn,
+#scrollRightBtn {
+height: 30px;
+width: 30px;
+float: left;
+}
+.EnableScrollBtn {
+cursor: pointer;
+}
+.scrollRightBtn {
+background: url("../img/collapse_B.png") no-repeat scroll right center;
+}
+.scrollLeftBtn {
+background: url("../img/leftArrow.png") no-repeat scroll left center;
+}
+.scrollRightBtnDisable {
+background: url("../img/rightArrowDisable.png") no-repeat scroll right center;
+cursor: default;
+}
+.scrollLeftBtnDisable {
+background: url("../img/leftArrowDisable.png") no-repeat scroll left center;
+cursor: default;
+}
+#scrollLeftBtn p,
+#scrollRightBtn p {
+height: 30px;
+}
+#class3MenuMainContent {
+width:697px;
+overflow:hidden;
+float:left;
+margin-top: -1px;
+}
+#class3MenuMainContent ul {
+width: 5000px;
+}
+#class3MenuMainContent li {
+float: left;
+list-style: none outside none;
+}
+#class3MenuMainContent ul p {
+text-decoration: none !important;
+height: 30px;
+line-height: 30px;
+padding: 0 30px;
+float: left;
+cursor: pointer;
+}
+.AEleMenu3 {
+color: #313131;
+border: 1px solid #D0D0D0;
+border-bottom: 1px solid #0099CC;
+background-color: #F5F5F5;
+}
+.AEleMenu3Selected {
+color: #0099CC;
+border: 1px solid #0099CC;
+border-bottom: 1px solid #FFFFFF;
+}
+.HeadDIV,
+.fakeHeadDIV  {
+padding-top: 20px;
+}
+.pageIntroduce {
+font-size: 18px;
+}
+.pIntroContent {
+padding: 8px 0;
+}
+.row,
+.rowBox,
+.colorTblRow,
+.segmentRow {
+clear: both;
+}
+.row,
+.rowBox,
+.colorTblRow,
+.outRow,
+.rowWithoutClear {
+min-height: 30px;
+height: auto !important;
+height: 30px;
+padding: 0 25px;
+}
+.rowBox div {
+display: inline-block;
+}
+.rowPaddingClear {
+padding: 0px;
+}
+.outRow  {
+padding: 0;
+margin: 10px 0;
+}
+.selectRow {
+min-height: 80px;
+}
+.segmentRow {
+height: 15px;
+background-color: #F7F7F7;
+}
+.left,
+.right,
+label.cfgLabel {
+float: left;
+line-height: 30px;
+}
+.collapBarWithDataTrans,
+.collapsibleBar {
+padding-left: 25px;
+cursor: pointer;
+background: url(../img/collapse_B.png) no-repeat 0px 30%;
+}
+.collapsibleBarExp {
+background: url(../img/expand_B.png) no-repeat 0px 30%;
+}
+.colorTbl {
+border: 1px solid #D0D0D0;
+line-height: 30px;
+margin-top: 10px;
+overflow: auto;
+}
+.colorRow {
+background: #EFF8FF;
+}
+.colorTblRow,
+.textareaRow {
+padding: 0 25px;
+}
+.colorTblRow span {
+display:inline-block;
+*display:inline;
+*zoom:1;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+margin-right: 3px;
+vertical-align: middle;
+*vertical-align: top;
+}
+.titleRow {
+background: #C8E6FE;
+}
+.noDataHint {
+height: 30px;
+line-height: 30px;
+border: 1px solid #D0D0D0;
+padding: 0 5px 0 45px;
+background: #C8E6FE url(../img/info_s.png) no-repeat 23px 50%;
+}
+.formTblWrap {
+border: 1px solid #D0D0D0;
+line-height: 30px;
+background: #F7F7F7;
+margin: -1px 0;
+zoom: 1;
+}
+.formTbl {
+padding: 10px 0 0;
+overflow: auto;
+*overflow: hidden;
+}
+.formTblCtrlBar, .addInstBar {
+height: 30px;
+line-height: 30px;
+border: 1px solid #D0D0D0;
+background: #EEEEEE;
+position: relative;
+}
+.formTblCtrlBar div {
+display: inline;
+}
+.instName, .instNew {
+padding-left: 25px;
+outline: none;
+color: #313131;
+height: 100%;
+cursor: pointer;
+display: block;
+width: 200px;
+}
+.instName {
+background: url(../img/collapse.png) no-repeat 0 50%;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+}
+.instNew {
+background: url(../img/newInst.png) no-repeat 2px 50%;
+}
+.instNameExp {
+background: url(../img/expand.png) no-repeat 0 50%;
+}
+.noHand {
+cursor: default;
+}
+.instSwitch {
+position: absolute;
+left: 300px;
+top: 3px;
+}
+.instDelete,
+.closePopLayer {
+position: absolute;
+right: 20px;
+top: 7px;
+cursor: pointer;
+}
+.closePopLayer {
+top: 10px;
+}
+.clear {
+clear: both;
+overflow:hidden;
+}
+.ExceedWidthEllipsis {
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+}
+.divQoSStatisticsCfg {
+padding: 20px;
+text-align: left;
+}
+.picQoSTrans {
+background:  url(../img/uploading.gif) no-repeat;
+}
+.partDivision {
+border-bottom: 1px dotted #313131;
+padding-bottom: 8px;
+margin: 10px 0 30px;
+}
+.emptyRow10 {
+margin: 10px;
+}
+.emptyRow20 {
+margin: 20px;
+}
+.fontSize {
+font-size:15px;
+}
+.DMSPathDiv {
+border: 1px solid #0099CC;
+width: 710px;
+*width: 690px;
+overflow: auto;
+margin: 10px auto;
+padding: 5px;
+}
+.hr0 {
+height:1px;
+border:none;
+border-top:1px solid #D0D0D0;
+}
+.sideShortCut {
+position: fixed;
+width:28px;
+height:50px;
+bottom:105px;
+right:0px;
+_position:absolute;
+_right:auto;
+cursor:pointer;
+z-index: 1000;
+}
+.BackToTop {
+display: block;
+height: 50px;
+width: 28px;
+text-decoration:none;
+background: url(../img/TOP.gif) no-repeat;
+}
+.pinspan {
+color: #313131;
+background: #E7FFE4;
+}
+.pin_remain {
+color: red;
+font-size: 1.1em;
+font-weight: bold;
+}
+._LuQUID_SelAccessDevice{
+color: #0099CC;
+cursor: pointer;
+text-decoration: none;
+}
+._LuQUID_AccessDeviceList{
+margin-left:150px;
+height:auto !important;
+min-height: 30px;
+padding: 0 5px 0 0;
+clear: both;
+}
+._LuQUID_HideAccessDevice{
+color: #0099CC;
+cursor: pointer;
+text-decoration: none;
+}
+._LuQUID_SelAccessDeviceDmz{
+color: #0099CC;
+cursor: pointer;
+text-decoration: none;
+}
+.AddIconControl{
+cursor: pointer;
+position: relative;
+top: 2px;
+}
+.DelIconControl{
+cursor: pointer;
+position: relative;
+top: 2px;
+}
+.IconControl{
+cursor: pointer;
+position: relative;
+top: 2px;
+}
+.logo_Mnc {
+width: 110px;
+height: 72px;
+float: left;
+background: url(../img/Logo_Mnc.png) no-repeat 5px 30px;
+}
+.logo_AXS {
+width: 110px;
+height: 72px;
+float: left;
+background: url(../img/Logo_AXS.png) no-repeat 5px 30px;
+}
+.logo_Claro {
+width: 110px;
+height: 72px;
+float: left;
+background: url(../img/Logo_Claro.png) no-repeat 5px 30px;
+}.logo_OJO {
+width: 300px;
+height: 72px;
+float: left;
+background: url(../img/Logo_OJO.png) no-repeat 5px 15px;
+}.logo_Tot {
+width: 160px;
+background: url(../img/Logo_Tot.png) no-repeat 5px 30px;
+}
+.timeArea_Tot {
+left: 190px;
+}.logo_Morocco {
+background: url(../img/Logo_Morocco.png) no-repeat 5px 30px;
+}.logo_IvoryOrange {
+background: url(../img/Logo_IvoryOrange.png) no-repeat 5px 30px;
+}
+.logo_KAMA_Orange {
+width: 300px;
+height: 72px;
+float: left;
+background: url(../img/Logo_OMA.png) no-repeat 5px 15px;
+}
+.color_OMA
+{
+color:#FF6600 !important;
+}.logo_Orange {
+background: url(../img/Logo_Orange.png) no-repeat 5px 30px;
+}
+.logo_KAMA_Orange {
+width: 300px;
+height: 72px;
+float: left;
+background: url(../img/Logo_OMA.png) no-repeat 5px 15px;
+}
+.color_OMA
+{
+color:#FF6600 !important;
+}
+div.errorLabelWraperBottom{
+overflow: hidden;
+width:100%;
+padding-left: 23px;
+line-height: 30px;
+}
+.logo_CTC {
+width: 190px;
+height: 72px;
+float: left;
+background: url(../img/Logo_CTC.jpg) no-repeat 5px 40px;
+}
+.timeArea_CTC
+{
+left: 200px;
+}
+.loginTitle_CTC {
+padding-left: 0px !important;
+}
+.logo_OMA {
+width: 300px;
+height: 72px;
+float: left;
+background: url(../img/Logo_OMA.png) no-repeat 5px 15px;
+}
+.color_OMA
+{
+color:#FF6600 !important;
+}.logo_OMA {
+width: 300px;
+height: 72px;
+float: left;
+background: url(../img/Logo_OMA.png) no-repeat 5px 15px;
+}
+.wlanon {background-image: url("../img/ok.png"); background-size: cover; width: 20px;}
+.wlanoff {background-image: url("../img/no.png"); background-size: cover; width: 20px;}
+.wlanTable table {border: 0px; width: 700px; min-height: 25px; line-height: 20px; border-collapse: collapse; padding: 0;}.logoPTCL {
+width: 110px;
+height: 72px;
+float: left;
+background: url(../img/Logo_PTCL.png) no-repeat -27px -5px;
+background-size: 165px 115px;
+}.logo_digi {
+width: 110px;
+height: 72px;
+float: left;
+background: url(../img/Logo_digi.png) no-repeat 5px 30px;
+}
+
+</style>
+<script type="text/javascript" src="/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/jquery/crypto-js.min.js"></script>
+<script type="text/javascript" src="/jquery/jsencrypt.min.js"></script>
+<script type="text/javascript" src="/jquery/common_lib.js"></script>
+<script type="text/javascript">
+function StatusOfLRBtnOf3MenuHandle(nowScrollLocation)
+{
+if (nowScrollLocation == "")
+{
+nowScrollLocation = 0;
+}
+var class3MenuContainerWidth = $("#class3MenuMainContent").width();
+var totalTabWidth = $("#_totalTabWidth").val();
+if ( nowScrollLocation >= (totalTabWidth - class3MenuContainerWidth) )
+{
+$("#scrollRightBtn").attr("class","scrollRightBtnDisable");
+$("#scrollLeftBtn").attr("class", "scrollLeftBtn EnableScrollBtn");
+}
+else if ( nowScrollLocation == 0 )
+{
+$("#scrollLeftBtn").attr("class", "scrollLeftBtnDisable");
+$("#scrollRightBtn").attr("class","scrollRightBtn EnableScrollBtn");
+}
+else
+{
+$("#scrollRightBtn").attr("class","scrollRightBtn EnableScrollBtn");
+$("#scrollLeftBtn").attr("class", "scrollLeftBtn EnableScrollBtn");
+}
+}
+function Menu3TabStyleHandle()
+{
+var class3MenuContainer = $("#class3MenuMainContent");
+var ContainerWidth = $("#commRight").width()- $("#scrollLeftBtn").width()
+- $("#scrollRightBtn").width();
+class3MenuContainer.width(ContainerWidth);
+var tabTotalWidth = 0;
+var tab = $("li",class3MenuContainer);
+for (var i=0; i< tab.length; i++)
+{
+var LiWidth = parseInt(tab[i].offsetWidth);
+tabTotalWidth = tabTotalWidth + LiWidth;
+}
+$("#_totalTabWidth").val(tabTotalWidth);
+var class3MenuUl = $("ul",class3MenuContainer);
+if ( tabTotalWidth > ContainerWidth )
+{
+class3MenuUl.css("width", 5000);
+$("#scrollLeftBtn,#scrollRightBtn").addClass("EnableScrollBtn");
+var nowScrollLocation = $("#_Menu3Location").text();
+if ((tabTotalWidth-ContainerWidth) < nowScrollLocation)
+{
+nowScrollLocation = tabTotalWidth-ContainerWidth;
+}
+class3MenuContainer.scrollLeft(nowScrollLocation);
+StatusOfLRBtnOf3MenuHandle(nowScrollLocation);
+}
+else
+{
+$("#scrollLeftBtn").removeClass("scrollLeftBtn");
+$("#scrollRightBtn").removeClass("scrollRightBtn");
+}
+}
+function MenuItemClass(menuItemJSON) {
+this.menuItemJSON = menuItemJSON;
+}
+MenuItemClass.prototype.findMenu = function (menuid) {
+var menuItemJSON = this.menuItemJSON;
+var menuItemId = menuItemJSON.id;
+if (menuItemId == menuid)
+{
+return menuItemJSON;
+}
+var children = menuItemJSON.children;
+if ( !children )
+{
+return null;
+}
+for (var i = 0; i < children.length; i++) {
+var childItem = children[i];
+var childID = childItem.id;
+if ( menuid == childID )
+{
+return childItem;
+}
+if ( childItem.children )
+{
+var childObj = new MenuItemClass(childItem);
+var targetMenu = childObj.findMenu(menuid);
+if (targetMenu)
+{
+return targetMenu;
+}
+}
+}
+return null
+}
+MenuItemClass.prototype.getLeftMostPageJSON = function () {
+var menuItemJSON = this.menuItemJSON;
+var menuItemId = menuItemJSON;
+var children = menuItemJSON.children;
+if ( !children )
+{
+return menuItemJSON;
+}
+var leftMostSon = children[0];
+var menuObj = new MenuItemClass(leftMostSon);
+return menuObj.getLeftMostPageJSON();
+}
+function MenuTreeClass(menuTreeJSON)
+{
+this.menuTreeJSON = menuTreeJSON
+}
+MenuTreeClass.prototype.findMenu = function(menuid) {
+var menuTreeJSON = this.menuTreeJSON
+for (var i = 0; i < menuTreeJSON.length; i++) {
+var menu1table = menuTreeJSON[i];
+var menu1Obj = new MenuItemClass(menu1table);
+var targetMenu = menu1Obj.findMenu(menuid);
+if ( targetMenu )
+{
+return targetMenu;
+}
+}
+return null
+};
+function GetLeftMostPageID(menuid)
+{
+var menuTable = menuTreeObj.findMenu(menuid);
+var menuObj = new MenuItemClass(menuTable);
+var pageJSON = menuObj.getLeftMostPageJSON();
+return pageJSON.id;
+}
+function Class3MenuShow(selectPageID, selectSupId, selectMidId, selectThdId)
+{
+if ( selectThdId == "" )
+{
+$("#class3Menu").css("display", "none");
+return;
+}
+var class2MenuNode = menuTreeObj.findMenu(selectMidId);
+var class3MenuJSON = class2MenuNode.children;
+var class3MenuContent = "";
+for (var index in class3MenuJSON)
+{
+var menu = class3MenuJSON[index]
+var class3MenuID = menu.id
+var class3MenuName = menu.name
+if ( class3MenuID == selectThdId )
+{
+AEleMenu3Class = "AEleMenu3Selected";
+}
+else
+{
+AEleMenu3Class = "AEleMenu3";
+}
+class3MenuContent = class3MenuContent
++ "<li><p class='" + AEleMenu3Class + "'"
++ "MenuClass='3'"
++ "id='"+ class3MenuID + "'"
++ "MenuPage='"+ GetLeftMostPageID(class3MenuID) +"'"
++ "href='#" + class3MenuID + "'>"
++ class3MenuName
++ "</p></li>";
+}
+$("#class3MenuMainContent ul").html(class3MenuContent);
+$("#class3MenuMainContent ul li p").click(function(){
+var MenuOBJ = $(this);
+if ( !checkDisClickAttr(MenuOBJ) )
+{
+return;
+}
+AjaxQuery_ClassMenuClick(MenuOBJ);
+});
+Menu3TabStyleHandle();
+$(window).resize(function(){
+Menu3TabStyleHandle();
+});
+$("#scrollRightBtn,#scrollLeftBtn").click(function () {
+if ( ! $(this).hasClass("EnableScrollBtn"))
+{
+consoleLog("no scroll button!!");
+return;
+}
+var scrollTarget = $("#class3MenuMainContent");
+var tabWidth = $("#_totalTabWidth").val();
+var srcollTotalLen = tabWidth - scrollTarget.width();
+if ( $(this).attr("id") == "scrollLeftBtn" )
+{
+scrollTarget.scrollLeft(0);
+}
+else
+{
+scrollTarget.scrollLeft(srcollTotalLen);
+}
+var afterPosition = scrollTarget.scrollLeft();
+StatusOfLRBtnOf3MenuHandle(afterPosition);
+});
+}
+function Class2MenuShow(selectPageID, selectSupId, selectMidId)
+{
+if ( selectMidId == "" )
+{
+return;
+}
+var class1MenuNode = menuTreeObj.findMenu(selectSupId);
+var class2MenuJSON = class1MenuNode.children;
+var class2MenuContent = "";
+var class2MenuClass = "";
+for (var index in class2MenuJSON)
+{
+var menu = class2MenuJSON[index]
+var class2MenuID = menu.id
+var class2MenuName = menu.name
+if ( class2MenuID == selectMidId )
+{
+class2MenuClass = "selectClass2Menu";
+}
+else
+{
+class2MenuClass = "";
+}
+class2MenuContent = class2MenuContent
++ "<li>"
++ "<a class='" + class2MenuClass + "' "
++ "href='javascript:void(0);' "
++ "MenuClass='2' "
++ "id='"+ class2MenuID + "' "
++ "MenuPage='"+ GetLeftMostPageID(class2MenuID)
++ "' title='" + class2MenuName
++ "'>"
++ class2MenuName
++ "</a></li>";
+}
+$("#class2MenuItem").html(class2MenuContent);
+$("#class2MenuItem li a").click(function(){
+var MenuOBJ = $(this);
+if ( !checkDisClickAttr(MenuOBJ) )
+{
+return;
+}
+AjaxQuery_ClassMenuClick(MenuOBJ);
+});
+}
+function Class1MenuShow(selectPageID, selectSupId)
+{
+var FirstMenuContent = "<ul>";
+var SupClass = "";
+var SupLiID = "";
+var FirstOne = "yes";
+var navBarWidth = $("#mainNavigator").width();
+var leftPadWidth = $("#mn_first").width();
+var rightPadWidth = $("#mn_last").width();
+var menuAreaWidth = navBarWidth - leftPadWidth - rightPadWidth;
+menuAreaWidth -= 7;
+var menuWidth = menuAreaWidth/(menuTreeJSON.length);
+menuWidth = Math.floor(menuWidth);
+for (var index in menuTreeJSON)
+{
+var menu = menuTreeJSON[index]
+var supId = menu.id
+var supName = menu.name
+if ( supId == selectSupId )
+{
+SupClass = "SelectMenuItem";
+}
+else
+{
+SupClass = "MenuItem";
+}
+if ( FirstOne == "yes" )
+{
+SupLiID = "homeLi";
+FirstOne = "no";
+}
+else
+{
+SupLiID = "";
+}
+FirstMenuContent = FirstMenuContent
++ "<li id=\"" + SupLiID + "\">"
++ "<a href=\"javascript:void(0);\" class=\"" + SupClass
++ "\" "
++ "style='width:" + menuWidth + "px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;' "
++ "MenuClass='1' "
++ "id='"+ supId + "' "
++ "MenuPage='"+ GetLeftMostPageID(supId) +"'"
++ " title='" + supName +"'>"
++ supName
++ "</a></li>";
+}
+FirstMenuContent = FirstMenuContent + "</ul>";
+$("#mn_li").html(FirstMenuContent);
+$("#mn_li li a").click(function(){
+var MenuOBJ = $(this);
+if ( !checkDisClickAttr(MenuOBJ) )
+{
+return;
+}
+AjaxQuery_ClassMenuClick(MenuOBJ);
+});
+}
+function checkDisClickAttr(obj)
+{
+if ("off" == obj.attr("EnableClick"))
+{
+return false;
+}
+handleDisClickAttr("off");
+return true;
+}
+function handleDisClickAttr(ret)
+{
+var selectSupId = $("#_NowSupIdInfo",_MenuInfo).text();
+var selectMidId = $("#_NowMidIdInfo",_MenuInfo).text();
+var selectThdId = $("#_NowThdIdInfo",_MenuInfo).text();
+if(selectThdId)
+{
+var objs = [$("#" + selectSupId),$("#" + selectMidId),$("#" + selectThdId)];
+}
+else
+{
+if(selectMidId)
+{
+var objs = [$("#" + selectSupId),$("#" + selectMidId)];
+}
+else
+{
+var objs = [$("#" + selectSupId)];
+}
+}
+for (var i = 0; i < objs.length; i++)
+{
+if (objs[i].length > 0)
+{
+objs[i].attr("EnableClick", ret);
+}
+}
+}
+function AjaxPageGet(PageName, MenuClass)
+{
+var pageContainer = $("#commPageContainer");
+pageContainer.succfunction = function(html){
+pageContainer.html(html);
+var _MenuInfo = $("#_MenuInfo");
+var selectPageID = $("#_NextPageInfo",_MenuInfo).text();
+var selectSupId = $("#_NowSupIdInfo",_MenuInfo).text();
+var selectMidId = $("#_NowMidIdInfo",_MenuInfo).text();
+var selectThdId = $("#_NowThdIdInfo",_MenuInfo).text();
+if ( "mmHome" == selectPageID )
+{
+$(document).scrollTop(0);
+return;
+}
+if (MenuClass == '1')
+{
+Class1MenuShow(selectPageID, selectSupId);
+}
+Class2MenuShow(selectPageID, selectSupId, selectMidId);
+Class3MenuShow(selectPageID, selectSupId, selectMidId, selectThdId);
+$(document).scrollTop(0);
+handleDisClickAttr("on");
+};
+pageContainer.errorfunction = function(){
+consoleLog("page get fail");
+showWaitTip(false);
+pageContainer.html("Page request failed, please try again!");
+handleDisClickAttr("on");
+};
+showWaitTip(true);
+pageContainer.dataTransfer( PageName, "GET", pageContainer.succfunction,
+pageContainer.errorfunction, false,
+undefined, 'html'
+);
+}
+function AjaxQuery_ClassMenuClick(MenuOBJ)
+{
+var MenuClass = MenuOBJ.attr("MenuClass");
+var page = MenuOBJ.attr("MenuPage");
+var scrollTarget = $("#class3MenuMainContent");
+var Menu3Location = scrollTarget.scrollLeft();
+var pageFile = "/?_type=menuView&_tag="
++ page + "&Menu3Location=0";
+if ( MenuClass == 3 )
+{
+pageFile = "/?_type=menuView&_tag="
++ page + "&Menu3Location=" + Menu3Location;
+}
+AjaxPageGet(pageFile, MenuClass);
+}
+function openLink(pageurl)
+{
+var PageName = "/?_type=menuView&_tag=" + pageurl;
+AjaxPageGet(PageName, 1);
+}
+function MenuShow(Menuclass, selectPageID, selectSupId, selectMidId, selectThdId)
+{
+if (Menuclass == "ClassAll")
+{
+Class1MenuShow(selectPageID, selectSupId);
+Class2MenuShow(selectPageID, selectSupId, selectMidId);
+Class3MenuShow(selectPageID, selectSupId, selectMidId, selectThdId);
+}
+else if (Menuclass == "ClassOne")
+{
+Class1MenuShow(selectPageID, selectSupId);
+}
+else if (Menuclass == "ClassTwo")
+{
+Class2MenuShow(selectPageID, selectSupId);
+}
+else
+{
+consoleLog("[menu_api.lp][MenuShow]    Menuclass("+ Menuclass + "filling is not right!!");
+}
+}
+function FakeClass1MenuShow()
+{
+var FirstMenuContent = "<ul>";
+var SupClass = "MenuItem";
+var SupLiID = "";
+var FirstOne = "yes";
+var navBarWidth = $("#mainNavigator").width();
+var leftPadWidth = $("#mn_first").width();
+var rightPadWidth = $("#mn_last").width();
+var menuAreaWidth = navBarWidth - leftPadWidth - rightPadWidth;
+menuAreaWidth -= 7;
+var menuWidth = menuAreaWidth/(menuTreeJSON.length);
+menuWidth = Math.floor(menuWidth);
+for (var index in menuTreeJSON)
+{
+var menu = menuTreeJSON[index]
+var supId = menu.id
+var supName = menu.name
+if ( FirstOne == "yes" )
+{
+SupLiID = "homeLi";
+FirstOne = "no";
+}
+else
+{
+SupLiID = "";
+}
+FirstMenuContent = FirstMenuContent
++ "<li id=\"" + SupLiID + "\">"
++ "<a href=\"javascript:void(0);\" class=\"" + SupClass
++ "\" "
++ "style='width:" + menuWidth + "px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; "
++ "color:#BFBDBE; cursor:default;'"
++ " hidefocus=\"true\" onclick=\" \" title=\"" + supName + "\">"
++ supName
++ "</a></li>";
+}
+FirstMenuContent = FirstMenuContent + "</ul>";
+$("#mn_li").html(FirstMenuContent);
+}
+function showWaitTip(show, TipMsg, StopTag)
+{
+var TipMsgTmp = TipMsg;
+if( show )
+{
+$("#blackMask,#tipLayer,#confirmBtnArea").css("display", "block");
+if (TipMsgTmp == undefined || TipMsgTmp == "")
+{
+$("#waitingImgArea").css("display", "none");
+if(true==StopTag)
+{
+$("#confirmStop").css("display", "block");
+$("#confirmCancel,#confirmOK").css("display", "none");
+}
+else
+{
+$("#confirmStop").css("display", "none");
+$("#confirmCancel,#confirmOK").css("display", "block");
+}
+}
+else
+{
+$("#confirmLayer, #waitingImgArea").css("display", "block");
+$("#confirmMsg p").text(TipMsgTmp);
+if(true==StopTag)
+{
+$("#confirmStop").css("display", "block");
+$("#confirmCancel,#confirmOK").css("display", "none");
+}
+else
+{
+$("#confirmCancel,#confirmOK,#confirmStop").css("display", "none");
+}
+}
+reposition_box("tipLayer");
+}
+else
+{
+$("#blackMask, #tipLayer, #confirmLayer").css("display", "none");
+}
+}
+function IniConfirm(msg)
+{
+showWaitTip(true);
+var confirmLayerOBJ = $("#confirmLayer");
+confirmLayerOBJ.css("display", "block");
+$("#confirmMsg p",confirmLayerOBJ).text(msg);
+$("#confirmCancel",confirmLayerOBJ).unbind( "click" );
+$("#confirmOK",confirmLayerOBJ).unbind( "click" );
+$("#confirmStop",confirmLayerOBJ).unbind( "click" );
+$("#confirmCancel",confirmLayerOBJ).bind("click", function(event){
+showWaitTip(false);
+});
+$("#confirmCancel",confirmLayerOBJ).focus();
+return confirmLayerOBJ;
+}
+function IniTip(msg, infoType)
+{
+showWaitTip(true);
+var confirmLayerOBJ = $("#confirmLayer");
+$("#confirmCancel",confirmLayerOBJ).css("display", "none");
+confirmLayerOBJ.css("display", "block");
+if (infoType == "err")
+{
+$("#confirmMsg",confirmLayerOBJ).css("background", 'url("../img/err_m.png") no-repeat 20px 50%');
+}
+else if (infoType == "succ")
+{
+$("#confirmMsg",confirmLayerOBJ).css("background", 'url("../img/succ_m.png") no-repeat 20px 50%');
+}
+else
+{
+$("#confirmMsg",confirmLayerOBJ).css("background", 'url("../img/info_m.png") no-repeat 20px 50%');
+}
+$("#confirmMsg p",confirmLayerOBJ).text(msg);
+$("#confirmCancel",confirmLayerOBJ).unbind( "click" );
+$("#confirmOK",confirmLayerOBJ).unbind( "click" );
+$("#confirmStop",confirmLayerOBJ).unbind( "click" );
+$("#confirmOK",confirmLayerOBJ).bind("click", function(event){
+showWaitTip(false);
+$("#confirmMsg",confirmLayerOBJ).css("background", 'url("../img/info_m.png") no-repeat 20px 50%');
+});
+$("#confirmOK",confirmLayerOBJ).focus();
+return confirmLayerOBJ;
+}
+function getStyle(obj,attr)
+{
+if (obj.currentStyle)
+{
+return obj.currentStyle[attr];
+}
+else
+{
+return document.defaultView.getComputedStyle(obj,null)[attr];
+}
+}
+function reposition_box(divId)
+{
+var box=document.getElementById(divId);
+if (null!=box)
+{
+var boxObj = $("#"+divId);
+var winH = $(window).height();
+var winW = $(window).width();
+var divH = boxObj.height();
+var divW = boxObj.width();
+var h = (winH-divH)/2;
+h = (h > 0) ? h : 5;
+var w = (winW-divW)/2;
+w = (w > 0) ? w : 5;
+boxObj.css({top:h, left:w});
+if ( divH > winH || divW > winW)
+{
+boxObj.css("position", "absolute");
+}
+else
+{
+boxObj.css("position", "fixed");
+}
+}
+}
+$.validator.setDefaults({
+errorPlacement: function (error, element) {
+var tipHTML = "<div class=\"errorLabelWraper\"></div>";
+var tipObj = $(tipHTML);
+error.appendTo(tipObj);
+var rowObj = element.closest(".row");
+if ( rowObj.length == 0 )
+{
+consoleLog("element id=["+element.attr("id")+"] is not in row div.");
+return ;
+}
+var rowWidth = rowObj.width();
+var usedWidth = 0;
+var rightObj = undefined;
+rowObj.children().each(function(){
+if (!($(this).hasClass("_LuQUID_AccessDeviceList")||
+$(this).hasClass("clear"))){
+usedWidth += $(this).outerWidth(true);
+}
+if ($(this).hasClass("right")){
+rightObj = $(this);
+}
+});
+var errWidth = rowWidth - usedWidth;
+var warpTip = "";
+warpTip = "";
+var widthtmp = errWidth-5-23-10;
+if(widthtmp < 1 || warpTip=="warp")
+{
+tipObj.removeAttr("style","");
+}
+else
+{
+tipObj.width(widthtmp);
+}
+if (rightObj != undefined)
+{
+tipObj.insertAfter(rightObj);
+}
+else
+{
+tipObj.appendTo(rowObj);
+}
+},
+onkeyup: function(element, event) {
+var excludedKeys = [
+16, 17, 18, 20, 35, 36, 37,
+38, 39, 40, 45, 144, 225
+];
+if (event.which === 9 && this.elementValue(element) === "" || $.inArray(event.keyCode, excludedKeys) !== -1 ) {
+return;
+} else if (element.name in this.submitted || element.name in this.invalid || element === this.lastActive) {
+this.element(element);
+}
+}
+});
+jQuery.extend(jQuery.validator.messages, {
+required: "This field is required. ",
+remote: "Please fix this field. ",
+email: "Please enter a valid email address. ",
+url: "Please enter a valid URL. ",
+date: "Please enter a valid date. ",
+dateISO: "Please enter a valid date (ISO). ",
+number: "Please enter a valid number. ",
+digits: "Please enter an integer. ",
+creditcard: "Please enter a valid credit card number. ",
+equalTo: "Please enter the same value again. ",
+maxlength: jQuery.validator.format("Please enter no more than {0} characters. "),
+minlength: jQuery.validator.format("Please enter at least {0} characters. "),
+rangelength: jQuery.validator.format("Please enter a value with {0} ~ {1} characters. "),
+range: jQuery.validator.format("Please enter a value between {0} and {1}. "),
+max: jQuery.validator.format("Please enter a value less than or equal to {0}. "),
+min: jQuery.validator.format("Please enter a value greater than or equal to {0}. ")
+});
+function AsciiPasswordCheck(Key)
+{
+for (var j = 0 ;j < Key.length; j++)
+{
+var ch = Key.charCodeAt(j);
+if(ch == 9)
+{
+return false;
+}
+}
+return true;
+}
+function AsciiCheck(Key)
+{
+for (var j = 0 ;j < Key.length; j++)
+{
+var ch = Key.charCodeAt(j);
+if(ch<32 || ch>126)
+{
+return false;
+}
+}
+return true;
+}
+function AsciiCheckWithLen(Key, LenLimit)
+{
+if (Key.length != LenLimit)
+{
+return false;
+}
+if ( false == AsciiCheck(Key) )
+{
+return false;
+}
+return true;
+}
+function HexCheck(Key)
+{
+for (var j = 0 ;j < Key.length; j++)
+{
+var ch = Key.charCodeAt(j);
+if (!((ch >= 65 && ch <= 70)
+||(ch >= 97 && ch <= 102)
+||(ch >= 48 && ch <= 57)))
+{
+return false;
+}
+}
+return true;
+}
+function HexCheckWithLen(Key, LenLimit)
+{
+if (Key.length != LenLimit)
+{
+return false;
+}
+if ( false == HexCheck(Key) )
+{
+return false;
+}
+return true;
+}
+function checkDomain(value)
+{
+var len = value.length;
+var firstChar = value.substr(0,1);
+var lastChar = value.substr(len-1,1);
+var maxlen = 64;
+if(len>64||len<1)
+{
+return false;
+}
+if (value.match("[^0-9a-zA-Z.-]") != null)
+{
+return false;
+}
+if(firstChar.match("[^0-9a-zA-Z]") != null)
+{
+return false;
+}
+if(lastChar.match("[^0-9a-zA-Z]") != null)
+{
+return false;
+}
+var pos = value.lastIndexOf(".");
+if(pos == -1)
+{
+var str = value;
+var templen = value.length;
+for(var i=0;i<len;i++)
+{
+var tempvalue = str.substring(i,i+1);
+if(isNaN(parseInt(tempvalue)))
+{
+return true;
+}
+}
+return false;
+}
+else
+{
+var str = value.substr(pos+1);
+var tmplen = value.length - (pos + 1);
+for(var i=0;i<tmplen;i++)
+{
+var tmpvalue = str.substring(i,i+1);
+if(isNaN(parseInt(tmpvalue)))
+{
+return true;
+}
+}
+return false;
+}
+}
+function checkIPv4Addr(ipaddr)
+{
+var re = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+if(re.test(ipaddr) == true)
+{
+var parts = ipaddr.split(".");
+for(var i=0; i<parts.length; i++)
+{
+if(parts[i].indexOf("0") == 0 && parts[i].length > 1)
+return false;
+if (parseInt((parts[i]),10) > 255 || parseInt((parts[i]),10) < 0)
+{
+return false;
+}
+}
+return true;
+}
+return false;
+}
+function checkIPv6Addr(ipaddr)
+{
+if (ipaddr.match("[^0-9a-fA-F:.]") != null)
+return false;
+var addrParts = ipaddr.split(':');
+var Doublecolon = ipaddr.split('::');
+var ipv4Parts = ipaddr.split('.');
+if(addrParts.length<3||addrParts.length>8)
+{
+return false;
+}
+else if(Doublecolon.length==1&&ipv4Parts.length==1&&addrParts.length!=8)
+{
+return false;
+}
+else if(Doublecolon.length==1&&ipv4Parts.length>1&&addrParts.length!=6)
+{
+return false;
+}
+else if(Doublecolon.length>1&&ipv4Parts.length>1&&addrParts.length>6)
+{
+return false;
+}
+else if(Doublecolon.length>2||ipaddr.split(':::').length>1)
+{
+return false;
+}
+else
+{
+if(addrParts[0]==""&&addrParts[1]!="")
+{
+return false;
+}
+for(var i=0;i<addrParts.length;i++)
+{
+if(i==addrParts.length-1&&addrParts[i]==""&&addrParts[i-1]!="")
+{
+return false;
+}
+if(addrParts[i].length>4 && addrParts[i].split('.').length<2)
+{
+return false;
+}
+}
+}
+var pos = ipaddr.lastIndexOf(":");
+var ipv4Parts = ipaddr.split('.');
+if(ipv4Parts.length>1)
+{
+var ipv4=ipaddr.substring(pos+1,ipaddr.length);
+if( false == checkIPv4Addr(ipv4) )
+{
+return false;
+}
+}
+return true;
+}
+function checkMacAddr(macaddr)
+{
+var regSingleByte = new RegExp(":","g");
+var regexp = /^([A-Fa-f0-9]{2}-){5}[A-Fa-f0-9]{2}$/;
+macaddr = macaddr.replace(regSingleByte,"-");
+if (!regexp.test(macaddr)) {
+return false;
+}
+return true;
+}
+jQuery.validator.addMethod(
+"macAddr",
+function(value, element, params) {
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if(checkMacAddr(value) == true)
+{
+return true;
+}
+return false;
+},
+"Please enter a valid MAC Address. "
+);
+jQuery.validator.addMethod(
+"IPv4Addr",
+function(value, element, params) {
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if(checkIPv4Addr(value) == true)
+{
+return true;
+}
+return false;
+},
+"Please enter a valid IPv4 Address. "
+);
+jQuery.validator.addMethod(
+"IPv6Addr",
+function(value, element, params) {
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+return checkIPv6Addr(value);
+},
+"Please enter a valid IPv6 Address. "
+);
+jQuery.validator.addMethod(
+"DomainName",
+function(value, element, params) {
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+return checkDomain(value);
+},
+"Please enter a valid Domain Name. "
+);
+jQuery.validator.addMethod(
+"HostName",
+function(value, element, params) {
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+var len = value.length;
+var firstChar = value.substr(0,1);
+var lastChar = value.substr(len-1,1);
+if (value.match("[^0-9a-zA-Z.-]") != null)
+{
+return false;
+}
+if(firstChar.match("[^0-9a-zA-Z]") != null)
+{
+return false;
+}
+if(lastChar.match("[^0-9a-zA-Z]") != null)
+{
+return false;
+}
+var pos = value.lastIndexOf(".");
+if(pos == -1)
+{
+var str = value;
+var templen = value.length;
+for(var i=0;i<len;i++)
+{
+var tempvalue = str.substring(i,i+1);
+if(isNaN(parseInt(tempvalue)))
+{
+return true;
+}
+}
+return false;
+}
+else
+{
+var str = value.substr(pos+1);
+var tmplen = value.length - (pos + 1);
+for(var i=0;i<tmplen;i++)
+{
+var tmpvalue = str.substring(i,i+1);
+if(isNaN(parseInt(tmpvalue)))
+{
+return true;
+}
+}
+return false;
+}
+},
+"Please enter a valid Host Name. "
+);
+jQuery.validator.addMethod(
+"url",
+function(value, element, params) {
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+var len = value.length;
+if( (len < 1) || (len > 256) )
+{
+return false;
+}
+if (value.match("[^0-9a-zA-Z.:;,!@%#?_/&=+*'$()\\[\\]-]") != null)
+{
+return false;
+}
+return true;
+},
+"Please enter a valid URL. "
+);
+jQuery.validator.addMethod(
+"DomainOrIPV4",
+function(value, element, params) {
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if(checkIPv4Addr(value) == true || checkDomain(value) == true)
+{
+return true;
+}
+return false;
+},
+$.validator.format("Please enter domain name or IPv4 address. ")
+);
+jQuery.validator.addMethod(
+"ChkPass",
+function(val, element)
+{
+if ( !(/[0-9]+/).test(val) ||
+!(/[a-zA-Z]+/).test(val) ||
+!(/[!"#$%&'()*+,-./:;<=>?@\[\\\]^_`{|}~]+/).test(val) )
+{
+return false;
+}
+if (val.length < 8)
+{
+return false;
+}
+return true;
+},
+$.validator.format("Password does not meet specifications")
+);
+jQuery.validator.addMethod(
+"PasswordASCII",
+function(value, element, params)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if (value == "						")
+{
+return true;
+}
+if ( false == AsciiPasswordCheck(value) )
+{
+params = 0;
+return false;
+}
+if ( false == AsciiCheck(value) )
+{
+params = 1;
+return false;
+}
+return true;
+},
+function(param, element)
+{
+var error = ["The format of password is wrong. Please clear it and re-enter. ", "Please enter only ASCII characters. "];
+var value = $(element).val();
+var ret = 0;
+if ( false == AsciiPasswordCheck(value) )
+{
+ret = 0;
+}
+else if( false == AsciiCheck(value) )
+{
+ret = 1;
+}
+else
+{
+}
+if ( ret <= error.length )
+{
+return error[ret];
+}
+}
+);
+jQuery.validator.addMethod(
+"ASCII",
+function(value, element, params)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if ( false == AsciiCheck(value) )
+{
+return false;
+}
+return true;
+},
+"Please enter only ASCII characters. "
+);
+jQuery.validator.addMethod(
+"PassStrong",
+function(value, element, params)
+{
+var num = 0;
+for (var j = 0 ;j < value.length; j++)
+{
+var ch = value.charCodeAt(j);
+if(ch<32 || ch>126)
+{
+return false;
+}
+}
+if (value.length < 8)
+return false;
+if((/[0-9]+/).test(value))
+num = num+1;
+if((/[a-z]+/).test(value))
+num = num+1;
+if((/[A-Z]+/).test(value))
+num = num+1;
+if((/[!"#$%&'()*+,-./:;<=>?@\[\\\]^_`{|}~]+/).test(value))
+num = num+1;
+if(num < 3)
+return false;
+return true;
+},
+"Please enter a strong password!"
+);
+jQuery.validator.addMethod(
+"utf8",
+function(value, element, params)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+return true;
+},
+"Please enter only ASCII characters. "
+);
+jQuery.validator.addMethod(
+"WEPKey128Bit",
+function(value, element, params)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+var AsciiLenLimit = 13;
+var HexLenLimit = 26;
+if ( AsciiCheckWithLen(value, AsciiLenLimit) == false
+&& HexCheckWithLen(value, HexLenLimit) == false )
+{
+return false;
+}
+return true;
+},
+"Please enter 13 ASCII characters or 26 hexadecimal digits. "
+);
+jQuery.validator.addMethod(
+"WEPAsciiOrHexLen",
+function(value, element, params)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+var AsciiLenLimit = 5;
+var HexLenLimit = 10;
+var AsciiLenLimit13 = 13;
+var HexLenLimit26 =26;
+if (AsciiCheckWithLen(value, AsciiLenLimit) == false
+&& HexCheckWithLen(value, HexLenLimit) == false
+&& AsciiCheckWithLen(value, AsciiLenLimit13) == false
+&& HexCheckWithLen(value, HexLenLimit26) == false)
+{
+return false;
+}
+return true;
+},
+"Please enter 5 or 13 ASCII characters, or enter 10 or 26 hexadecimal digits. "
+);
+jQuery.validator.addMethod(
+"HEX",
+function(value, element, params)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if ( HexCheck(value) == false )
+{
+return false;
+}
+return true;
+},
+"Please enter only hexadecimal characters. "
+);
+jQuery.validator.addMethod(
+"fixedlength",
+function(value, element, param)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if (value.length != param)
+{
+return false;
+}
+return true;
+},
+jQuery.validator.format("Please enter {0} characters. ")
+);
+jQuery.validator.addMethod(
+"fixedValue",
+function(value, element, param)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if (value != param)
+{
+return false;
+}
+return true;
+},
+jQuery.validator.format("The only allowed value is {0}.")
+);
+function hexCompare(hexNum, hexRefer)
+{
+var num = parseInt(hexNum, 16);
+var refer = parseInt(hexRefer, 16);
+if (num < refer)
+{
+return -1;
+}
+else if (num > refer)
+{
+return 1;
+}
+else
+{
+return 0;
+}
+}
+jQuery.validator.addMethod(
+"hexRange",
+function(value, element, params)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if (typeof(params[0]) == "object")
+{
+for (var i=0; i<params.length; i++)
+{
+var range = params[i];
+if (typeof(range) == "object")
+{
+if (hexCompare(value, range[0]) != -1 && hexCompare(value, range[1]) != 1 )
+{
+return true;
+}
+}
+}
+}
+else
+{
+if (hexCompare(value, params[0]) != -1 && hexCompare(value, params[1]) != 1 )
+{
+return true;
+}
+}
+return false;
+},
+function(params, element){
+var rangesStr = "";
+if (typeof(params[0]) == "object")
+{
+var rangesLen = params.length;
+for (var i=0; i<rangesLen; i++)
+{
+var range = params[i];
+if (hexCompare(range[0], range[1]) != 0)
+{
+rangesStr += range[0] + "~" + range[1];
+}
+else
+{
+rangesStr += range[0];
+}
+if ( i < rangesLen-1 )
+{
+rangesStr += ", ";
+}
+}
+}
+else
+{
+rangesStr = params[0] + "~" + params[1];
+}
+return $.validator.format("Please enter a hexadecimal value in the ranges of {0}. ", rangesStr);
+}
+);
+jQuery.validator.addMethod(
+"ranges",
+function(value, element, param)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+var rangesLen = param.length;
+for (var i=0; i<rangesLen; i++)
+{
+var range = param[i];
+if ( typeof range === 'number' )
+{
+if ( value == range )
+{
+return true;
+}
+}
+else
+{
+if ( value >= range[0] && value <= range[1] )
+{
+return true;
+}
+}
+}
+return false;
+},
+function(param, element){
+var rangesStr = "";
+var rangesLen = param.length;
+for (var i=0; i<rangesLen; i++)
+{
+var range = param[i];
+if ( typeof range === 'number' )
+{
+rangesStr += range;
+}
+else
+{
+rangesStr += range[0] + "~" + range[1];
+}
+if ( i < rangesLen-1 )
+{
+rangesStr += ",";
+}
+}
+return $.validator.format("Please enter a value in the ranges of {0}. ", rangesStr);
+}
+);
+jQuery.validator.addMethod(
+"integer",
+function(value, element, params)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+return /^-?\d+$/.test(value);
+},
+"Please enter an integer. "
+);
+jQuery.validator.addMethod(
+"concurrence",
+function(value, element, param)
+{
+if (1 > param.length)
+{
+return true;
+}
+var obj = get_element_obj($(element), param[0]);
+if (obj.is(":hidden"))
+{
+return true;
+}
+if ("" == value && "" == obj.val())
+{
+return true;
+}
+if ("" != value && "" != obj.val())
+{
+return true;
+}
+return false;
+},
+"Please input valid prefix. "
+);
+function get_element_obj(obj, id)
+{
+var instTplt = obj.closest("[id^=template_]");
+var elementID = obj.attr("id");
+var arr = elementID.split(':');
+var strId = id;
+if (arr.length > 1)
+{
+var exNum = arr[arr.length-1];
+strId = id + ":" + exNum;
+}
+return $("[id='"+strId+"']", instTplt);
+};
+function test_greatThan(obj, value, param, type)
+{
+if ("errstring" == type )
+{
+var tempstring = {
+"1" : param[2].separate ? "Please enter a value greater than \"{0}\". " : "Please enter a value greater than the former. " ,
+"2" : param[2].separate ? "Please enter a value not less than \"{0}\". " : "Please enter a value not less than the former. " ,
+"3" : param[2].separate ? "Please ensure the difference with the latter not greater than {1}. " : "Please ensure the difference with the former not greater than {1}. "
+};
+return $.validator.format(tempstring[param[2].ret], param[2].idtext, param[2].discrepantMode);
+}
+else
+{
+var tmpvalue = obj.val();
+var ret = true;
+if (param[2].equal)
+{
+ret = Number(value) >= Number(tmpvalue);
+if (!ret)
+{
+param[2].ret = "2";
+return false;
+}
+}
+else
+{
+ret = Number(value) > Number(tmpvalue);
+if (!ret)
+{
+param[2].ret = "1";
+return false;
+}
+}
+if (param[2].discrepantMode)
+{
+ret = Number(value) - Number(tmpvalue) <= Number(param[2].discrepantMode);
+if (!ret)
+{
+param[2].ret = "3";
+return false;
+}
+}
+obj.parent().next().children().hide();
+return true;
+}
+};
+function test_lessThan(obj, value, param, type)
+{
+if ("errstring" == type )
+{
+var tempstring = {
+"1" : param[2].separate ? "Please enter a value less than \"{0}\". " : "Please enter a value less than the latter. " ,
+"2" : param[2].separate ? "Please enter a value not greater than \"{0}\". " : "Please enter a value not greater than the latter. " ,
+"3" : param[2].separate ? "Please ensure the difference with the former not greater than {1}. " : "Please ensure the difference with the latter not greater than {1}. "
+};
+return $.validator.format(tempstring[param[2].ret], param[2].idtext, param[2].discrepantMode);
+}
+else
+{
+var tmpvalue = obj.val();
+var ret = true;
+if (param[2].equal)
+{
+ret = Number(value) <= Number(tmpvalue);
+if (!ret)
+{
+param[2].ret = "2";
+return false;
+}
+}
+else
+{
+ret = Number(value) < Number(tmpvalue);
+if (!ret)
+{
+param[2].ret = "1";
+return false;
+}
+}
+if (param[2].discrepantMode)
+{
+ret = Number(tmpvalue) - Number(value) <= Number(param[2].discrepantMode)
+if (!ret)
+{
+param[2].ret = "3";
+return false;
+}
+}
+obj.parent().next().children().hide();
+return true;
+}
+};
+jQuery.validator.addMethod(
+"extremumRange",
+function(value, element, param)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if (2 > param.length)
+{
+return true;
+}
+var obj = get_element_obj($(element), param[1]);
+if (3 > param.length)
+{
+param[2] = {};
+}
+param[2]["idtext"] = obj.parent().prev().text();
+if (obj.is(":hidden") || "" == obj.val())
+{
+return true;
+}
+var selectMode = {
+"greatThan" : test_greatThan,
+"lessThan" : test_lessThan
+};
+return selectMode[param[0]](obj, value, param);
+},
+function(param,element)
+{
+var selectMode = {
+"greatThan" : test_greatThan,
+"lessThan" : test_lessThan
+};
+return selectMode[param[0]]("", "", param, "errstring");
+}
+);
+function range_greatThan(obj, value, param, type)
+{
+if ("errstring" == type )
+{
+var tempstring = {
+"1" : param[2].separate ? "Please enter a value greater than \"{0}\". " : ( param[2].objPosition =="first" ? "Please enter a value greater than the former. " : "Please enter a value greater than the latter." ),
+"2" : param[2].separate ? "Please enter a value not less than \"{0}\". " : ( param[2].objPosition =="first" ? "Please enter a value not less than the former. " : "Please enter a value not less than the latter. " ) ,
+"3" : param[2].separate ? "Please ensure the difference with \"{0}\" not greater than {1}. " : ( param[2].objPosition =="first" ? "Please ensure the difference with the former not greater than {1}. " : "Please ensure the difference with the latter not greater than {1}. ")
+};
+return $.validator.format(tempstring[param[2].ret], param[2].idtext, param[2].discrepantMode);
+}
+else
+{
+obj.parent().next().children().hide();
+var tmpvalue = obj.val();
+var ret = true;
+if (param[2].equal)
+{
+ret = Number(value) >= Number(tmpvalue);
+if (!ret)
+{
+param[2].ret = "2";
+return false;
+}
+}
+else
+{
+ret = Number(value) > Number(tmpvalue);
+if (!ret)
+{
+param[2].ret = "1";
+return false;
+}
+}
+if (param[2].discrepantMode)
+{
+ret = Number(value) - Number(tmpvalue) <= Number(param[2].discrepantMode);
+if (!ret)
+{
+param[2].ret = "3";
+return false;
+}
+}
+return true;
+}
+};
+function range_lessThan(obj, value, param, type)
+{
+if ("errstring" == type )
+{
+var tempstring = {
+"1" : param[2].separate ? "Please enter a value less than \"{0}\". " : ( param[2].objPosition == "first" ? "Please enter a value less than the former. " : "Please enter a value less than the latter. " ),
+"2" : param[2].separate ? "Please enter a value not greater than \"{0}\". " : ( param[2].objPosition == "first" ? "Please enter a value not greater than the former." : "Please enter a value not greater than the latter. " ),
+"3" : param[2].separate ? "Please ensure the difference with \"{0}\" not greater than {1}. " : ( param[2].objPosition == "first" ? "Please ensure the difference with the former not greater than {1}. " : "Please ensure the difference with the latter not greater than {1}. " )
+};
+return $.validator.format(tempstring[param[2].ret], param[2].idtext, param[2].discrepantMode);
+}
+else
+{
+obj.parent().next().children().hide();
+var tmpvalue = obj.val();
+var ret = true;
+if (param[2].equal)
+{
+ret = Number(value) <= Number(tmpvalue);
+if (!ret)
+{
+param[2].ret = "2";
+return false;
+}
+}
+else
+{
+ret = Number(value) < Number(tmpvalue);
+if (!ret)
+{
+param[2].ret = "1";
+return false;
+}
+}
+if (param[2].discrepantMode)
+{
+ret = Number(tmpvalue) - Number(value) <= Number(param[2].discrepantMode)
+if (!ret)
+{
+param[2].ret = "3";
+return false;
+}
+}
+return true;
+}
+};
+jQuery.validator.addMethod(
+"compareRange",
+function(value, element, param)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if (2 > param.length)
+{
+return true;
+}
+var obj = get_element_obj($(element), param[1]);
+if (3 > param.length)
+{
+param[2] = {};
+}
+param[2]["idtext"] = obj.parent().prev().text();
+var selectMode = {
+"greatThan" : range_greatThan,
+"lessThan" : range_lessThan
+};
+return selectMode[param[0]](obj, value, param);
+},
+function(param,element)
+{
+var selectMode = {
+"greatThan" : range_greatThan,
+"lessThan" : range_lessThan
+};
+return selectMode[param[0]]("", "", param, "errstring");
+}
+);
+jQuery.validator.addMethod(
+"banValue",
+function(value, element, param)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+var paramLen = param.length;
+for (var i = 0;i < paramLen;i++)
+{
+var range = param[i];
+if (typeof range === 'string' )
+{
+if (value == range)
+{
+return false;
+}
+}
+else
+{
+if (value >= range[0] && value <= range[1])
+{
+return false;
+}
+}
+}
+return true;
+},
+function(param, element){
+var rangesStr = "";
+var paramLen = param.length;
+for (var i=0; i<paramLen; i++)
+{
+var paraVal = param[i];
+if ( "object" === typeof paraVal )
+{
+rangesStr += paraVal[0] + "~" + paraVal[1];
+}
+else
+{
+rangesStr += paraVal;
+}
+if ( i < paramLen-1 )
+{
+rangesStr += ", ";
+}
+}
+if (paramLen > 1)
+{
+return $.validator.format("Please ensure the input NOT in the ranges of \"{0}\". ", rangesStr);
+}
+else
+{
+return $.validator.format("Please ensure the input NOT equal to \"{0}\". ", rangesStr);
+}
+}
+);
+jQuery.validator.addClassRules({
+ipSepCheck: {
+"required": true,
+"integer": true,
+"range":[0,255]
+},
+macSepCheck:{
+"required": true,
+"HEX": true,
+"fixedlength": 2
+}
+});
+function checkTimeHMS(timestr) {
+var re = /^([0-1]{1}[0-9]{1}|[2]{1}[0-3]{1}):[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}$/;
+if (re.test(timestr) == true) {
+return true;
+}
+return false;
+}
+jQuery.validator.addMethod(
+"checkTimeHMS",
+function (value, element, params) {
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if (checkTimeHMS(value) == true) {
+return true;
+}
+return false;
+},
+"Please enter the correct time format like HH:MM:SS."
+);
+function time_earlierThan(obj, value, param, type)
+{
+var tmpvalue = obj.val();
+var ret = true;
+var valuearr = value.split(":")
+var tmpvaluearr = tmpvalue.split(":")
+if (valuearr[0] < tmpvaluearr[0])
+{
+return true;
+}
+else
+{
+if (valuearr[0] === tmpvaluearr[0] && valuearr[1] < tmpvaluearr[1])
+{
+return true;
+}
+else
+{
+if (valuearr[1] === tmpvaluearr[1] && valuearr[2] < tmpvaluearr[2])
+{
+return true;
+}
+}
+return false;
+}
+};
+function time_laterThan(obj, value, param, type)
+{
+var tmpvalue = obj.val();
+var ret = true;
+var valuearr = value.split(":")
+var tmpvaluearr = tmpvalue.split(":")
+if (valuearr[0] > tmpvaluearr[0])
+{
+return true;
+}
+else
+{
+if (valuearr[0] === tmpvaluearr[0] && valuearr[1] > tmpvaluearr[1])
+{
+return true;
+}
+else
+{
+if (valuearr[1] === tmpvaluearr[1] && valuearr[2] > tmpvaluearr[2])
+{
+return true;
+}
+}
+return false;
+}
+};
+jQuery.validator.addMethod(
+"timeComparison",
+function (value, element, param) {
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if (2 > param.length) {
+return true;
+}
+var obj = get_element_obj($(element), param[1]);
+if (3 > param.length) {
+param[2] = {};
+}
+param[2]["idtext"] = obj.parent().prev().text();
+if (obj.is(":hidden") || "" == obj.val()) {
+return true;
+}
+var selectMode = {
+"laterThan": time_laterThan,
+"earlierThan": time_earlierThan
+};
+return selectMode[param[0]](obj, value, param);
+},
+"Start time must be earlier than end time."
+);
+function compareIPv4(firstIP, secondIP)
+{
+var fIP;
+var sIP;
+fIP = firstIP.split(".");
+sIP = secondIP.split(".");
+for (var i = 0; i < 4; i++)
+{
+if (fIP[i] != "" && sIP[i] != "")
+{
+fIP[i] = parseInt(fIP[i],10);
+sIP[i] = parseInt(sIP[i],10);
+}
+if (fIP[i] > sIP[i])
+{
+return 1;
+}
+else if (fIP[i] < sIP[i])
+{
+return -1;
+}
+}
+return 0;
+}
+function checkWholeIPv4(k, v, ipValue,template)
+{
+var vLen = v.length;
+var retMsg = "";
+for (var j = 0; j < vLen; j++)
+{
+if (retMsg != "")
+{
+retMsg += ", ";
+}
+var range = v[j];
+if (typeof range === 'string')
+{
+retMsg += range;
+}
+else
+{
+retMsg += range[0]+" ~ "+range[1];
+}
+}
+if (k == "banValue")
+{
+retMsg = " is NOT allowed to input the following value(s): {0}. ".format(retMsg);
+for (var i = 0; i < vLen; i++)
+{
+var range = v[i];
+if (typeof range === 'string')
+{
+if (ipValue == range)
+{
+return [false, k, retMsg];
+}
+}
+else
+{
+if ("-1" != compareIPv4(ipValue, range[0]) &&
+"1" != compareIPv4(ipValue, range[1]))
+{
+return [false, k, retMsg];
+}
+}
+}
+}
+else if (k == "allowRange")
+{
+retMsg = "'s input is invalid. Please ensure the input is in the following range: {0}. ".format(retMsg);
+for (var i = 0; i < vLen; i++)
+{
+var range = v[i];
+if ("-1" != compareIPv4(ipValue, range[0]) &&
+"1" != compareIPv4(ipValue, range[1]))
+{
+return [true, "", ""];
+}
+}
+return [false, k, retMsg];
+}
+else if (k == "notLessThan")
+{
+retMsg = "";
+var IPObj = $("[id^='"+v+"']",template);
+IPObj.FillIPorMacDataCombination("sub_"+v, ".", 4);
+var minValue = IPObj.val();
+if (-1 == compareIPv4(ipValue, minValue)){
+return [false, k, retMsg];
+}
+}
+else if (k == "notMoreThan")
+{
+retMsg = "";
+var IPObj = $("[id^='"+v+"']",template);
+IPObj.FillIPorMacDataCombination("sub_"+v, ".", 4);
+var maxValue = IPObj.val();
+if (1 == compareIPv4(ipValue, maxValue)){
+return [false, k, retMsg];
+}
+}
+else
+{
+}
+return [true, "", ""];
+}
+function checkWholeMac(k, v, macValue)
+{
+var vLen = v.length;
+var retMsg = "";
+for (var j = 0; j < vLen; j++)
+{
+if (retMsg != "")
+{
+retMsg += ", ";
+}
+var range = v[j];
+if (typeof range === 'string')
+{
+retMsg += range;
+}
+else
+{
+retMsg += range[0]+" ~ "+range[1];
+}
+}
+if (k == "banValue")
+{
+retMsg = " is NOT allowed to input the following value(s): {0}. ".format(retMsg);
+for (var i = 0; i < vLen; i++)
+{
+var range = v[i];
+if (typeof range === 'string')
+{
+if (macValue.toLowerCase() == range.toLowerCase())
+{
+return [false, k, retMsg];
+}
+}
+}
+}
+else
+{
+}
+return [true, "", ""];
+}
+function getMsgofWholeMACIPCheck(checkRetArray, ruleObj, checkValue, checkParaName)
+{
+var errMsg = "";
+var ruleName = checkRetArray[1];
+if(ruleObj.messages[ruleName] != undefined){
+return ruleObj.messages[ruleName];
+}
+switch (ruleName){
+case "banValue":{
+if (checkParaName != "")
+{
+errMsg = checkParaName + checkRetArray[2];
+}
+else{
+errMsg = "Current operation is invalid, please check configuration parameters. "+"["+"Error Input: "+checkValue+"]";
+}
+break;
+}
+case "allowRange":{
+if (checkParaName != ""){
+errMsg = checkParaName + checkRetArray[2];
+}
+else{
+errMsg = "Current operation is invalid, please check configuration parameters. "+"["+"Error Input: "+checkValue+"]";
+}
+break;
+}
+default:{
+errMsg = "error msg undefined!"
+}
+}
+return errMsg;
+}
+jQuery.validator.addMethod(
+"utf8LengthRange",
+function(value, element, param)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+var valLength = value.length;
+var param1 = param[0];
+var param2 = param[1];
+if (param2 < 3)
+{
+alert("utf8LengthRange is invalid!["+param2+"<"+3 +"]");
+}
+else
+{
+param1 = Math.ceil(parseInt(param[0])/ 3);
+param2 = Math.floor(parseInt(param[1]) / 3);
+if (param1 < param2)
+{
+if (valLength >= param1 && valLength <= param2 )
+{
+return true;
+}
+}
+else if (param1 == param2)
+{
+if (valLength == param2)
+{
+return true;
+}
+}
+else
+{
+alert("utf8LengthRange ["+param1+","+param2+"] is invalid!");
+}
+}
+return false;
+},
+function(param, element){
+var lengthStr = "";
+var param1 = param[0];
+var param2 = param[1];
+if (param2 < 3)
+{
+lengthStr = " Range Error!!!!!![param2<WEB_UTF8_REALBYTE]";
+}
+else
+{
+param1 = Math.ceil(parseInt(param[0])/ 3);
+param2 = Math.floor(parseInt(param[1]) / 3);
+if (param1 < param2)
+{
+lengthStr = param1 + " ~ " + param2;
+}
+else if (param1 == param2)
+{
+lengthStr = param2;
+}
+else
+{
+lengthStr = " Range Error!!!!!!["+param1+","+param2+"]";
+}
+}
+return $.validator.format("Please enter a value with {0} characters.", lengthStr);
+}
+);
+jQuery.validator.addMethod(
+"notEqualTo",
+function(value, element, param)
+{
+var obj = $("[id^='"+param+"']");
+if ( value == obj.val())
+{
+return false;
+}
+return true;
+},
+function(param, element){
+var paramName = "";
+var obj = $("[id^='"+param+"']");
+paramName = $("label[for='"+param+"']").text();
+return $.validator.format("Please enter a different value with {0}. ", paramName);
+}
+);
+
+
+
+(function(){
+$(document).ready(function(){
+var curv = 2067;
+if (curv == "65")
+$("#languageSwitch").hide();
+});
+})();
+
+(function(){
+$(document).ready(function(){
+var CountryCode = "2067";
+if (CountryCode == "152" || CountryCode == "163")
+{
+$("#logo").attr("class", "logo_Claro");
+}
+});
+})();
+
+(function(){
+$(document).ready(function(){
+var CountryCode = "2067";
+if (CountryCode == "36")
+{
+$("#logo").addClass("logo_Tot");
+$("#timeArea").addClass("timeArea_Tot");
+}
+});
+})();
+(function(){
+$(document).ready(function(){
+var CountryCode = "2067";
+if (CountryCode == "106")
+{
+$("#logo").addClass("logo_Morocco");
+}
+});
+})();
+(function(){
+$(document).ready(function(){
+var CountryCode = "2067";
+if (CountryCode == "138")
+{
+$("#logo").addClass("logo_IvoryOrange");
+}
+});
+})();
+(function(){
+$(document).ready(function(){
+var CountryCode = "2067";
+if (CountryCode == "174")
+{
+$("#logo").addClass("logo_Orange");
+}
+});
+})();
+
+
+
+
+
+
+
+
+var menuTreeJSON = [{"id":"homePage","name":"Home","extData":"Show the important information.","area":[{"area":"home_t.lp"}]},{"id":"internet","name":"Internet","children":[{"id":"internetStatus","name":"Status","children":[{"id":"ethWanStatus","name":"WAN","pageHelp":"This page shows the status of WAN. ","extData":"This page displays basic information of WAN connection. ","area":[{"area":"wan_eth_status_t.lp"}]},{"id":"Wan3gStatus","name":"3G/4G","pageHelp":"This page shows the status of 3G/4G. ","extData":"need to add.","area":[{"area":"wwan_mobile_status_t.lp"},{"area":"wan_3g_status_t.lp"}]},{"id":"tunnel4in6Status","name":"DSLite","pageHelp":"This page shows the status of DSLite connection. ","extData":"Tunnel configuration information, including how to configure relevant parameters of Tunnel Connection, and WAN Connection Name is the name of underlying WAN Connection associated with the Tunnel, and the range of Interface IPv4 address is between 192.0.0.2 and 192.0.0.6. ","area":[{"area":"tunnel_4in6_status_t.lp"}]},{"id":"tunnel6in4Status","name":"6RD","pageHelp":"This page shows the status of 6RD connection. ","extData":"6in4 Tunnel settings. In this page, the WAN Connection represents its underlying Connection name. Please notice that 6in4 Tunnel does not verify the underlying Connection. ","area":[{"area":"tunnel_6in4_status_t.lp"}]},{"id":"l2tpStatus","name":"L2TP","pageHelp":"This page shows the status of L2TP connection. ","extData":"need to add.","area":[{"area":"l2tp_status_t.lp"}]}]},{"id":"security","name":"Security","children":[{"id":"firewall","name":"Firewall","pageHelp":"This page provides the function of firewall parameter(s) configuration. ","extData":"This page allows the user to set the level of the firewall(IPv4) and protection against attacks. After setting, this page displays the level of the firewall and the new state of protection against attacks. ","area":[{"area":"firewall_config_t.lp"},{"area":"firewall_dos_t.lp"}]},{"id":"filterCriteria","name":"Filter Criteria","pageHelp":"This page provides the function of filter criteria parameter(s) configuration. ","extData":"{Filter Switch And Mode Configuration:}This page configures the MAC filter and URl filter modes and switches. {{MAC Filter:}MAC Address Filter: The MAC Address Filter settings can set the relevance parameters of the MAC filter function. The user interface will display the set MAC Filter rules after setting completed. {{URL Filter:}URL Filter: The URL Filter settings can set rule to filter HTTP packets or accept HTTP packets. The page will display the new URL Filter rules after setting completed. {{IP Filter - IPv4:}This page allows the user to set the rule to filter the packet. After setting, this page displays the rule. {{IP Filter - IPv6:}This page allows the user to set the rule to filter the packet. After setting, this page displays the rule. ","area":[{"area":"firewall_filterglobal_t.lp"},{"area":"firewall_ipfilter_t.lp"}]},{"id":"dmz","name":"DMZ","pageHelp":"This page provides the function of DMZ parameter(s) configuration. ","extData":"This page allows to set DMZ Host and displays the information of DMZ Host. ","area":[{"area":"firewall_dmz_t.lp"}]},{"id":"portForwarding","name":"Port Forwarding","pageHelp":"This page provides the function of port forwarding parameter(s) configuration. ","extData":"Users can use the application name to set a virtual server. if you enable virtual server configuration, you can use  Wide Area Network to access the virtual host. ","area":[{"area":"firewall_portforwarding_t.lp"}]}]},{"id":"parentCtrl","name":"Parental Controls","pageHelp":"This page provides the function of parental controls parameter(s) configuration. ","extData":"The page include Time Policy for restricting users' network using, and the administrator can add and delete the user information. ","area":[{"area":"firewall_parentctrl_t.lp"}]},{"id":"ddns","name":"DDNS","pageHelp":"This page provides the function of DDNS parameter(s) configuration. ","extData":"This page allows to enable or disable the function of DDNS. After settings are completed, it shows the new DDNS status. ","area":[{"area":"ddns_t.lp"}]},{"id":"sntp","name":"SNTP","pageHelp":"This page provides the function of SNTP parameter(s) configuration. ","extData":"This page can display the current time,it can also set the time zone and the time server address. ","area":[{"area":"sntp_t.lp"}]}]},{"id":"localnet","name":"Local Network","children":[{"id":"localNetStatus","name":"Status","pageHelp":"This page shows the status of LAN. ","extData":"{LAN Information:}Display the Ethernet port information, including port name, link status, packets/bytes received, packets/bytes sent, etc.{{WLAN Status:}Display WLAN information, including radio status, channel, SSID name, packets received, packets sent, security, etc.{{WLAN Client Status:}Display WLAN Client Status information. {{LAN Client Status:}Display the LAN Client Status information. {{USB Storage Status:}Display information of USB devices connected. ","area":[{"area":"status_lan_info_t.lp"},{"area":"wlan_wlanstatus_t.lp"},{"area":"wlan_client_stat_t.lp"},{"area":"accessdev_landevs_t.lp"},{"area":"usb_usbdevs_t.lp"}]},{"id":"wlanConfig","name":"WLAN","children":[{"id":"wlanBasic","name":"WLAN Basic","pageHelp":"This page provides the function of WLAN basic parameter(s) configuration. ","extData":"{WLAN On/Off Configuration & WLAN Global Configuration:}Configure WLAN basic parameters, such as radio, channel, wireless mode, etc. {{WLAN SSID Configuration:}SSID name, hiding SSID, Enable, SSID priority, etc. SSID security setting, supported methods: None, WEP, WPA, WPA2, WPA/WPA2, etc. ","area":[{"area":"wlan_wlanbasiconoff_t.lp"},{"area":"wlan_wlanbasicadconf_t.lp"},{"area":"wlan_wlansssidconf_t.lp"}]},{"id":"wlanAdvanced","name":"WLAN Advanced","pageHelp":"This page provides the function of WLAN advanced parameter(s) configuration. ","extData":"{Access Control-Mode Configuration/Rule Configuration:}Configure ACL policy and MAC. ","area":[{"area":"wlan_macfilteraclpolicy_t.lp"},{"area":"wlan_macfilterrule_t.lp"}]},{"id":"wps","name":"WPS","pageHelp":"This page provides the function of WPS parameter(s) configuration. ","extData":"Set WPS method, PBC or PIN. If PIN method is selected, it will show AP'PIN or allow to input Enrolee'PIN. ","area":[{"area":"wlan_wps_t.lp"}]}]},{"id":"lanConfig","name":"LAN","children":[{"id":"lanMgrIpv4","name":"IPv4","pageHelp":"This page provides the function of LAN (IPv4) parameter(s) configuration. ","extData":"{Allocated Address (DHCP)/DHCP Server:}1.Supporting the management of the Home Gateway's IP address. 2.Dynamic Address management, including Dynamic Address distribution, and parameters distributed to equipment, such as lease time, address range, DNS, etc. {{DHCP Conditional Serving Pool:}Supporting dynamic address allocation according to LAN port, after the enable is set to true, it becomes effective. {{DHCP Binding:}Static address management: based on the dynamic address, it provides the configuration on binding relationship of MAC address and IP address (legal IP address), and reserves the configuration IP function. {{Port Control:}Configure the DHCP serivce of each port. ","area":[{"area":"Localnet_LanMgrIpv4_t.lp"},{"area":"Localnet_LanMgrIpv4_DHCPPortService_t.lp"},{"area":"Localnet_LanDevDHCPSource_t.lp"}]}]},{"id":"ftp","name":"FTP","pageHelp":"This page provides the function of FTP parameter(s) configuration. ","extData":"This page allows to enable or disable FTP server function, and it can also set the parameters just like FTP server security,username and password. ","area":[{"area":"Localnet_ftp_t.lp"}]},{"id":"dms","name":"DMS/DLNA","pageHelp":"This page provides the function of DMS parameter(s) configuration. ","extData":"Custom DMS. DMS(Digital Media Server) can discover media content on the USB storage device, and share this on the network. ","area":[{"area":"dms_dms_t.lp"}]},{"id":"samba","name":"Samba Service","pageHelp":"This page provides the function of samba parameter(s) configuration. ","extData":"need to add.","area":[{"area":"Localnet_Samba_t.lp"}]},{"id":"usbfunccfg","name":"USB","pageHelp":"This page provides the function of USB parameter(s) configuration. ","extData":"need to add.","area":[{"area":"usb_usbfunccfg_t.lp"}]}]},{"id":"voip","name":"VoIP","children":[{"id":"voipStatus","name":"Status","pageHelp":"This page shows the status of VoIP. ","extData":"{VoIP Status:}Display the current server status of VoIP users. {{Call Log:}Show information of history call. ","area":[{"area":"Voip_lineStatus_t.lp"},{"area":"Voip_phoneStatus_t.lp"}]}]},{"id":"mgrAndDiag","name":"Management & Diagnosis","children":[{"id":"statusMgr","name":"Status","pageHelp":"This page shows the basic information of device. ","extData":"Display primary information of this device: model name, serial number, soft version, boot version, etc. ","area":[{"area":"devmgr_statusmgr_t.lp"}]},{"id":"devMgr","name":"System Management","children":[{"id":"rebootAndReset","name":"Device Management","pageHelp":"This page provides the function of device management. ","extData":"{Reboot Management/Factory Reset Management:}Reboot or restore default if needed. ","area":[{"area":"devmgr_restartmgr_t.lp"},{"area":"db_resetmgr_t.lp"}]}]},{"id":"accountMgr","name":"Account Management","pageHelp":"This page provides the function of web account parameter(s) configuration. ","extData":"{Admin Account Management:}Maintaining the WEB user's accounts information of the device. {{Idle Timeout:}Login timeout configuration. ","area":[{"area":"devauth_accountmgr_t.lp"},{"area":"web_login_timeout_t.lp"}]}]}];
+var menuTreeObj = new MenuTreeClass(menuTreeJSON);
+var _sessionTmpToken = "\x4c\x56\x32\x31\x38\x37\x68\x37\x62\x50\x4e\x58\x67\x71\x71\x50\x69\x58\x77\x53\x74\x66\x46\x58";
+var preLoadImg = [];
+preLoadImg[0] = "/img/nv_s.gif";
+preLoadImg[1] = "/img/nv_left.gif";
+preLoadImg[2] = "/img/nv_right.gif";
+preLoadImg[3] = "/img/nv_middle.gif";
+preLoadImg[4] = "/img/English_s.gif";
+preLoadImg[5] = "/img/Chinese.gif";
+preLoadImg[6] = "/img/Chinese_s.gif";
+preLoadImg[7] = "/img/English.gif";
+preLoadImg[8] = "/img/waiting.gif";
+preLoadImg[9] = "/img/info_m.png";
+preLoadImg[10] = "/img/waiting_w.gif";
+function preload(Img)
+{
+var imgTmp = [];
+for (var i=0; i<Img.length; i++)
+{
+imgTmp[i] = new Image();
+imgTmp[i].src = Img[i];
+}
+}
+preload(preLoadImg);
+</script>
+</head>
+<body>
+<script type="text/javascript">
+if(top != self)
+{
+document.getElementsByTagName("body")[0].style.display = 'none';
+top.location = self.location;
+}
+function LogOff()
+{
+showWaitTip(true);
+$.post( "/?_type=loginData&_tag=logout_entry", {IF_LogOff:1, _sessionTOKEN:_sessionTmpToken}, undefined)
+.done(function( data ) {
+if($.isPlainObject(data))
+{
+if ( data.need_refresh )
+{
+top.location.href = top.location.href;
+}
+else
+{
+alert("This page has expired, please refresh and try again. ");
+showWaitTip(false);
+}
+}
+else
+{
+top.location.href = top.location.href;
+}
+});
+}
+function LogUser()
+{
+openLink("accountMgr" + "&Menu3Location=0");
+}
+</script>
+<div id="blackMask" class="black_overlay" style="display: none;"></div>
+<div id="tipLayer" class="white_content" style="display: none; top: 279.5px; left: 722px; position: fixed;">
+<div id="confirmLayer" style="display:none;">
+<div id="confirmMsg">
+<p>are you sure?</p>
+</div>
+<div id="waitingImgArea" style="display:none;">
+</div>
+<div id="confirmBtnArea" style="display: block;">
+<input type="button" class="button" id="confirmCancel" value="Cancel" style="display: block;">
+<input type="button" class="button" id="confirmOK" value="OK" style="display: block;">
+<input type="button" class="button" id="confirmStop" value="Stop" style="display: none;">
+</div>
+</div>
+</div>
+<div id="page_container">
+<div id="page_header">
+<div id="banner">
+
+<div id="logo" class="logo clickable"></div>
+
+<div class="timeArea" id="timeArea" style="">
+Current Time: <span id="_DevCurrTime">1970-01-12T15:02</span>
+</div>
+<div id="banner_switchArea">
+
+
+<div id="languageSwitch">
+<img src="/img/Chinese.gif" alt="Chinese" id="ChineseModify" class="clickable">
+<img src="/img/English_s.gif" alt="English" id="EnglishModify">
+</div>
+
+<div id="logOff" class="emColor clickable" onclick="LogOff()">
+<div id="LogOffLnk"> Logout</div>
+
+<div id="logUser" class="logUser" title="user">
+user
+</div>
+
+</div>
+
+</div>
+</div>
+<div id="mainNavigator">
+<div id="mn_first"></div>
+<div id="mn_li"><ul><li id="homeLi"><a href="javascript:void(0);" class="MenuItem" style="width:188px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" menuclass="1" id="homePage" menupage="homePage" title="Home" enableclick="on">Home</a></li><li id=""><a href="javascript:void(0);" class="MenuItem" style="width:188px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" menuclass="1" id="internet" menupage="ethWanStatus" title="Internet">Internet</a></li><li id=""><a href="javascript:void(0);" class="SelectMenuItem" style="width:188px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" menuclass="1" id="localnet" menupage="localNetStatus" title="Local Network">Local Network</a></li><li id=""><a href="javascript:void(0);" class="MenuItem" style="width:188px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" menuclass="1" id="voip" menupage="voipStatus" title="VoIP">VoIP</a></li><li id=""><a href="javascript:void(0);" class="MenuItem" style="width:188px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" menuclass="1" id="mgrAndDiag" menupage="statusMgr" title="Management &amp; Diagnosis">Management &amp; Diagnosis</a></li></ul></div>
+<div id="mn_last"></div>
+</div>
+</div>
+<div id="page_content">
+<div id="commPageContainer" class="commPageContainer"><script type="text/javascript">
+$(document).ready(function(){
+initial_sceneTip();
+initial_CollapsibleBar();
+initial_addInstLink();
+initial_QueryAccessDeviceLink();
+initial_TimeCtl();
+$(".HeadDIV").each(function(){
+var Head = $(this);
+var HeadID = Head.attr("id");
+var template = $("#template_"+HeadID,Head);
+var formOBJ = $("form",Head);
+if ( ! formOBJ.attr("onsubmit") )
+{
+formOBJ.attr("onsubmit", "return false;");
+}
+var stopFormAutoSubmitStr = "<input type='text' id='_stopFormAutoSubmit'"
++" value='' class='PostIgnore'"
++" style='display:none;'>";
+formOBJ.prepend(stopFormAutoSubmitStr);
+initial_button("Apply", Head);
+initial_button("Cancel", Head);
+initial_button("Delete", Head);
+initialCtrlAllLink(Head);
+initial_special_password(Head);
+var collapsibleInstObj = $(".collapsibleInst",template);
+collapsibleInstObj.unbind("click");
+collapsibleInstObj.click(function(event){
+var collapsibleInst = $(this);
+var template = collapsibleInst.parents("[id^='template_']");
+var ChangeArea = $(".ChangeArea",template);
+if ( ChangeArea.is(":hidden") )
+{
+ChangeArea.showIt(true);
+collapsibleInst.addClass("instNameExp");
+}
+else
+{
+ChangeArea.showIt(false);
+collapsibleInst.removeClass("instNameExp");
+$(".Btn_cancel",ChangeArea).click();
+}
+});
+$(".utf8Compatible", template).each(function(){
+var thisObj = $(this);
+var dTip = thisObj.text();
+var dTipArr = dTip.split("");
+var firstNum = "";
+var secNum = "";
+var firstNumStart = "";
+var firstNumEnd = "";
+var secNumStart = "";
+var secNumEnd = "";
+var Nums = 0;
+var newTip = "";
+dTipArr = $.grep(dTipArr, function(n,i){
+return n != " ";
+});
+dTip = dTipArr.join("");
+for(var i=0; i<dTipArr.length; i++)
+{
+if (Nums > 2)
+{
+thisObj.remove();
+break;
+}
+if (isNaN(dTipArr[i]) == false)
+{
+if (firstNumStart == "")
+{
+firstNumStart = i;
+firstNumEnd = parseInt(i)+1;
+Nums += 1;
+}
+else
+{
+if (secNumStart == "")
+{
+if (firstNumEnd == i)
+{
+firstNumEnd = parseInt(i)+1;
+}
+else
+{
+secNumStart = i;
+secNumEnd = parseInt(i)+1;
+Nums += 1;
+}
+}
+else
+{
+if (secNumEnd == i)
+{
+secNumEnd = parseInt(i)+1;
+}
+else
+{
+Nums = 3;
+}
+}
+}
+}
+}
+if (firstNumStart != "" && secNumStart != "")
+{
+firstNum = dTip.slice(firstNumStart, firstNumEnd);
+secNum = dTip.slice(secNumStart, secNumEnd);
+newTip = dTip.slice(0, firstNumStart)+" ";
+if (parseInt(secNum) < 3)
+{
+var prevObjId = thisObj.prev().attr("id");
+alert("Element[id='"+prevObjId+"']'s length range ["+ firstNum+","+secNum+"] will be invalid after utf-8 transforming!");
+}
+else
+{
+firstNum = Math.ceil(parseInt(firstNum) / 3);
+secNum = Math.floor(parseInt(secNum) / 3);
+if (firstNum < secNum)
+{
+firstNum=reformString(firstNum.toString(), 3);
+secNum=reformString(secNum.toString(), 3);
+newTip += firstNum + " ~ " + secNum;;
+}
+else if (firstNum == secNum)
+{
+secNum=reformString(secNum.toString(), 3);
+newTip += secNum;
+}
+else
+{
+var prevObjId = thisObj.prev().attr("id");
+alert("Element[id='"+prevObjId+"']'s length range ["+firstNum+","+secNum+"] is invalid after utf-8 transforming!");
+}
+}
+}
+else
+{
+thisObj.remove();
+}
+if (newTip != "")
+{
+thisObj.text(newTip);
+}
+});
+template.on("focus.dTip","input[type='text'],input[type='password']", function(){
+var thisObj = $(this);
+if (thisObj.attr("readonly")) {
+return;
+}
+var msg = thisObj.nextAll("span").not(".__CheckPwdStrength").text();
+if (msg != "")
+{
+var pos = thisObj.offset();
+var objWidth = thisObj.width();
+var dhtml = "<div id='dynamicTip'><div id='dTip_l'></div>"
++ "<div id='dTip_m'>"
++ msg
++ "</div><div id='dTip_r'></div></div>";
+var dtObj = $(dhtml).css({top:(pos.top-33)+'px',left:(pos.left+objWidth+8)+'px'});
+dtObj.appendTo('body').fadeIn(400);
+thisObj.bind("blur.dTip",function(){
+dtObj.remove();
+});
+}
+var fObj = $(":focus");
+var tObj = $("#dynamicTip");
+if ( (tObj.length > 0) && (fObj.attr("id") != thisObj.attr("id")) )
+{
+tObj.remove();
+}
+});
+$("input.ip,input.mac", template).each(function(){
+var InputOBJ = $(this);
+InputOBJ.unbind("keydown");
+InputOBJ.unbind("keyup");
+InputOBJ.keydown(function(event){
+autoJumpBack(this,this.value,event);
+});
+InputOBJ.keyup(function(event){
+FocusAutoJump(this,this.value,event);
+});
+});
+$(".instSwitch input",template).each(function(){
+var InputOBJ = $(this);
+if (InputOBJ.attr("type") == "radio")
+{
+InputOBJ.unbind("change");
+InputOBJ.change(function(event){
+var template = $(this).parents("[id^='template_']");
+var ChangeArea = $(".ChangeArea",template);
+var _InstIDName = "_InstID";
+var _InstIDValue = template.find("[id^='_InstID']").val();
+var luquidObjUl = $("._LuQUID_CONFIG_OBJID", Head);
+var objId = $("li", luquidObjUl).eq(0).text();
+if ( _InstIDValue == undefined )
+{
+var instId = objId + "\\._OBJ_InstID";
+_InstIDValue = $("[id^='"+ instId +"']",template).val();
+_InstIDName = objId + "._OBJ_InstID";
+}
+if ( ChangeArea.is(":hidden")
+&& _InstIDValue != "-1" )
+{
+var ServerAddr = template.parents(".HeadDIV").find("address span").text();
+var instSwitchName = colonStripping(InputOBJ.attr("name"));
+var instSwitchValue = InputOBJ.val();
+var PostData = "IF_ACTION=Apply"+"&"
++ instSwitchName+"="+instSwitchValue+"&"
++ _InstIDName+"=" + _InstIDValue;
+var actionType = "InstSwitch";
+var PostSuccHandler = "fillDataByInstSwitchResult";
+dataPost(actionType, PostSuccHandler, ServerAddr, template, PostData);
+}
+});
+}
+});
+template.unbind("fillDataByInstSwitchResult");
+template.bind("fillDataByInstSwitchResult", function(event,xml, template){
+if ( template.hasError(xml) == 0 )
+{
+return;
+}
+$(".ChangeArea",template).showIt(true);
+$(".collapsibleInst",template).addClass("instNameExp");
+});
+template.unbind("fillDataByDeleteResult");
+template.bind("fillDataByDeleteResult", function(event,xml, template){
+if ( template.hasError(xml) == 0 )
+{
+template.remove();
+}
+else
+{
+$(".ChangeArea",template).showIt(true);
+}
+});
+initialStatusArea(Head);
+initialConfigArea(Head);
+});
+$("[id^='AreaHideAttr']").each(function(){
+var HideAttr = $(this);
+var HeadID = $(this).next().next().attr("id") || $(this).next().attr("id");
+var template = $("#template_"+HeadID);
+if (HideAttr.html() == 2){
+template.find("*").attr("disabled",true).attr("hideattr",true);
+$("[class^='Button']", template).addClass("disableBtn");
+$("[class^='longBtn']", template).addClass("disableBtn");
+$("[class^='instDelete Btn_delete']").remove();
+$("[class^='addInstBar AddContentContainer']").remove();
+$("[id^='Btn_cancel_'],[id^='Btn_apply_']", template).unbind();
+$("[class^='Button Btn_refresh']").removeClass("disableBtn").attr("disabled",false);
+}
+});
+});
+</script>
+
+<div id="_MenuInfo" style="display:none;">
+<div id="_NextPageInfo">lanMgrIpv4</div>
+<div id="_NowSupIdInfo">localnet</div>
+<div id="_NowMidIdInfo">lanConfig</div>
+<div id="_NowThdIdInfo">lanMgrIpv4</div>
+<div id="_Menu3Location">0</div>
+</div>
+
+<div id="commLeft">
+<div id="class2Menu" class="class2Menu">
+<ul id="class2MenuItem" class=""><li><a class="" href="javascript:void(0);" menuclass="2" id="localNetStatus" menupage="localNetStatus" title="Status">Status</a></li><li><a class="" href="javascript:void(0);" menuclass="2" id="wlanConfig" menupage="wlanBasic" title="WLAN">WLAN</a></li><li><a class="selectClass2Menu" href="javascript:void(0);" menuclass="2" id="lanConfig" menupage="lanMgrIpv4" title="LAN">LAN</a></li><li><a class="" href="javascript:void(0);" menuclass="2" id="ftp" menupage="ftp" title="FTP">FTP</a></li><li><a class="" href="javascript:void(0);" menuclass="2" id="dms" menupage="dms" title="DMS/DLNA">DMS/DLNA</a></li><li><a class="" href="javascript:void(0);" menuclass="2" id="samba" menupage="samba" title="Samba Service">Samba Service</a></li><li><a class="" href="javascript:void(0);" menuclass="2" id="usbfunccfg" menupage="usbfunccfg" title="USB">USB</a></li></ul>
+</div>
+</div>
+<div id="commRight">
+<input id="_totalTabWidth" type="hidden" value="86">
+<div id="class3Menu">
+<div id="scrollLeftBtn" class=""><p></p></div>
+<div id="class3MenuMainContent" style="width: 685px;">
+<ul><li><p class="AEleMenu3Selected" menuclass="3" id="lanMgrIpv4" menupage="lanMgrIpv4" href="#lanMgrIpv4">IPv4</p></li></ul>
+</div>
+<div id="scrollRightBtn" class=""><p></p></div>
+</div>
+<div class="tabContent">
+<div id="pageIntroduce" class="pageIntroduce">
+<span>Page Information</span>
+</div>
+
+<p class="pIntroContent">This page provides the function of LAN (IPv4) parameter(s) configuration. </p>
+
+<div id="childPage">
+<div class="instCfgArea">
+<script type="text/javascript">
+$(document).ready(function(){
+var HeadID = "DHCPHostInfo";
+var Head = $("#"+HeadID);
+var ServerAddr = $("address span", Head).text();
+RefreshClickHandle(Head);
+Head.succfunction = function(xml){
+var hasExpiredInst = 0;
+var OBJ = $(xml).find("OBJ_DHCPHOSTINFO_ID");
+var instances = $("Instance ", OBJ);
+instances.each(function(i){
+var inst = $(this);
+inst.find("ParaName").each(function(){
+var ParaName = $(this).text();
+var ParaValue = $(this).next().text();
+if ( ParaName == "IPAddr"
+&& ParaValue == "" )
+{
+hasExpiredInst = 1;
+return false;
+}
+});
+if ( 1 == hasExpiredInst )
+{
+$("IF_ERRORSTR", $(xml)).text("SUCC");
+return false;
+}
+});
+if (Head.hasError(xml) == 0)
+{
+var TemplateOBJ = $("#template_"+HeadID,Head);
+var XMLOBJ = $(xml).find("OBJ_DHCPHOSTINFO_ID");
+var RuleNum = $("Instance", XMLOBJ).length;
+var OBJID = ["OBJ_DHCPHOSTINFO_ID"];
+if (RuleNum == 0)
+{
+$(".noDataHint",Head).showIt(true);
+TemplateOBJ.parent().showIt(false);
+}
+else
+{
+$(".noDataHint",Head).showIt(false);
+TemplateOBJ.parent().showIt(true);
+Head.createPageDataByClone(RuleNum, OBJID, xml);
+$("[id^='ExpiredTime\\:']", Head).each(function()
+{
+var selfSpanHtml = $(this).text();
+if (selfSpanHtml != "-1")
+{
+selfSpanHtml = sec2HrMinSec(selfSpanHtml);
+}
+else
+{
+selfSpanHtml = selfSpanHtml.replace("-1", "Infinity");
+}
+$(this).text(selfSpanHtml);
+$(this).attr("title", selfSpanHtml);
+});
+$("[id^='IPAddr\\:']", Head).each(function()
+{
+var elID = $(this).attr("id");
+if ( elID == "IPAddr:DHCPHostInfo" )
+{
+return false;
+}
+var selfSpanHtml = $(this).text();
+if ( "" == selfSpanHtml )
+{
+$(this).parent().remove();
+}
+});
+$("[id^='PhyPortName\\:']", Head).each(function()
+{
+var selfSpanHtml = $(this).text();
+if ( "Unknown" == selfSpanHtml )
+{
+$(this).parent().remove();
+}
+else
+{
+$.publish("/some/softVersionModify", [$(this)]);
+}
+});
+colorTblRow(".colorTbl", "even", Head);
+var tempObjs = $("[id^='template_"+HeadID+"_']", Head);
+if ( tempObjs.length == 0 )
+{
+var dataTitle = $("#"+HeadID+"_title", Head);
+$(".noDataHint",Head).showIt(true);
+dataTitle.parent().showIt(false);
+}
+}
+}
+};
+if ( $(".collapBarWithDataTrans",Head).length <= 0 )
+{
+Head.dataTransfer(ServerAddr, "GET", Head.succfunction);
+}
+else
+{
+initial_collapBarWithDataTrans(Head);
+}
+});
+</script>
+<script type="text/javascript">
+jQuery.validator.addMethod(
+"OPTION66Check",
+function(value, element, params)
+{
+if ( this.optional(element) )
+{
+return "dependency-mismatch";
+}
+if(value == "")
+{
+return true;
+}
+else if(checkIPv4Addr(value) == true)
+{
+return true;
+}
+else if(checkDomain(value) == true)
+{
+return true;
+}
+return false;
+},
+$.validator.format("Valid Input: IPv4 address or domain name ")
+);
+chanegeButtonByCustom = function(btn, ContainerOBJ){
+var Obj = $("[id^='"+btn+"']",ContainerOBJ);
+Obj.addClass("disableBtn");
+};
+function g_DnsServerSource_DNSCtrlDisp()
+{
+var HeadID = "DHCPBasicCfg";
+var templateID = "template_"+ HeadID;
+var template = $("#"+templateID);
+var dnsDIVObj = $("#div_DNSServer1, #div_DNSServer2", template);
+var dnsObj = $("#DNSServer1, #DNSServer2", template);
+if ($("#DnsServerSource1", template).is(':checked'))
+{
+dnsDIVObj.hide();
+dnsObj.addClass("PostIgnore");
+$("#div_Ipv4DnsOrigin").show();
+$("#Ipv4DnsOrigin").removeClass("PostIgnore");
+}
+else
+{
+dnsDIVObj.show();
+dnsObj.removeClass("PostIgnore");
+$("#div_Ipv4DnsOrigin").hide();
+$("#Ipv4DnsOrigin").addClass("PostIgnore");
+}
+$.callModifier("DHCPBasicCfg/undisplayDNSConf");
+}
+function g_LeaseTimeMode_CtrlDisp()
+{
+var HeadID = "DHCPBasicCfg";
+var templateID = "template_"+ HeadID;
+var template = $("#"+templateID);
+var LeaseTimeMode = $("#LeaseTimeMode", template).val();
+var leaseTimeSelfDefineDIVObj = $("#div_LeaseTimeSelfDefine", template);
+if ( "selfDefine" == LeaseTimeMode )
+{
+leaseTimeSelfDefineDIVObj.show();
+}
+else
+{
+leaseTimeSelfDefineDIVObj.hide();
+}
+$.callModifier("DHCPBasicCfg/undisplayTimConf");
+}
+function Customize_DHCPBasicCfg(paramsOBJ)
+{
+var TemplateOBJ = paramsOBJ["TemplateOBJ"];
+var IPJSON = {
+"IPAddr:DHCPBasicCfg":"sub_IPAddr",
+"SubnetMask":"sub_SubMask",
+"MinAddress:DHCPBasicCfg":"sub_MinAddress",
+"MaxAddress:DHCPBasicCfg":"sub_MaxAddress",
+"DNSServer1":"sub_DNSServer1",
+"DNSServer2":"sub_DNSServer2"
+};
+for (var IPTmp in IPJSON)
+{
+var ipHiddenObj = $("[id^='"+IPTmp+"']", TemplateOBJ);
+ipHiddenObj.FillIPorMacDataBySplit(IPJSON[IPTmp], ".", 4);
+}
+}
+function initial_template_DHCPBasicCfg(templateID)
+{
+var template = $("#"+templateID);
+var ipSegmentCheck = {
+"required": true,
+"integer": true,
+"range": [0, 255]
+};
+var checkForm = $("form", template);
+checkForm.validate({
+"groups": {
+IPAddr: "sub_IPAddr0:DHCPBasicCfg sub_IPAddr1:DHCPBasicCfg sub_IPAddr2:DHCPBasicCfg sub_IPAddr3:DHCPBasicCfg",
+SubMask: "sub_SubMask0 sub_SubMask1 sub_SubMask2 sub_SubMask3",
+MinAddress: "sub_MinAddress0:DHCPBasicCfg sub_MinAddress1:DHCPBasicCfg sub_MinAddress2:DHCPBasicCfg sub_MinAddress3:DHCPBasicCfg",
+MaxAddress: "sub_MaxAddress0:DHCPBasicCfg sub_MaxAddress1:DHCPBasicCfg sub_MaxAddress2:DHCPBasicCfg sub_MaxAddress3:DHCPBasicCfg",
+DNSServer1: "sub_DNSServer10 sub_DNSServer11 sub_DNSServer12 sub_DNSServer13",
+DNSServer2: "sub_DNSServer20 sub_DNSServer21 sub_DNSServer22 sub_DNSServer23"
+},
+"rules": {
+"sub_IPAddr0:DHCPBasicCfg": ipSegmentCheck,
+"sub_IPAddr1:DHCPBasicCfg": ipSegmentCheck,
+"sub_IPAddr2:DHCPBasicCfg": ipSegmentCheck,
+"sub_IPAddr3:DHCPBasicCfg": ipSegmentCheck,
+"sub_SubMask0": ipSegmentCheck,
+"sub_SubMask1": ipSegmentCheck,
+"sub_SubMask2": ipSegmentCheck,
+"sub_SubMask3": ipSegmentCheck,
+"sub_MinAddress0:DHCPBasicCfg": ipSegmentCheck,
+"sub_MinAddress1:DHCPBasicCfg": ipSegmentCheck,
+"sub_MinAddress2:DHCPBasicCfg": ipSegmentCheck,
+"sub_MinAddress3:DHCPBasicCfg": ipSegmentCheck,
+"sub_MaxAddress0:DHCPBasicCfg": ipSegmentCheck,
+"sub_MaxAddress1:DHCPBasicCfg": ipSegmentCheck,
+"sub_MaxAddress2:DHCPBasicCfg": ipSegmentCheck,
+"sub_MaxAddress3:DHCPBasicCfg": ipSegmentCheck,
+"sub_DNSServer10": ipSegmentCheck,
+"sub_DNSServer11": ipSegmentCheck,
+"sub_DNSServer12": ipSegmentCheck,
+"sub_DNSServer13": ipSegmentCheck,
+"sub_DNSServer20": ipSegmentCheck,
+"sub_DNSServer21": ipSegmentCheck,
+"sub_DNSServer22": ipSegmentCheck,
+"sub_DNSServer23": ipSegmentCheck,
+"LeaseTimeSelfDefine": {
+"required": true,
+"integer": true,
+"range":[60, 157680000]
+}
+},
+"messages": {
+}
+});
+template.bind("fillDataByApplyResult", function(event,xml, template){
+if ($("IF_ERRORID", $(xml)).text() == "-1381")
+{
+$("IF_ERRORSTR", $(xml)).text("SUCC");
+$("#DHCPSpecialAddMgr_Refresh_button", $("#DHCPSpecialAddMgr")).click();
+$("#DHCPStaticRule_Refresh_button", $("#DHCPStaticRule")).click();
+}
+if ( ActionByApplyResult(xml, template) == 0 )
+{
+var OBJID = ["OBJ_Br0AndDhcpsHosCfg_ID","OBJ_LANDNS_ID","OBJ_WINSADDR_ID"
+];
+template.fillDataByOBJID(xml, OBJID, template, 0);
+var CustomizeParams = {
+"TemplateOBJ":template
+};
+Customize_DHCPBasicCfg(CustomizeParams);
+g_DnsServerSource_DNSCtrlDisp();
+var leaseTime = $("#LeaseTime", template).val();
+if ( leaseTime == -1 )
+{
+$("#LeaseTimeMode", template).val("Infinity");
+}
+else
+{
+$("#LeaseTimeMode", template).val("selfDefine");
+$("#LeaseTimeSelfDefine", template).val(leaseTime);
+}
+g_LeaseTimeMode_CtrlDisp();
+}
+});
+
+template.bind("fillDataByCancelResult", function(event,xml, template){
+var OBJID = ["OBJ_Br0AndDhcpsHosCfg_ID","OBJ_LANDNS_ID","OBJ_WINSADDR_ID"
+];
+ActionByCancelResult(xml, template, OBJID);
+var CustomizeParams = {
+"TemplateOBJ":template
+};
+Customize_DHCPBasicCfg(CustomizeParams);
+g_DnsServerSource_DNSCtrlDisp();
+var leaseTime = $("#LeaseTime", template).val();
+if ( leaseTime == -1 )
+{
+$("#LeaseTimeMode", template).val("Infinity");
+}
+else
+{
+$("#LeaseTimeMode", template).val("selfDefine");
+$("#LeaseTimeSelfDefine", template).val(leaseTime);
+}
+g_LeaseTimeMode_CtrlDisp();
+});
+template.bind("hiddenValueChangeByCustom", function(event,template){
+var IPJSON = {
+"IPAddr:DHCPBasicCfg":"sub_IPAddr",
+"SubMask":"sub_SubMask",
+"MinAddress:DHCPBasicCfg":"sub_MinAddress",
+"MaxAddress:DHCPBasicCfg":"sub_MaxAddress",
+"DNSServer1":"sub_DNSServer1",
+"DNSServer2":"sub_DNSServer2"
+};
+for (var IPTmp in IPJSON)
+{
+var ipHiddenObj = $("[id^='"+IPTmp+"']",template);
+ipHiddenObj.FillIPorMacDataCombination(IPJSON[IPTmp], ".", 4);
+}
+var submask = $("#SubMask", template).val();
+$("#SubnetMask", template).val(submask);
+var LeaseTimeMode = $("#LeaseTimeMode", template).val();
+var LeaseTimeSelfDefine = $("#LeaseTimeSelfDefine", template).val();
+if ( LeaseTimeMode == "selfDefine" )
+{
+$("#LeaseTime", template).val(LeaseTimeSelfDefine);
+}
+else
+{
+$("#LeaseTime", template).val("-1");
+}
+$.publish("/some/changePostData", [template]);
+});
+}
+$(document).ready(function(){
+var HeadID = "DHCPBasicCfg";
+var Head = $("#"+HeadID);
+var templateID = "template_"+ HeadID;
+var ServerAddr = $("address span", Head).text();
+initial_template_DHCPBasicCfg(templateID);
+var loginURL = document.URL;
+var parts = loginURL.split("/");
+var urlHostPart = parts[2];
+var urlHostArr = urlHostPart.split(":");
+var urlHost = urlHostArr[0];
+$("#IF_URL_HOST", Head).val(urlHost);
+$(":radio[name='ServerEnable']").change(function(){
+$.publish("/some/MinMaxIPCtrl", [$("#"+templateID)]);
+});
+$(":radio[name='DnsServerSource']").change(function(){
+g_DnsServerSource_DNSCtrlDisp();
+});
+$("#LeaseTimeMode").change(function(){
+g_LeaseTimeMode_CtrlDisp();
+});
+Head.chanegeDataByCustom =function(xml){
+var OBJ = $(xml).find("OBJ_BRGRP_ID");
+var instances = $("Instance ", OBJ);
+instances.each(function(i){
+var inst = $(this);
+inst.find("ParaName").each(function(){
+var ParaName = $(this).text();
+var ParaValue = $(this).next().text();
+if ( ParaName == "_InstID" )
+{
+$(this).text("_InstID_BRGRP");
+}
+});
+});
+};
+Head.fillDataByCustom = function(suffix,TemplateOBJ){
+var CustomizeParams = {
+"TemplateOBJ":TemplateOBJ
+};
+Customize_DHCPBasicCfg(CustomizeParams);
+};
+Head.succfunction = function(xml){
+var template = $("[id^='template_']", Head);
+Head.hasError(xml,"externErrorHint");
+Head.chanegeDataByCustom(xml);
+var OBJID = ["OBJ_Br0AndDhcpsHosCfg_ID","OBJ_LANDNS_ID","OBJ_WINSADDR_ID"
+];
+Head.fillDataByOBJID(xml, OBJID, template, 0);
+Head.fillDataByCustom(0, template);
+g_DnsServerSource_DNSCtrlDisp();
+$.publish("/some/MinMaxIPCtrl", [$("#"+templateID)]);
+var leaseTime = $("#LeaseTime", template).val();
+if ( leaseTime == -1 )
+{
+$("#LeaseTimeMode", template).val("Infinity");
+}
+else
+{
+$("#LeaseTimeMode", template).val("selfDefine");
+$("#LeaseTimeSelfDefine", template).val(leaseTime);
+}
+g_LeaseTimeMode_CtrlDisp();
+};
+if ( $(".collapBarWithDataTrans",Head).length <= 0 )
+{
+Head.dataTransfer(ServerAddr,
+"GET",
+Head.succfunction);
+}
+else
+{
+initial_collapBarWithDataTrans(Head);
+}
+});
+</script>
+<script type="text/javascript">
+chanegeButtonByCustom = function(btn, ContainerOBJ){
+var Obj = $("[id^='"+btn+"']",ContainerOBJ);
+Obj.addClass("disableBtn");
+};
+function Customize_DHCPStaticRule(paramsOBJ)
+{
+var TemplateOBJ = paramsOBJ["TemplateOBJ"];
+TemplateOBJ.collapsibleInstTitleChange("Name");
+var MACJSON = {
+"MACAddr":"sub_MACAddr"
+};
+for (var MACTmp in MACJSON)
+{
+var macHiddenObj = $("[id^='"+MACTmp+"']", TemplateOBJ);
+macHiddenObj.FillIPorMacDataBySplit(MACJSON[MACTmp], ":", 6);
+}
+var IPJSON = {
+"IPAddr":"sub_IPAddr"
+};
+for (var IPTmp in IPJSON)
+{
+var ipHiddenObj = $("[id^='"+IPTmp+"']", TemplateOBJ);
+ipHiddenObj.FillIPorMacDataBySplit(IPJSON[IPTmp], ".", 4);
+}
+}
+function initial_template_DHCPStaticRule(templateID)
+{
+var template = $("#"+templateID);
+var macSegmentCheck = {
+"required": true,
+"HEX": true,
+"fixedlength": 2
+};
+var ipSegmentCheck = {
+"required": true,
+"integer": true,
+"range": [0, 255]
+};
+template.bind("applyPromptCheckJSON", function(event, template){
+var checkJSONTempObj = {
+"groups": {
+MACAddr: "sub_MACAddr0 sub_MACAddr1 sub_MACAddr2 sub_MACAddr3 sub_MACAddr4 sub_MACAddr5",
+IPAddr: "sub_IPAddr0 sub_IPAddr1 sub_IPAddr2 sub_IPAddr3"
+},
+"rules": {
+"Name": {
+"required": true,
+"utf8": true,
+"utf8LengthRange":[1,32]
+},
+"sub_MACAddr0": macSegmentCheck,
+"sub_MACAddr1": macSegmentCheck,
+"sub_MACAddr2": macSegmentCheck,
+"sub_MACAddr3": macSegmentCheck,
+"sub_MACAddr4": macSegmentCheck,
+"sub_MACAddr5": macSegmentCheck,
+"sub_IPAddr0": ipSegmentCheck,
+"sub_IPAddr1": ipSegmentCheck,
+"sub_IPAddr2": ipSegmentCheck,
+"sub_IPAddr3": ipSegmentCheck
+},
+"messages": {
+}
+};
+template.setPromptCheckJSON(checkJSONTempObj, template);
+});
+template.bind("fillDataByApplyResult", function(event,xml, template){
+ActionByApplyResult(xml, template, "Name");
+});
+
+template.bind("fillDataByCancelResult", function(event,xml, template){
+var OBJID = ["OBJ_DHCPBIND_ID"];
+ActionByCancelResult(xml, template, OBJID);
+template.trigger("fillDataByCustom",[0, template, xml]);
+});
+template.bind("hiddenValueChangeByCustom", function(event,template){
+var MACJSON = {
+"MACAddr":"sub_MACAddr"
+};
+for (var MACTmp in MACJSON)
+{
+var macHiddenObj = $("[id^='"+MACTmp+"']",template);
+macHiddenObj.FillIPorMacDataCombination(MACJSON[MACTmp], ":", 6);
+}
+var IPJSON = {
+"IPAddr":"sub_IPAddr"
+};
+for (var IPTmp in IPJSON)
+{
+var ipHiddenObj = $("[id^='"+IPTmp+"']", template);
+ipHiddenObj.FillIPorMacDataCombination(IPJSON[IPTmp], ".", 4);
+}
+});
+template.bind("fillDataByCustom", function(event, suffix, ContainerOBJ, xml){
+var CustomizeParams = {
+"TemplateOBJ":ContainerOBJ
+};
+Customize_DHCPStaticRule(CustomizeParams);
+});
+}
+$(document).ready(function(){
+var HeadID = "DHCPStaticRule";
+var Head = $("#"+HeadID);
+var templateID = "template_"+ HeadID;
+var ServerAddr = $("address span", Head).text();
+initial_template_DHCPStaticRule(templateID);
+Head.succfunction = function(xml){
+Head.hasError(xml,"externErrorHint");
+var DHCPStaticRuleOBJ = $(xml).find("OBJ_DHCPBIND_ID");
+var RuleNum = $("Instance", DHCPStaticRuleOBJ).length;
+var OBJID = ["OBJ_DHCPBIND_ID"];
+Head.createPageDataByClone(RuleNum, OBJID, xml);
+};
+if ( $(".collapBarWithDataTrans",Head).length <= 0 )
+{
+Head.dataTransfer(ServerAddr,
+"GET",
+Head.succfunction);
+}
+else
+{
+initial_collapBarWithDataTrans(Head);
+}
+var Btn_DHCPStaticRule_Refresh= $("#DHCPStaticRule_Refresh_button", Head);
+Btn_DHCPStaticRule_Refresh.unbind("click");
+Btn_DHCPStaticRule_Refresh.click(function(){
+var HeadID = Head.attr("id");
+Head.find("[id^='template_"+HeadID+"_']").each(function(){
+$(this).remove();
+});
+var ServerAddr = $("address span", Head).text();
+Head.dataTransfer(ServerAddr,
+"GET",
+Head.succfunction,
+Head.failfunction,
+false,
+false);
+});
+});
+</script>
+
+
+<div id="DHCPHostInfo" class="HeadDIV">
+<address style="display:none">
+<span class="form-action">/?_type=menuData&amp;_tag=Localnet_LanMgrIpv4_DHCPHostInfo_lua.lua</span>
+</address>
+<div class="externErrorHint" style="display:none;">
+<span class="caption1"></span>
+</div>
+<h1 class="collapBarWithDataTrans collapsibleBarExp" id="DHCPHostInfoBar">Allocated Address (DHCP)</h1>
+<div id="DHCPHostInfo_container" style="">
+<input type="hidden" id="DataHasBeenGot" value="1">
+<div class="errorHint" style="display:none;">
+<span class="caption1"></span>
+</div>
+<div class="noDataHint" style="display:none;">
+<span>There are no data now. </span>
+</div>
+<form class="colorTbl form_content" onsubmit="return false;"><input type="text" id="_stopFormAutoSubmit" value="" class="PostIgnore" style="display:none;">
+<div id="DHCPHostInfo_title" class="colorTblRow emFont titleRow colorRow">
+<span class="w180" title="Host Name">Host Name</span>
+<span class="w150" title="MAC Address">MAC Address</span>
+<span class="w100" title="IP Address">IP Address</span>
+<span class="w100" title="Port">Port</span>
+<span class="w120" title="Remaining Lease">Remaining Lease</span>
+</div>
+<div id="template_DHCPHostInfo_0" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:0" title="RUT241">RUT241</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:0" title="20:97:27:78:3b:8a">20:97:27:78:3b:8a</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:0" title="192.168.1.6">192.168.1.6</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:0" title="LAN1">LAN1</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:0" title="21 h 0 min 33 s">21 h 0 min 33 s</span>
+</div><div id="template_DHCPHostInfo_1" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:1" title=""></span>
+<span class="w150" id="MACAddr:DHCPHostInfo:1" title="3a:43:e6:2c:65:2c">3a:43:e6:2c:65:2c</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:1" title="192.168.1.51">192.168.1.51</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:1" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:1" title="20 h 53 min 32 s">20 h 53 min 32 s</span>
+</div><div id="template_DHCPHostInfo_2" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:2" title="shelly2pmg4-ccba97dc5b84">shelly2pmg4-ccba97dc5b84</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:2" title="cc:ba:97:dc:5b:84">cc:ba:97:dc:5b:84</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:2" title="192.168.1.16">192.168.1.16</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:2" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:2" title="15 h 46 min 47 s">15 h 46 min 47 s</span>
+</div><div id="template_DHCPHostInfo_3" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:3" title="homeassistant">homeassistant</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:3" title="20:f8:3b:02:67:6c">20:f8:3b:02:67:6c</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:3" title="192.168.1.48">192.168.1.48</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:3" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:3" title="12 h 57 min 51 s">12 h 57 min 51 s</span>
+</div><div id="template_DHCPHostInfo_4" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:4" title="shellypro2-8813bfe0d4b8">shellypro2-8813bfe0d4b8</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:4" title="88:13:bf:e0:d4:b8">88:13:bf:e0:d4:b8</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:4" title="192.168.1.15">192.168.1.15</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:4" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:4" title="16 h 45 min 31 s">16 h 45 min 31 s</span>
+</div><div id="template_DHCPHostInfo_5" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:5" title="shelly2pmg4-98a316746cc4">shelly2pmg4-98a316746cc4</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:5" title="98:a3:16:74:6c:c4">98:a3:16:74:6c:c4</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:5" title="192.168.1.30">192.168.1.30</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:5" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:5" title="16 h 45 min 59 s">16 h 45 min 59 s</span>
+</div><div id="template_DHCPHostInfo_6" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:6" title="shelly2pmg4-ccba97dc37a8">shelly2pmg4-ccba97dc37a8</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:6" title="cc:ba:97:dc:37:a8">cc:ba:97:dc:37:a8</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:6" title="192.168.1.27">192.168.1.27</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:6" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:6" title="16 h 45 min 59 s">16 h 45 min 59 s</span>
+</div><div id="template_DHCPHostInfo_7" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:7" title="shelly2pmg4-7c2c677a1738">shelly2pmg4-7c2c677a1738</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:7" title="7c:2c:67:7a:17:38">7c:2c:67:7a:17:38</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:7" title="192.168.1.14">192.168.1.14</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:7" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:7" title="16 h 45 min 54 s">16 h 45 min 54 s</span>
+</div><div id="template_DHCPHostInfo_8" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:8" title="shelly2pmg4-7c2c677b41d8">shelly2pmg4-7c2c677b41d8</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:8" title="7c:2c:67:7b:41:d8">7c:2c:67:7b:41:d8</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:8" title="192.168.1.29">192.168.1.29</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:8" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:8" title="16 h 45 min 54 s">16 h 45 min 54 s</span>
+</div><div id="template_DHCPHostInfo_9" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:9" title="shelly2pmg4-ccba97dfe8fc">shelly2pmg4-ccba97dfe8fc</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:9" title="cc:ba:97:df:e8:fc">cc:ba:97:df:e8:fc</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:9" title="192.168.1.33">192.168.1.33</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:9" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:9" title="16 h 45 min 48 s">16 h 45 min 48 s</span>
+</div><div id="template_DHCPHostInfo_10" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:10" title="shelly2pmg3-8cbfea9e6e60">shelly2pmg3-8cbfea9e6e60</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:10" title="8c:bf:ea:9e:6e:60">8c:bf:ea:9e:6e:60</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:10" title="192.168.1.21">192.168.1.21</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:10" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:10" title="16 h 47 min 28 s">16 h 47 min 28 s</span>
+</div><div id="template_DHCPHostInfo_11" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:11" title="shellydimmerg3-b08184f0aed0">shellydimmerg3-b08184f0aed0</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:11" title="b0:81:84:f0:ae:d0">b0:81:84:f0:ae:d0</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:11" title="192.168.1.19">192.168.1.19</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:11" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:11" title="22 h 35 min 24 s">22 h 35 min 24 s</span>
+</div><div id="template_DHCPHostInfo_12" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:12" title="shellyshutter-d0cf13d726ec">shellyshutter-d0cf13d726ec</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:12" title="d0:cf:13:d7:26:ec">d0:cf:13:d7:26:ec</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:12" title="192.168.1.22">192.168.1.22</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:12" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:12" title="22 h 35 min 16 s">22 h 35 min 16 s</span>
+</div><div id="template_DHCPHostInfo_13" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:13" title="shellyshutter-d0cf13dfa474">shellyshutter-d0cf13dfa474</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:13" title="d0:cf:13:df:a4:74">d0:cf:13:df:a4:74</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:13" title="192.168.1.7">192.168.1.7</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:13" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:13" title="22 h 35 min 14 s">22 h 35 min 14 s</span>
+</div><div id="template_DHCPHostInfo_14" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:14" title="shellyshutter-d0cf13dfae58">shellyshutter-d0cf13dfae58</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:14" title="d0:cf:13:df:ae:58">d0:cf:13:df:ae:58</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:14" title="192.168.1.17">192.168.1.17</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:14" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:14" title="22 h 35 min 15 s">22 h 35 min 15 s</span>
+</div><div id="template_DHCPHostInfo_15" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:15" title="shellyplusi4-cc7b5c8a9ebc">shellyplusi4-cc7b5c8a9ebc</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:15" title="cc:7b:5c:8a:9e:bc">cc:7b:5c:8a:9e:bc</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:15" title="192.168.1.20">192.168.1.20</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:15" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:15" title="22 h 35 min 24 s">22 h 35 min 24 s</span>
+</div><div id="template_DHCPHostInfo_16" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:16" title="shelly2pmg4-7c2c6779fe50">shelly2pmg4-7c2c6779fe50</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:16" title="7c:2c:67:79:fe:50">7c:2c:67:79:fe:50</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:16" title="192.168.1.25">192.168.1.25</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:16" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:16" title="22 h 35 min 29 s">22 h 35 min 29 s</span>
+</div><div id="template_DHCPHostInfo_17" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:17" title="shelly2pmg4-7c2c677b223c">shelly2pmg4-7c2c677b223c</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:17" title="7c:2c:67:7b:22:3c">7c:2c:67:7b:22:3c</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:17" title="192.168.1.3">192.168.1.3</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:17" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:17" title="15 h 5 min 23 s">15 h 5 min 23 s</span>
+</div><div id="template_DHCPHostInfo_18" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:18" title="shelly2pmg4-98a3167550a8">shelly2pmg4-98a3167550a8</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:18" title="98:a3:16:75:50:a8">98:a3:16:75:50:a8</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:18" title="192.168.1.8">192.168.1.8</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:18" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:18" title="22 h 35 min 23 s">22 h 35 min 23 s</span>
+</div><div id="template_DHCPHostInfo_19" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:19" title="shelly2pmg4-ccba97e048f8">shelly2pmg4-ccba97e048f8</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:19" title="cc:ba:97:e0:48:f8">cc:ba:97:e0:48:f8</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:19" title="192.168.1.32">192.168.1.32</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:19" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:19" title="22 h 35 min 13 s">22 h 35 min 13 s</span>
+</div><div id="template_DHCPHostInfo_20" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:20" title="shelly2pmg4-ccba97d67960">shelly2pmg4-ccba97d67960</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:20" title="cc:ba:97:d6:79:60">cc:ba:97:d6:79:60</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:20" title="192.168.1.10">192.168.1.10</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:20" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:20" title="22 h 35 min 23 s">22 h 35 min 23 s</span>
+</div><div id="template_DHCPHostInfo_21" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:21" title="shelly2pmg4-7c2c677b3864">shelly2pmg4-7c2c677b3864</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:21" title="7c:2c:67:7b:38:64">7c:2c:67:7b:38:64</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:21" title="192.168.1.26">192.168.1.26</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:21" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:21" title="22 h 35 min 22 s">22 h 35 min 22 s</span>
+</div><div id="template_DHCPHostInfo_22" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:22" title="shelly2pmg4-7c2c677b4524">shelly2pmg4-7c2c677b4524</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:22" title="7c:2c:67:7b:45:24">7c:2c:67:7b:45:24</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:22" title="192.168.1.5">192.168.1.5</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:22" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:22" title="15 h 5 min 23 s">15 h 5 min 23 s</span>
+</div><div id="template_DHCPHostInfo_23" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:23" title="shelly2pmg4-98a316735e44">shelly2pmg4-98a316735e44</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:23" title="98:a3:16:73:5e:44">98:a3:16:73:5e:44</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:23" title="192.168.1.31">192.168.1.31</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:23" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:23" title="22 h 35 min 18 s">22 h 35 min 18 s</span>
+</div><div id="template_DHCPHostInfo_24" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:24" title="shelly1g4-a085e3ca3708">shelly1g4-a085e3ca3708</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:24" title="a0:85:e3:ca:37:08">a0:85:e3:ca:37:08</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:24" title="192.168.1.23">192.168.1.23</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:24" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:24" title="15 h 5 min 21 s">15 h 5 min 21 s</span>
+</div><div id="template_DHCPHostInfo_25" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:25" title="GW-58D50AB9D2B3">GW-58D50AB9D2B3</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:25" title="58:d5:0a:b9:d2:b3">58:d5:0a:b9:d2:b3</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:25" title="192.168.1.46">192.168.1.46</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:25" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:25" title="22 h 36 min 23 s">22 h 36 min 23 s</span>
+</div><div id="template_DHCPHostInfo_26" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:26" title="00067813112C">00067813112C</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:26" title="00:06:78:13:11:2c">00:06:78:13:11:2c</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:26" title="192.168.1.42">192.168.1.42</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:26" title="LAN2">LAN2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:26" title="22 h 36 min 34 s">22 h 36 min 34 s</span>
+</div><div id="template_DHCPHostInfo_27" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:27" title="EAP653-UR-DC-62-79-E3-45-98">EAP653-UR-DC-62-79-E3-45-98</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:27" title="dc:62:79:e3:45:98">dc:62:79:e3:45:98</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:27" title="192.168.1.45">192.168.1.45</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:27" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:27" title="Infinity">Infinity</span>
+</div><div id="template_DHCPHostInfo_28" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:28" title=""></span>
+<span class="w150" id="MACAddr:DHCPHostInfo:28" title="d2:cb:89:22:74:23">d2:cb:89:22:74:23</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:28" title="192.168.1.41">192.168.1.41</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:28" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:28" title="17 h 2 min 39 s">17 h 2 min 39 s</span>
+</div><div id="template_DHCPHostInfo_29" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:29" title=""></span>
+<span class="w150" id="MACAddr:DHCPHostInfo:29" title="34:90:ea:c5:e1:c8">34:90:ea:c5:e1:c8</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:29" title="192.168.1.12">192.168.1.12</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:29" title="SSID3">SSID3</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:29" title="12 h 6 min 27 s">12 h 6 min 27 s</span>
+</div><div id="template_DHCPHostInfo_30" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:30" title="COVID-19">COVID-19</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:30" title="50:de:06:63:4a:27">50:de:06:63:4a:27</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:30" title="192.168.1.47">192.168.1.47</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:30" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:30" title="12 h 30 min 8 s">12 h 30 min 8 s</span>
+</div><div id="template_DHCPHostInfo_31" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:31" title="ShellyWallDisplay-000822BD7D53">ShellyWallDisplay-000822BD7D53</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:31" title="00:08:22:bd:7d:53">00:08:22:bd:7d:53</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:31" title="192.168.1.18">192.168.1.18</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:31" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:31" title="23 h 57 min 11 s">23 h 57 min 11 s</span>
+</div><div id="template_DHCPHostInfo_32" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:32" title=""></span>
+<span class="w150" id="MACAddr:DHCPHostInfo:32" title="78:f5:05:86:c9:76">78:f5:05:86:c9:76</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:32" title="192.168.1.4">192.168.1.4</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:32" title="SSID3">SSID3</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:32" title="15 h 9 min 5 s">15 h 9 min 5 s</span>
+</div><div id="template_DHCPHostInfo_33" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:33" title="Master">Master</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:33" title="ec:71:db:bf:45:14">ec:71:db:bf:45:14</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:33" title="192.168.1.2">192.168.1.2</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:33" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:33" title="12 h 38 min 1 s">12 h 38 min 1 s</span>
+</div><div id="template_DHCPHostInfo_34" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:34" title="Balcony">Balcony</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:34" title="ec:71:db:06:ae:b7">ec:71:db:06:ae:b7</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:34" title="192.168.1.39">192.168.1.39</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:34" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:34" title="12 h 38 min 1 s">12 h 38 min 1 s</span>
+</div><div id="template_DHCPHostInfo_35" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:35" title="Eisodos">Eisodos</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:35" title="ec:71:db:2b:ab:eb">ec:71:db:2b:ab:eb</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:35" title="192.168.1.40">192.168.1.40</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:35" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:35" title="12 h 38 min 12 s">12 h 38 min 12 s</span>
+</div><div id="template_DHCPHostInfo_36" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:36" title="Balcony">Balcony</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:36" title="ec:71:db:96:35:0e">ec:71:db:96:35:0e</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:36" title="192.168.1.9">192.168.1.9</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:36" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:36" title="12 h 38 min 16 s">12 h 38 min 16 s</span>
+</div><div id="template_DHCPHostInfo_37" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:37" title="chuangmi_camera_021a04">chuangmi_camera_021a04</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:37" title="94:f8:27:22:78:64">94:f8:27:22:78:64</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:37" title="192.168.1.44">192.168.1.44</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:37" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:37" title="13 h 39 min 2 s">13 h 39 min 2 s</span>
+</div><div id="template_DHCPHostInfo_38" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:38" title=""></span>
+<span class="w150" id="MACAddr:DHCPHostInfo:38" title="a8:e2:91:71:17:6c">a8:e2:91:71:17:6c</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:38" title="192.168.1.28">192.168.1.28</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:38" title="SSID3">SSID3</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:38" title="22 h 37 min 38 s">22 h 37 min 38 s</span>
+</div><div id="template_DHCPHostInfo_39" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:39" title="shelly2pmg4-7c2c677b42c8">shelly2pmg4-7c2c677b42c8</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:39" title="7c:2c:67:7b:42:c8">7c:2c:67:7b:42:c8</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:39" title="192.168.1.13">192.168.1.13</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:39" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:39" title="13 h 40 min 23 s">13 h 40 min 23 s</span>
+</div><div id="template_DHCPHostInfo_40" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:40" title=""></span>
+<span class="w150" id="MACAddr:DHCPHostInfo:40" title="34:90:ea:c6:75:4e">34:90:ea:c6:75:4e</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:40" title="192.168.1.34">192.168.1.34</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:40" title="SSID3">SSID3</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:40" title="20 h 18 min 4 s">20 h 18 min 4 s</span>
+</div><div id="template_DHCPHostInfo_41" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:41" title="Redmi-Note-14-Pro-5G">Redmi-Note-14-Pro-5G</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:41" title="aa:69:5e:26:e3:2d">aa:69:5e:26:e3:2d</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:41" title="192.168.1.50">192.168.1.50</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:41" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:41" title="1 h 50 min 2 s">1 h 50 min 2 s</span>
+</div><div id="template_DHCPHostInfo_42" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:42" title="Redmi-Note-14-Pro-5G">Redmi-Note-14-Pro-5G</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:42" title="6a:66:97:77:de:0f">6a:66:97:77:de:0f</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:42" title="192.168.1.52">192.168.1.52</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:42" title="SSID5">SSID5</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:42" title="0 h 5 min 27 s">0 h 5 min 27 s</span>
+</div><div id="template_DHCPHostInfo_43" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:43" title="Samsung">Samsung</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:43" title="4c:c9:5e:95:44:dc">4c:c9:5e:95:44:dc</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:43" title="192.168.1.35">192.168.1.35</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:43" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:43" title="17 h 31 min 15 s">17 h 31 min 15 s</span>
+</div><div id="template_DHCPHostInfo_44" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:44" title="WiiM Pro-E99C">WiiM Pro-E99C</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:44" title="b8:13:32:d6:e9:9c">b8:13:32:d6:e9:9c</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:44" title="192.168.1.38">192.168.1.38</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:44" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:44" title="14 h 9 min 54 s">14 h 9 min 54 s</span>
+</div><div id="template_DHCPHostInfo_45" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:45" title="Watch">Watch</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:45" title="1a:51:25:37:62:49">1a:51:25:37:62:49</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:45" title="192.168.1.36">192.168.1.36</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:45" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:45" title="20 h 38 min 49 s">20 h 38 min 49 s</span>
+</div><div id="template_DHCPHostInfo_46" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:46" title=""></span>
+<span class="w150" id="MACAddr:DHCPHostInfo:46" title="34:90:ea:cf:bf:68">34:90:ea:cf:bf:68</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:46" title="192.168.1.11">192.168.1.11</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:46" title="SSID3">SSID3</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:46" title="19 h 0 min 56 s">19 h 0 min 56 s</span>
+</div><div id="template_DHCPHostInfo_47" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:47" title="shellyflood-345F4553B180">shellyflood-345F4553B180</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:47" title="34:5f:45:53:b1:80">34:5f:45:53:b1:80</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:47" title="192.168.1.37">192.168.1.37</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:47" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:47" title="19 h 17 min 44 s">19 h 17 min 44 s</span>
+</div><div id="template_DHCPHostInfo_48" class="colorTblRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:48" title="shelly1g4-7c2c677f6410">shelly1g4-7c2c677f6410</span>
+<span class="w150" id="MACAddr:DHCPHostInfo:48" title="7c:2c:67:7f:64:10">7c:2c:67:7f:64:10</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:48" title="192.168.1.24">192.168.1.24</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:48" title="SSID2">SSID2</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:48" title="19 h 39 min 13 s">19 h 39 min 13 s</span>
+</div><div id="template_DHCPHostInfo_49" class="colorTblRow colorRow" style="">
+<span class="w180" id="HostName:DHCPHostInfo:49" title=""></span>
+<span class="w150" id="MACAddr:DHCPHostInfo:49" title="ba:68:f5:54:9a:20">ba:68:f5:54:9a:20</span>
+<span class="w100" id="IPAddr:DHCPHostInfo:49" title="192.168.1.53">192.168.1.53</span>
+<span class="w100" id="PhyPortName:DHCPHostInfo:49" title="LAN4">LAN4</span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo:49" title="20 h 59 min 19 s">20 h 59 min 19 s</span>
+</div><div id="template_DHCPHostInfo" class="colorTblRow" style="display:none;">
+<span class="w180" id="HostName:DHCPHostInfo" title=""></span>
+<span class="w150" id="MACAddr:DHCPHostInfo" title=""></span>
+<span class="w100" id="IPAddr:DHCPHostInfo" title=""></span>
+<span class="w100" id="PhyPortName:DHCPHostInfo" title=""></span>
+<span class="w120" id="ExpiredTime:DHCPHostInfo" title="0 h 0 min 0 s">0 h 0 min 0 s</span>
+</div>
+</form>
+<div class="buttongroup">
+<input type="button" class="Button Btn_refresh" id="DHCPHostInfo_Btn_refresh" name="DHCPHostInfo_Btn_refresh" value="Refresh">
+</div>
+</div>
+</div>
+
+<div id="DHCPBasicCfg" class="HeadDIV">
+<address style="display:none">
+<span class="form-action">/?_type=menuData&amp;_tag=Localnet_LanMgrIpv4_DHCPBasicCfg_lua.lua</span>
+</address>
+<div class="externErrorHint" style="display:none;">
+<span class="caption1"></span>
+</div>
+<h1 class="collapBarWithDataTrans" id="DHCPBasicCfgBar">DHCP Server</h1>
+<input type="hidden" id="DataHasBeenGot" value="0">
+<div id="DHCPBasicCfg_container" style="display: none;">
+<div id="template_DHCPBasicCfg">
+<div id="changeArea_DHCPBasicCfg" class="ChangeArea formTblWrap">
+<div class="errorHint" style="display:none;">
+<span class="caption1"></span>
+</div>
+<div class="succHint" style="display:none;">
+<span class="caption1">Your data have been stored!</span>
+</div>
+<form class="form_content formTbl" onsubmit="return false;" novalidate="novalidate"><input type="text" id="_stopFormAutoSubmit" value="" class="PostIgnore" style="display:none;">
+<input type="hidden" id="IF_URL_HOST" value="192.168.1.1">
+<input type="hidden" id="_InstID" value="">
+<input type="hidden" id="IPAddr:DHCPBasicCfg">
+<input type="hidden" id="SubMask">
+<input type="hidden" id="SubnetMask">
+
+<input type="hidden" id="MinAddress:DHCPBasicCfg">
+<input type="hidden" id="MaxAddress:DHCPBasicCfg">
+<input type="hidden" id="IPRouters">
+<input type="hidden" id="DNSServer1">
+<input type="hidden" id="DNSServer2">
+<input type="hidden" id="LeaseTime">
+<input type="hidden" id="NetbiosNameEnable" class="PostIgnore inputNorm">
+
+
+<div class="row" id="div_ServerEnable">
+<label class="cfgLabel w200">DHCP Server</label>
+<div id="ServerEnable" class="right w200">
+<input type="radio" id="ServerEnable1" name="ServerEnable" value="1">
+<label for="ServerEnable1">On</label>
+&nbsp;&nbsp;
+<input type="radio" id="ServerEnable0" name="ServerEnable" value="0">
+<label for="ServerEnable0">Off</label>
+</div>
+</div>
+
+<div class="row">
+<label for="sub_IPAddr0:DHCPBasicCfg" class="cfgLabel w200">LAN IP Address</label>
+<div class="right">
+<input class="ip" name="sub_IPAddr0:DHCPBasicCfg" type="text" maxlength="3" id="sub_IPAddr0:DHCPBasicCfg" value="">.
+<input class="ip" name="sub_IPAddr1:DHCPBasicCfg" type="text" maxlength="3" id="sub_IPAddr1:DHCPBasicCfg" value="">.
+<input class="ip" name="sub_IPAddr2:DHCPBasicCfg" type="text" maxlength="3" id="sub_IPAddr2:DHCPBasicCfg" value="">.
+<input class="ip" name="sub_IPAddr3:DHCPBasicCfg" type="text" maxlength="3" id="sub_IPAddr3:DHCPBasicCfg" value="">
+</div>
+</div>
+<div class="row">
+<label for="sub_SubMask0" class="cfgLabel w200">Subnet Mask</label>
+<div class="right">
+<input class="ip" name="sub_SubMask0" type="text" maxlength="3" id="sub_SubMask0" value="">.
+<input class="ip" name="sub_SubMask1" type="text" maxlength="3" id="sub_SubMask1" value="">.
+<input class="ip" name="sub_SubMask2" type="text" maxlength="3" id="sub_SubMask2" value="">.
+<input class="ip" name="sub_SubMask3" type="text" maxlength="3" id="sub_SubMask3" value="">
+</div>
+</div>
+
+<div class="row" id="div_MinAddress">
+<label for="sub_MinAddress0:DHCPBasicCfg" class="cfgLabel w200">DHCP Start IP Address</label>
+<div class="right">
+<input class="ip" name="sub_MinAddress0:DHCPBasicCfg" type="text" maxlength="3" id="sub_MinAddress0:DHCPBasicCfg" value="">.
+<input class="ip" name="sub_MinAddress1:DHCPBasicCfg" type="text" maxlength="3" id="sub_MinAddress1:DHCPBasicCfg" value="">.
+<input class="ip" name="sub_MinAddress2:DHCPBasicCfg" type="text" maxlength="3" id="sub_MinAddress2:DHCPBasicCfg" value="">.
+<input class="ip" name="sub_MinAddress3:DHCPBasicCfg" type="text" maxlength="3" id="sub_MinAddress3:DHCPBasicCfg" value="">
+</div>
+</div>
+<div class="row" id="div_MaxAddress">
+<label for="sub_MaxAddress0:DHCPBasicCfg" class="cfgLabel w200">DHCP End IP Address</label>
+<div class="right">
+<input class="ip" name="sub_MaxAddress0:DHCPBasicCfg" type="text" maxlength="3" id="sub_MaxAddress0:DHCPBasicCfg" value="">.
+<input class="ip" name="sub_MaxAddress1:DHCPBasicCfg" type="text" maxlength="3" id="sub_MaxAddress1:DHCPBasicCfg" value="">.
+<input class="ip" name="sub_MaxAddress2:DHCPBasicCfg" type="text" maxlength="3" id="sub_MaxAddress2:DHCPBasicCfg" value="">.
+<input class="ip" name="sub_MaxAddress3:DHCPBasicCfg" type="text" maxlength="3" id="sub_MaxAddress3:DHCPBasicCfg" value="">
+</div>
+</div>
+<div class="row" id="div_DnsServerSource">
+<label id="ISPDNS" for="DnsServerSource" class="left w200">ISP DNS</label>
+<div id="DnsServerSource" class="right">
+<input type="radio" id="DnsServerSource1" name="DnsServerSource" value="1">
+<label for="DnsServerSource1">On</label>
+&nbsp;&nbsp;
+<input type="radio" id="DnsServerSource0" name="DnsServerSource" value="0">
+<label for="DnsServerSource0">Off</label>
+</div>
+</div>
+<div class="row" id="div_Ipv4DnsOrigin" style="display:none;">
+<label for="Ipv4DnsOrigin" class="left w200">&nbsp;</label>
+<div class="right">
+<select id="Ipv4DnsOrigin" name="Ipv4DnsOrigin" class="PostIgnore selectNorm">
+<option value="1" title="DNS Address Through">DNS Address Through</option>
+<option value="0" title="DNS Address Specified">DNS Address Specified</option>
+</select>
+</div>
+</div>
+<div class="row" id="div_DNSServer1">
+<label for="sub_DNSServer10" class="cfgLabel w200">Primary DNS</label>
+<div class="right">
+<input class="ip" name="sub_DNSServer10" type="text" maxlength="3" id="sub_DNSServer10" value="">.
+<input class="ip" name="sub_DNSServer11" type="text" maxlength="3" id="sub_DNSServer11" value="">.
+<input class="ip" name="sub_DNSServer12" type="text" maxlength="3" id="sub_DNSServer12" value="">.
+<input class="ip" name="sub_DNSServer13" type="text" maxlength="3" id="sub_DNSServer13" value="">
+</div>
+</div>
+<div class="row" id="div_DNSServer2">
+<label for="sub_DNSServer20" class="cfgLabel w200">Secondary DNS</label>
+<div class="right">
+<input class="ip" name="sub_DNSServer20" type="text" maxlength="3" id="sub_DNSServer20" value="">.
+<input class="ip" name="sub_DNSServer21" type="text" maxlength="3" id="sub_DNSServer21" value="">.
+<input class="ip" name="sub_DNSServer22" type="text" maxlength="3" id="sub_DNSServer22" value="">.
+<input class="ip" name="sub_DNSServer23" type="text" maxlength="3" id="sub_DNSServer23" value="">
+</div>
+</div>
+<div class="row">
+<label for="LeaseTimeMode" class="left w200">Lease Time Mode</label>
+<div class="right">
+<select id="LeaseTimeMode" name="LeaseTimeMode" class="PostIgnore selectNorm">
+<option value="selfDefine" title="Custom">Custom</option>
+<option value="Infinity" title="Infinity">Infinity</option>
+</select>
+</div>
+</div>
+<div class="row" id="div_LeaseTimeSelfDefine">
+<label for="LeaseTimeSelfDefine" class="cfgLabel w200">Custom Lease Time</label>
+<div class="right">
+<input type="text" id="LeaseTimeSelfDefine" name="LeaseTimeSelfDefine" class="PostIgnore inputNorm">s
+<span style="display:none;">Range: 60 ~ 157 680 000</span>
+</div>
+</div>
+<div class="row" id="div_NetbiosName" style="display:none;">
+<label for="NetbiosName" class="cfgLabel w200">WINS Server Address</label>
+<div class="right">
+<input type="text" id="NetbiosName" name="NetbiosName" class="PostIgnore inputNorm">
+<span style="display:none;">IPv4 Address</span>
+</div>
+</div>
+
+<div class="buttongroup">
+<input type="button" class="Button Btn_cancel" id="Btn_cancel_DHCPBasicCfg" name="Btn_cancel_DHCPBasicCfg" value="Cancel">
+<input type="button" class="Button Btn_apply" id="Btn_apply_DHCPBasicCfg" name="Btn_apply_DHCPBasicCfg" value="Apply">
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="DHCPStaticRule" class="HeadDIV">
+<address style="display:none">
+<span class="form-action">/?_type=menuData&amp;_tag=Localnet_LanMgrIpv4_DHCPStaticRule_lua.lua</span>
+</address>
+<div class="externErrorHint" style="display:none;">
+<span class="caption1"></span>
+</div>
+<h1 class="collapBarWithDataTrans collapsibleBarExp" id="DHCPStaticRuleBar">DHCP Binding</h1>
+<input type="hidden" id="DataHasBeenGot" value="1">
+<div id="DHCPStaticRule_container" style="">
+<input type="hidden" id="_InstNum" value="2">
+<div id="template_DHCPStaticRule_0" style="">
+<div id="topLine_DHCPStaticRule:0" class="formTblCtrlBar">
+<span id="instName_DHCPStaticRule:0" class="instName collapsibleInst" title="EAP653-UR">EAP653-UR</span>
+<span id="instDelete_DHCPStaticRule:0" class="instDelete Btn_delete"><img src="img/del.png" alt="delete"></span>
+</div>
+<div id="changeArea_DHCPStaticRule:0" class="ChangeArea formTblWrap" style="display:none;">
+<div class="errorHint" style="display:none;">
+<span class="caption1"></span>
+</div>
+<div class="succHint" style="display:none;">
+<span class="caption1">Your data have been stored!</span>
+</div>
+<form class="form_content formTbl" onsubmit="return false;" novalidate="novalidate"><input type="text" id="_stopFormAutoSubmit:0" value="" class="PostIgnore" style="display:none;">
+<input type="hidden" id="_InstID:DHCPStaticRule:0" value="DEV.V4DHCP.Server.Pool1.Bind1">
+<input type="hidden" id="MACAddr:0" value="dc:62:79:e3:45:98">
+<input type="hidden" id="IPAddr:0" value="192.168.1.45">
+<div class="row">
+<label for="Name:0" class="cfgLabel w200">Name</label>
+<div class="right">
+<input type="text" id="Name:0" name="Name:0" class="inputNorm">
+<span class="utf8Compatible" style="display:none;">Length: 1 ~ 10</span>
+</div>
+</div>
+<div class="row">
+<label for="sub_MACAddr0:0" class="cfgLabel w200">MAC Address</label>
+<div class="right">
+<input class="mac" name="sub_MACAddr0:0" type="text" maxlength="2" id="sub_MACAddr0:0" value="">:
+<input class="mac" name="sub_MACAddr1:0" type="text" maxlength="2" id="sub_MACAddr1:0" value="">:
+<input class="mac" name="sub_MACAddr2:0" type="text" maxlength="2" id="sub_MACAddr2:0" value="">:
+<input class="mac" name="sub_MACAddr3:0" type="text" maxlength="2" id="sub_MACAddr3:0" value="">:
+<input class="mac" name="sub_MACAddr4:0" type="text" maxlength="2" id="sub_MACAddr4:0" value="">:
+<input class="mac" name="sub_MACAddr5:0" type="text" maxlength="2" id="sub_MACAddr5:0" value="">
+</div>
+</div>
+<div class="row">
+<label for="sub_IPAddr0:0" class="cfgLabel w200">IP Address</label>
+<div class="right">
+<input class="ip" name="sub_IPAddr0:0" type="text" maxlength="3" id="sub_IPAddr0:0" value="">.
+<input class="ip" name="sub_IPAddr1:0" type="text" maxlength="3" id="sub_IPAddr1:0" value="">.
+<input class="ip" name="sub_IPAddr2:0" type="text" maxlength="3" id="sub_IPAddr2:0" value="">.
+<input class="ip" name="sub_IPAddr3:0" type="text" maxlength="3" id="sub_IPAddr3:0" value="">
+</div>
+</div>
+<div class="buttongroup">
+<input type="button" class="Button Btn_cancel" id="Btn_cancel_DHCPStaticRule:0" name="Btn_cancel_DHCPStaticRule:0" value="Cancel">
+<input type="button" class="Button Btn_apply" id="Btn_apply_DHCPStaticRule:0" name="Btn_apply_DHCPStaticRule:0" value="Apply">
+</div>
+</form>
+</div>
+</div><div id="template_DHCPStaticRule_1" style="">
+<div id="topLine_DHCPStaticRule:1" class="formTblCtrlBar">
+<span id="instName_DHCPStaticRule:1" class="instName collapsibleInst instNameExp">New Item</span>
+<span id="instDelete_DHCPStaticRule:1" class="instDelete Btn_delete"><img src="img/del.png" alt="delete"></span>
+</div>
+<div id="changeArea_DHCPStaticRule:1" class="ChangeArea formTblWrap" style="">
+<div class="errorHint" style="display:none;">
+<span class="caption1"></span>
+</div>
+<div class="succHint" style="display:none;">
+<span class="caption1">Your data have been stored!</span>
+</div>
+<form class="form_content formTbl" onsubmit="return false;" novalidate="novalidate"><input type="text" id="_stopFormAutoSubmit:1" value="" class="PostIgnore" style="display:none;">
+<input type="hidden" id="_InstID:DHCPStaticRule:1" value="-1">
+<input type="hidden" id="MACAddr:1" value="">
+<input type="hidden" id="IPAddr:1" value="">
+<div class="row">
+<label for="Name:1" class="cfgLabel w200">Name</label>
+<div class="right">
+<input type="text" id="Name:1" name="Name:1" class="inputNorm">
+<span class="utf8Compatible" style="display:none;">Length: 1 ~ 10</span>
+</div>
+</div>
+<div class="row">
+<label for="sub_MACAddr0:1" class="cfgLabel w200">MAC Address</label>
+<div class="right">
+<input class="mac" name="sub_MACAddr0:1" type="text" maxlength="2" id="sub_MACAddr0:1" value="">:
+<input class="mac" name="sub_MACAddr1:1" type="text" maxlength="2" id="sub_MACAddr1:1" value="">:
+<input class="mac" name="sub_MACAddr2:1" type="text" maxlength="2" id="sub_MACAddr2:1" value="">:
+<input class="mac" name="sub_MACAddr3:1" type="text" maxlength="2" id="sub_MACAddr3:1" value="">:
+<input class="mac" name="sub_MACAddr4:1" type="text" maxlength="2" id="sub_MACAddr4:1" value="">:
+<input class="mac" name="sub_MACAddr5:1" type="text" maxlength="2" id="sub_MACAddr5:1" value="">
+</div>
+</div>
+<div class="row">
+<label for="sub_IPAddr0:1" class="cfgLabel w200">IP Address</label>
+<div class="right">
+<input class="ip" name="sub_IPAddr0:1" type="text" maxlength="3" id="sub_IPAddr0:1" value="">.
+<input class="ip" name="sub_IPAddr1:1" type="text" maxlength="3" id="sub_IPAddr1:1" value="">.
+<input class="ip" name="sub_IPAddr2:1" type="text" maxlength="3" id="sub_IPAddr2:1" value="">.
+<input class="ip" name="sub_IPAddr3:1" type="text" maxlength="3" id="sub_IPAddr3:1" value="">
+</div>
+</div>
+<div class="buttongroup">
+<input type="button" class="Button Btn_cancel" id="Btn_cancel_DHCPStaticRule:1" name="Btn_cancel_DHCPStaticRule:1" value="Cancel">
+<input type="button" class="Button Btn_apply" id="Btn_apply_DHCPStaticRule:1" name="Btn_apply_DHCPStaticRule:1" value="Apply">
+</div>
+</form>
+</div>
+</div><div id="template_DHCPStaticRule" style="display:none;">
+<div id="topLine_DHCPStaticRule" class="formTblCtrlBar">
+<span id="instName_DHCPStaticRule" class="instName collapsibleInst">New Item</span>
+<span id="instDelete_DHCPStaticRule" class="instDelete Btn_delete"><img src="img/del.png" alt="delete"></span>
+</div>
+<div id="changeArea_DHCPStaticRule" class="ChangeArea formTblWrap" style="display:none;">
+<div class="errorHint" style="display:none;">
+<span class="caption1"></span>
+</div>
+<div class="succHint" style="display:none;">
+<span class="caption1">Your data have been stored!</span>
+</div>
+<form class="form_content formTbl" onsubmit="return false;"><input type="text" id="_stopFormAutoSubmit" value="" class="PostIgnore" style="display:none;">
+<input type="hidden" id="_InstID:DHCPStaticRule" value="-1">
+<input type="hidden" id="MACAddr" value="">
+<input type="hidden" id="IPAddr" value="">
+<div class="row">
+<label for="Name" class="cfgLabel w200">Name</label>
+<div class="right">
+<input type="text" id="Name" name="Name" class="inputNorm">
+<span class="utf8Compatible" style="display:none;">Length: 1 ~ 10</span>
+</div>
+</div>
+<div class="row">
+<label for="sub_MACAddr0" class="cfgLabel w200">MAC Address</label>
+<div class="right">
+<input class="mac" name="sub_MACAddr0" type="text" maxlength="2" id="sub_MACAddr0" value="">:
+<input class="mac" name="sub_MACAddr1" type="text" maxlength="2" id="sub_MACAddr1" value="">:
+<input class="mac" name="sub_MACAddr2" type="text" maxlength="2" id="sub_MACAddr2" value="">:
+<input class="mac" name="sub_MACAddr3" type="text" maxlength="2" id="sub_MACAddr3" value="">:
+<input class="mac" name="sub_MACAddr4" type="text" maxlength="2" id="sub_MACAddr4" value="">:
+<input class="mac" name="sub_MACAddr5" type="text" maxlength="2" id="sub_MACAddr5" value="">
+</div>
+</div>
+<div class="row">
+<label for="sub_IPAddr0" class="cfgLabel w200">IP Address</label>
+<div class="right">
+<input class="ip" name="sub_IPAddr0" type="text" maxlength="3" id="sub_IPAddr0" value="">.
+<input class="ip" name="sub_IPAddr1" type="text" maxlength="3" id="sub_IPAddr1" value="">.
+<input class="ip" name="sub_IPAddr2" type="text" maxlength="3" id="sub_IPAddr2" value="">.
+<input class="ip" name="sub_IPAddr3" type="text" maxlength="3" id="sub_IPAddr3" value="">
+</div>
+</div>
+<div class="buttongroup">
+<input type="button" class="Button Btn_cancel" id="Btn_cancel_DHCPStaticRule" name="Btn_cancel_DHCPStaticRule" value="Cancel">
+<input type="button" class="Button Btn_apply" id="Btn_apply_DHCPStaticRule" name="Btn_apply_DHCPStaticRule" value="Apply">
+</div>
+</form>
+</div>
+</div>
+<div class="addInstBar AddContentContainer">
+<span id="addInstBar_DHCPStaticRule" class="instNew addInst">Create New Item</span>
+</div>
+<div id="DHCPStaticRule_Refresh" style="display:none;">
+<input type="hidden" id="DHCPStaticRule_Refresh_button">
+</div>
+</div>
+</div>
+
+<script>
+
+</script>
+<script type="text/javascript">
+function ISPDNSModify(e,subTemplate,b,c)
+{
+
+}
+$.subscribe("/some/MinMaxIPCtrl", ISPDNSModify);
+</script><script>
+
+</script><script>
+
+</script>
+<script>
+
+</script>
+<script type="text/javascript">
+
+</script>
+
+
+
+<script type="text/javascript">
+function initial_template_LanDevDHCPSource(templateID)
+{
+var template = $("#"+templateID);
+template.bind("fillDataByApplyResult", function(event, xml, template){
+ActionByApplyResult(xml, template);
+});
+template.bind("fillDataByCancelResult", function(event, xml, template){
+var templateID = template.attr("id");
+if ( template.hasError(xml) == 0 )
+{
+var RuleNum = $("#_InstNum", template).val();
+for (var i=0; i<RuleNum; i++)
+{
+var _InstID = $("[id^='_InstID_']", template).eq(i).val();
+var RuleObj = $("[id^='div_LanDevDHCPSourceRule_']", template).eq(i);
+var DataOBJID = ["OBJ_LANDEVDHCPSOURCE_ID"];
+var suffix = getInstIndexByPath(xml, DataOBJID[0], _InstID);
+RuleObj.fillDataByOBJID(xml, DataOBJID, RuleObj, suffix, "_");
+}
+}
+});
+}
+$(document).ready(function(){
+var HeadID = "LanDevDHCPSource";
+var Head = $("#"+HeadID);
+var ServerAddr = $("address span", Head).text();
+initial_template_LanDevDHCPSource("template_"+HeadID);
+Head.succfunction = function(xml){
+Head.hasError(xml,"externErrorHint");
+var OBJ = $(xml).find("OBJ_LANDEVDHCPSOURCE_ID");
+var RuleNum = $("Instance", OBJ).length;
+var TemplateOBJ = $("#template_"+HeadID,Head);
+if (RuleNum == 0)
+{
+$(".noDataHint",Head).showIt(true);
+TemplateOBJ.showIt(false);
+}
+else
+{
+$(".noDataHint",Head).showIt(false);
+TemplateOBJ.showIt(true);
+$("#_InstNum", Head).val(RuleNum);
+for (var i=0; i<RuleNum; i++)
+{
+var ruleTemplate = $("#div_LanDevDHCPSourceRule");
+var clone = ruleTemplate.cloneWithSuffix(i, "_");
+ruleTemplate.before(clone);
+var DataOBJID = ["OBJ_LANDEVDHCPSOURCE_ID"];
+clone.fillDataByOBJID(xml, DataOBJID, clone, i, "_");
+clone.showIt(true);
+}
+}
+$.publish("/some/softVersionModify", [Head]);
+$.publish("/some/sncTAHidden", [Head]);
+var data = {}
+data.TemplateOBJ = TemplateOBJ;
+$.callModifier ("/Landevdhcpsource/Ssiddisabled",data)
+};
+if ( $(".collapBarWithDataTrans",Head).length <= 0 )
+{
+Head.dataTransfer(ServerAddr,
+"GET",
+Head.succfunction);
+}
+else
+{
+initial_collapBarWithDataTrans(Head);
+}
+});
+</script>
+
+
+<div id="LanDevDHCPSource" class="HeadDIV">
+<address style="display:none">
+<span class="form-action">/?_type=menuData&amp;_tag=Localnet_LanDevDHCPSource_lua.lua</span>
+</address>
+<div class="externErrorHint" style="display:none;">
+<span class="caption1"></span>
+</div>
+<h1 class="collapBarWithDataTrans" id="LanDevDHCPSourceBar">DHCP Port Control</h1>
+<input type="hidden" id="DataHasBeenGot" value="0">
+<div id="LanDevDHCPSource_container" style="display: none;">
+<div class="noDataHint" style="display:none;">
+<span>There are no data now. </span>
+</div>
+<div id="template_LanDevDHCPSource" class="formTblWrap">
+<div class="errorHint" style="display:none;">
+<span class="caption1"></span>
+</div>
+<div class="succHint" style="display:none;">
+<span class="caption1">Your data have been stored!</span>
+</div>
+<div class="formTbl">
+<input type="hidden" id="_InstNum">
+<div class="row" id="div_LanDevDHCPSourceRule" style="display:none;">
+<form onsubmit="return false;"><input type="text" id="_stopFormAutoSubmit" value="" class="PostIgnore" style="display:none;">
+<input type="hidden" id="_InstID" value="">
+<label id="VendorClassID" class="cfgLabel w100"></label>
+<div class="right" id="ProcFlag">
+<input type="radio" id="ProcFlag3" name="ProcFlag" value="3">
+<label for="ProcFlag3">No Control</label>&nbsp;&nbsp;
+<input type="radio" id="ProcFlag2" name="ProcFlag" value="2">
+<label for="ProcFlag2">Internet</label>&nbsp;&nbsp;
+<input type="radio" id="ProcFlag1" name="ProcFlag" value="1">
+<label for="ProcFlag1">Local</label>&nbsp;&nbsp;
+</div>
+</form>
+</div>
+<div class="buttongroup">
+<input type="button" class="Button Btn_cancel" id="Btn_cancel_LanDevDHCPSource" name="Btn_cancel_LanDevDHCPSource" value="Cancel">
+<input type="button" class="Button Btn_apply" id="Btn_apply_LanDevDHCPSource" name="Btn_apply_LanDevDHCPSource" value="Apply">
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+</script>
+<script type="text/javascript">
+function softModify(e,subTemplate,b,c)
+{
+
+}
+$.subscribe("/some/softVersionModify", softModify);
+</script><script>
+
+</script>
+
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+if(0)
+{
+if(2 == 0)
+{
+$("input,texteare,select").attr("disabled",true).attr("hideattr",true);
+$("[class^='Button']").addClass("disableBtn");
+$("[class^='longBtn']").addClass("disableBtn");
+$("[class^='instDelete Btn_delete']").remove();
+$("[class^='addInstBar AddContentContainer']").remove();
+$("[id^='Btn_cancel_'],[id^='Btn_apply_']").unbind();
+$("[class^='Button Btn_refresh']").removeClass("disableBtn").attr("disabled",false);
+}
+}
+_sessionTmpToken = "\x6c\x43\x67\x64\x6a\x57\x6a\x4f\x6c\x53\x68\x58\x78\x77\x49\x76\x72\x6f\x78\x69\x54\x68\x48\x32";
+var childPage = $("#childPage");
+var HeadDIVList = $(".HeadDIV", childPage);
+var FstHeadDIV = HeadDIVList.eq(0);
+var collapBarToUnfold = $(".collapBarWithDataTrans",FstHeadDIV).eq(0);
+var containerMainID = FstHeadDIV.attr("id") + "_container";
+var UnderControlContainer = $("#"+containerMainID, FstHeadDIV);
+g_runElementControl(HeadDIVList);
+if ( UnderControlContainer.is(":hidden") )
+{
+$(".collapBarWithDataTrans",FstHeadDIV).eq(0).click();
+}
+});
+</script>
+</div>
+<div id="sideShortCut" class="sideShortCut" style="">
+<a id="BackToTop" class="BackToTop" titile="TOP"></a>
+</div>
+<script type="text/javascript">
+var _MenuInfo = $("#_MenuInfo");
+var NowNextpage = $("#_NextPageInfo",_MenuInfo).text();
+var NowSupId = $("#_NowSupIdInfo",_MenuInfo).text();
+var NowMidId = $("#_NowMidIdInfo",_MenuInfo).text();
+var NowThdId = $("#_NowThdIdInfo",_MenuInfo).text();
+MenuShow("ClassAll", NowNextpage, NowSupId, NowMidId, NowThdId);
+$('#sideShortCut').click(function(){
+$(document).scrollTop(0);
+});
+function showTopAnchor()
+{
+var distanceFromTop = $(document).scrollTop();
+if( distanceFromTop > 135 )
+{
+if ("1"[0])
+{
+$('#sideShortCut').show();
+}
+}
+else
+{
+$('#sideShortCut').hide();
+}
+}
+$(window).scroll(function(){
+showTopAnchor();
+});
+</script>
+
+<div style="clear:left;height:1px;">&nbsp;</div>
+</div>
+<div id="page_footer">
+
+<span id="copyRight">©2008-2023 ZTE Corporation. All rights reserved</span>&nbsp;&nbsp;|&nbsp;&nbsp;
+
+<span id="pdtVer">F670L&nbsp;V9.0.11P1N75</span>
+
+</div>
+</div>
+<script type="text/javascript">
+function LanguageSwitch(nowLanguage, nowStatus)
+{
+var changeLanguage = "";
+if ( "English" == nowLanguage)
+{
+changeLanguage = "Chinese";
+}
+else
+{
+changeLanguage = "English";
+}
+showWaitTip(true);
+if (nowStatus == "showloginPage")
+{
+_sessionTmpToken = $("#_sessionTOKEN").val();
+}
+$.post( "/?_type=hiddenData&_tag=switchlang_entry", {IF_LanguageSwitch:changeLanguage, _sessionTOKEN:_sessionTmpToken}, undefined, "json" )
+.done(function( data ) {
+if ( data.need_refresh )
+{
+top.location.href = top.location.href;
+}
+else
+{
+alert("This page has expired, please refresh and try again. ");
+showWaitTip(false);
+}
+});
+}
+function MenuModeSwitch(ModeNow)
+{
+var ChangeModeSwitch = "";
+if ( "Basic" == ModeNow )
+{
+ChangeModeSwitch = "Advanced";
+}
+else
+{
+ChangeModeSwitch = "Basic";
+}
+showWaitTip(true);
+$.post( "/?_type=loginData&_tag=modeswitch_entry", {IF_ModeSwitch:ChangeModeSwitch, _sessionTOKEN:_sessionTmpToken}, undefined, "json" )
+.done(function( data ) {
+if ( data.need_refresh )
+{
+top.location.href = top.location.href;
+}
+else
+{
+alert("This page has expired, please refresh and try again. ");
+showWaitTip(false);
+}
+});
+}
+var UpdateTimeTimerID;
+function UpdateCurrTime()
+{
+var CurrTimeObj = $("#_DevCurrTime");
+var CurrTimeDiv = $("#timeArea");
+CurrTimeObj.succfunction = function(xml){
+if (CurrTimeDiv.hasError(xml,"_noExist") == 0)
+{
+var currTimeByXML = "";
+$(xml).find('ParaName').each(function(){
+var tmp = $(this);
+if ( tmp.text() == "CurrentLocalTime" )
+{
+currTimeByXML = tmp.next().text();
+return false;
+}
+});
+if(typeof(customTimeStyle) == "function")
+{
+customTimeStyle(CurrTimeObj, currTimeByXML, "template");
+}
+else
+{
+var timeStr = timeTranslate(currTimeByXML);
+if ( currTimeByXML != "")
+{
+var SecTimeLocation = currTimeByXML.lastIndexOf(":");
+var currTimeNotSec = currTimeByXML.substring(0, SecTimeLocation);
+CurrTimeObj.text(currTimeNotSec);
+}
+}
+}
+};
+CurrTimeObj.failfunction = function(xml){
+};
+CurrTimeObj.dataTransfer("/?_type=hiddenData&_tag=sntp_data",
+"GET",
+CurrTimeObj.succfunction,
+CurrTimeObj.failfunction,
+false);
+UpdateTimeTimerID = setTimeout("UpdateCurrTime()", 30*1000);
+}
+$(document).ready(function(){
+
+clearTimeout(UpdateTimeTimerID);
+var NowStatus = "\x73\x68\x6f\x77\x43\x6f\x6d\x6d\x6f\x6e\x50\x61\x67\x65";
+var TimeAreaCus = "";
+var IsShowTimeZone = {
+'showloginPage' : false,
+'showWizardPage' : true,
+'showCommonPage' : true
+};
+if ( !IsShowTimeZone[NowStatus] )
+{
+$("#timeArea").hide();
+}else if(TimeAreaCus == "remove"){
+$("#timeArea").remove();
+}
+else
+{
+$("#timeArea").show();
+UpdateCurrTime();
+}
+
+var logoLink = "homePage";
+var IsShowlogOff = {
+'showloginPage' : false,
+'showWizardPage' : false,
+'showCommonPage' : true
+};
+if ( !IsShowlogOff[NowStatus] )
+{
+$("#logOff").hide();
+}
+else
+{
+var obj = $("#logo");
+obj.addClass("clickable");
+obj.click(function(){
+openLink(logoLink + "&Menu3Location=0");
+});
+}
+var modeSwitchAction = {
+'showloginPage' : null,
+'showWizardPage' : null,
+'showCommonPage' : MenuModeSwitch
+};
+if ( 2 == 1 || 2 == 4)
+{
+modeSwitchAction.showCommonPage = null;
+}
+if ( modeSwitchAction[NowStatus] != null )
+{
+var modeSwitchButContent = "\x41\x64\x76\x61\x6e\x63\x65\x64";
+var modeOBJ = $("#modeSwitch");
+var modeBasic = $("#modeBisic",modeOBJ);
+var ModeAdvanced = $("#ModeAdvanced",modeOBJ);
+if ( modeSwitchButContent == "Basic" )
+{
+ModeAdvanced.attr("class", "emColor clickable");
+modeBasic.attr("class", "");
+}
+else if ( modeSwitchButContent == "Advanced" )
+{
+modeBasic.attr("class", "emColor clickable");
+ModeAdvanced.attr("class", "");
+}
+else
+{
+}
+}
+$("span", modeOBJ).each(function(){
+var tempOBJ = $(this);
+tempOBJ.click(function(){
+if ( ! $(this).hasClass("clickable")
+|| modeSwitchAction[NowStatus] == null)
+{
+return;
+}
+var ModeNow = "\x41\x64\x76\x61\x6e\x63\x65\x64";
+MenuModeSwitch(ModeNow);
+});
+});
+function bindLanguageSwitchOld(){
+var languageButContent = "\x45\x6e\x67\x6c\x69\x73\x68";
+var languageOBJ = $("#languageSwitch");
+var languageEnglishOBJ = $("#EnglishModify",languageOBJ);
+var languageChineseOBJ = $("#"+"ChineseModify",languageOBJ);
+if ( languageButContent == "English" )
+{
+languageEnglishOBJ.attr("src","/img/English_s.gif");
+languageChineseOBJ.attr("src","/img/Chinese.gif");
+languageChineseOBJ.addClass("clickable");
+}
+else if ( languageButContent == "Chinese" )
+{
+languageEnglishOBJ.attr("src","/img/English.gif");
+languageEnglishOBJ.addClass("clickable");
+languageChineseOBJ.attr("src","/img/Chinese_s.gif");
+}
+else if ( languageButContent == "Spanish" )
+{
+languageEnglishOBJ.attr("src","/img/English.gif");
+languageEnglishOBJ.addClass("clickable");
+languageChineseOBJ.attr("src","/img/Spanish_s.gif");
+}
+else if ( languageButContent == "Japanese" )
+{
+languageEnglishOBJ.attr("src","/img/English.gif");
+languageEnglishOBJ.addClass("clickable");
+languageChineseOBJ.attr("src","/img/Japanese_s.gif");
+}
+else if ( languageButContent == "Portuguese" )
+{
+languageEnglishOBJ.attr("src","/img/English.gif");
+languageEnglishOBJ.addClass("clickable");
+languageChineseOBJ.attr("src","/img/Portuguese_s.gif");
+}else if( languageButContent == "French" ){
+languageEnglishOBJ.attr("src","/img/English.gif");
+languageEnglishOBJ.addClass("clickable");
+languageChineseOBJ.attr("src","/img/French_s.gif");
+}else if( languageButContent == "Russian" ){
+languageEnglishOBJ.attr("src","/img/English.gif");
+languageEnglishOBJ.addClass("clickable");
+languageChineseOBJ.attr("src","/img/Russian_s.gif");
+}
+else
+{
+}
+$("img", languageOBJ).each(function(){
+var LanguageModifyOBJ = $(this);
+LanguageModifyOBJ.click(function(){
+if ( ! $(this).hasClass("clickable") )
+{
+return;
+}
+var LanguageNow = "\x45\x6e\x67\x6c\x69\x73\x68";
+LanguageSwitch(LanguageNow, NowStatus);
+});
+});
+}
+function bindLanguageSwitch(){
+var languageButContent = "\x45\x6e\x67\x6c\x69\x73\x68";
+var languageOBJ = $("#languageSwitch");
+var languageEnglishOBJ = $("#EnglishModify",languageOBJ);
+var languageUnEnglishOBJ = $("#UnEnglishModify",languageOBJ);
+if ( languageButContent == "English" )
+{
+languageEnglishOBJ.attr("class","currentlang");
+languageUnEnglishOBJ.attr("class", "bannerswtch clickable");
+}
+else
+{
+languageEnglishOBJ.attr("class", "bannerswtch clickable");
+languageUnEnglishOBJ.attr("class","currentlang");
+}
+$("span", languageOBJ).each(function(){
+var LanguageModifyOBJ = $(this);
+LanguageModifyOBJ.click(function(){
+if ( ! $(this).hasClass("clickable") )
+{
+return;
+}
+var LanguageNow = "\x45\x6e\x67\x6c\x69\x73\x68";
+LanguageSwitch(LanguageNow, NowStatus);
+});
+});
+}
+
+bindLanguageSwitchOld();
+
+try{
+if((templateModify!=undefined) && (typeof(templateModify)=="function")){
+templateModify();
+}
+}catch(e){
+}
+});
+window.onresize = function()
+{
+if ($("#tipLayer").css("display") != "none")
+{
+reposition_box("tipLayer");
+consoleLog("window reseze!");
+}
+}
+</script>
+
+
+<svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" focusable="false" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;"><defs id="SvgjsDefs1002"></defs><polyline id="SvgjsPolyline1003" points="0,0"></polyline><path id="SvgjsPath1004" d="M0 0 "></path></svg></body></html>

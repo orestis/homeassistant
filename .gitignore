@@ -1,0 +1,6 @@
+.ha-token
+.samba-pass
+.mqtt-pass
+.venv
+*.pyc
+__pycache__/

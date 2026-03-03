@@ -1,0 +1,84 @@
+<div id="dashboard">
+  {# --- Status Bar --- #}
+  <div class="status-bar">
+    <div class="status-item">
+      <span class="status-icon">🏠</span>
+      <span class="status-value">{{ "%.1f"|format(indoor_temp) if indoor_temp is not none else "--" }}°</span>
+    </div>
+    <div class="status-item">
+      <span class="status-icon">💧</span>
+      <span class="status-value">{{ "%.0f"|format(indoor_humidity) if indoor_humidity is not none else "--" }}%</span>
+    </div>
+    <div class="status-item">
+      <span class="status-icon">🌤️</span>
+      <span class="status-value">{{ "%.1f"|format(outdoor_temp) if outdoor_temp is not none else "--" }}°</span>
+    </div>
+  </div>
+
+  {# --- Scenes --- #}
+  <div class="section">
+    <div class="scene-grid">
+      {% for scene in scenes %}
+      <form method="POST" action="/action/scene">
+        <input type="hidden" name="entity_id" value="{{ scene.entity_id }}">
+        <button
+          type="submit"
+          class="tile scene-tile"
+          style="background: {{ scene.color }}"
+          hx-post="/action/scene"
+          hx-vals='{"entity_id": "{{ scene.entity_id }}"}'
+          hx-target="#dashboard"
+          hx-swap="outerHTML"
+          hx-indicator="this"
+        >
+          <span class="tile-icon">{{ scene.icon }}</span>
+          <span class="tile-label">{{ scene.name }}</span>
+        </button>
+      </form>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# --- Climate --- #}
+  <div class="section climate-section">
+    <div class="climate-header">
+      <span class="climate-name">{{ climate.name }}</span>
+      <span class="climate-state {% if climate.action == 'heating' %}heating{% endif %}">
+        {{ climate.action | default("--") }}
+      </span>
+    </div>
+    <div class="climate-controls">
+      <form method="POST" action="/action/climate">
+        <input type="hidden" name="entity_id" value="{{ climate.entity_id }}">
+        <input type="hidden" name="action" value="down">
+        <button
+          type="submit"
+          class="tile climate-btn"
+          hx-post="/action/climate"
+          hx-vals='{"entity_id": "{{ climate.entity_id }}", "action": "down"}'
+          hx-target="#dashboard"
+          hx-swap="outerHTML"
+          hx-indicator="this"
+          {% if climate.target is not none and climate.target <= climate.min %}disabled{% endif %}
+        >−</button>
+      </form>
+      <div class="climate-display">
+        <span class="climate-target">{{ climate.target if climate.target is not none else "--" }}</span>
+      </div>
+      <form method="POST" action="/action/climate">
+        <input type="hidden" name="entity_id" value="{{ climate.entity_id }}">
+        <input type="hidden" name="action" value="up">
+        <button
+          type="submit"
+          class="tile climate-btn"
+          hx-post="/action/climate"
+          hx-vals='{"entity_id": "{{ climate.entity_id }}", "action": "up"}'
+          hx-target="#dashboard"
+          hx-swap="outerHTML"
+          hx-indicator="this"
+          {% if climate.target is not none and climate.target >= climate.max %}disabled{% endif %}
+        >+</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+{
+  "ha_url": "http://supervisor/core",
+  "ha_token_env": "SUPERVISOR_TOKEN",
+  "server_port": 5000,
+
+  "sensors": {
+    "indoor_temp": "sensor.bthome_sensor_47af_temperature",
+    "indoor_humidity": "sensor.bthome_sensor_47af_humidity",
+    "outdoor_temp": "sensor.daikinap68496_climatecontrol_outdoor_temperature"
+  },
+
+  "climate": {
+    "entity_id": "climate.antlia_leaving_water_offset",
+    "name": "Heating Offset",
+    "min": -10,
+    "max": 10,
+    "step": 1
+  },
+
+  "scenes": [
+    {
+      "name": "Morning",
+      "icon": "☀️",
+      "entity_id": "scene.morning",
+      "color": "#FFA500"
+    },
+    {
+      "name": "Relax",
+      "icon": "🌙",
+      "entity_id": "scene.relax",
+      "color": "#6A5ACD"
+    },
+    {
+      "name": "Lights Off",
+      "icon": "⚫",
+      "entity_id": "scene.lights_off",
+      "color": "#333333"
+    }
+  ]
+}

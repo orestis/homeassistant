@@ -1,0 +1,26 @@
+[
+  {
+    "input_entity": "binary_sensor.lights_office_input_0",
+    "light_entity": "light.lampteras_14",
+    "input_friendly_name": "lights-office Input 0",
+    "shelly_device_name": "shelly1g4-7c2c677f6410",
+    "shelly_ip": "192.168.1.24",
+    "light_friendly_name": "Γραφείο τοίχος"
+  },
+  {
+    "input_entity": "binary_sensor.shelly2pmg4_7c2c677b4524_input_0",
+    "light_entity": "light.upnodomatio",
+    "input_friendly_name": "lights-kid-room Input 0",
+    "shelly_device_name": "shelly2pmg4-7c2c677b4524",
+    "shelly_ip": "192.168.1.5",
+    "light_friendly_name": "Υπνοδωματιο"
+  },
+  {
+    "input_entity": "binary_sensor.shelly2pmg4_7c2c6779fe50_input_0",
+    "light_entity": "light.poluelaios_2",
+    "input_friendly_name": "shelly2pmg4-7c2c6779fe50 Input 0",
+    "shelly_device_name": "shelly2pmg4-7c2c6779fe50",
+    "shelly_ip": "192.168.1.25",
+    "light_friendly_name": "Αριστερά "
+  }
+]

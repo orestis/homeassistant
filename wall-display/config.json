@@ -1,0 +1,26 @@
+{
+  "name": "Wall Display Dashboard",
+  "version": "0.10.0",
+  "slug": "wall_display",
+  "description": "Lightweight server-rendered dashboard for Shelly Wall Display",
+  "homeassistant_api": true,
+  "auth_api": true,
+  "init": false,
+  "host_network": true,
+  "arch": ["aarch64", "amd64", "armhf", "armv7", "i386"],
+  "url": "https://github.com/orestis/homeassistant",
+  "startup": "application",
+  "boot": "auto",
+  "ports": {
+    "5000/tcp": 5000
+  },
+  "ports_description": {
+    "5000/tcp": "Wall Display Dashboard HTTP"
+  },
+  "options": {},
+  "schema": {},
+  "ingress": true,
+  "ingress_port": 5000,
+  "panel_icon": "mdi:tablet",
+  "panel_title": "Wall Display"
+}

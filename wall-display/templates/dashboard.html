@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta http-equiv="refresh" content="30">
+  <title>Wall Display</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #121212;
+      color: #e0e0e0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+    }
+
+    #dashboard {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding: 8px;
+      gap: 8px;
+    }
+
+    /* --- Status Bar --- */
+    .status-bar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 8px 12px;
+      flex-shrink: 0;
+    }
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-icon { font-size: 1.1rem; }
+    .status-value {
+      font-size: 1.2rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* --- Sections --- */
+    .section {
+      flex-shrink: 0;
+    }
+
+    /* --- Scene Grid --- */
+    .scene-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .scene-grid form { display: contents; }
+
+    /* --- Tiles --- */
+    .tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 14px;
+      color: #fff;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.1s, transform 0.1s;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .tile:active {
+      opacity: 0.7;
+      transform: scale(0.95);
+    }
+    /* htmx loading state — instant feedback */
+    .tile.htmx-request {
+      opacity: 0.5;
+    }
+
+    .scene-tile {
+      padding: 16px 8px;
+      min-height: 80px;
+    }
+    .tile-icon { font-size: 1.8rem; margin-bottom: 4px; }
+    .tile-label { font-size: 0.85rem; font-weight: 600; }
+
+    /* --- Climate --- */
+    .climate-section {
+      background: #1e1e1e;
+      border-radius: 14px;
+      padding: 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .climate-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .climate-name {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .climate-state {
+      font-size: 0.85rem;
+      padding: 3px 10px;
+      border-radius: 8px;
+      background: #2a2a2a;
+      text-transform: capitalize;
+    }
+    .climate-state.heating {
+      background: #e65100;
+      color: #fff;
+    }
+    .climate-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .climate-controls form { display: contents; }
+    .climate-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #2a2a2a;
+      font-size: 1.8rem;
+      font-weight: 300;
+    }
+    .climate-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+    .climate-display {
+      text-align: center;
+    }
+    .climate-target {
+      font-size: 2.5rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body>
+  {% include "partials/dashboard_content.html" %}
+  <script src="/static/htmx.min.js" defer></script>
+</body>
+</html>
