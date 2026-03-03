@@ -1,5 +1,7 @@
 """Home Assistant REST API client."""
 
+from __future__ import annotations
+
 import json
 import logging
 import urllib.request
@@ -63,3 +65,21 @@ class HAClient:
             "entity_id": entity_id,
             "temperature": temperature,
         })
+
+    def get_weather_forecast(self, entity_id: str, forecast_type: str = "hourly") -> list[dict]:
+        """Get weather forecast entries via the weather.get_forecasts service."""
+        result = self._request(
+            "POST",
+            f"/api/services/weather/get_forecasts?return_response",
+            {"entity_id": entity_id, "type": forecast_type},
+        )
+        if not isinstance(result, dict):
+            return []
+        # Handle response: {"weather.x": {"forecast": [...]}}
+        # or {"service_response": {"weather.x": {"forecast": [...]}}}
+        data = result.get("service_response", result)
+        if isinstance(data, dict):
+            entity_data = data.get(entity_id, data)
+            if isinstance(entity_data, dict):
+                return entity_data.get("forecast", [])
+        return []

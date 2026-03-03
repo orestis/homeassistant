@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <meta http-equiv="refresh" content="30">
   <title>Wall Display</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -28,35 +27,94 @@
     /* --- Status Bar --- */
     .status-bar {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: center;
       background: #1e1e1e;
       border-radius: 12px;
-      padding: 8px 12px;
+      padding: 8px 14px;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .status-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .status-left-main {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .status-left-secondary {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding-left: 21px;
+    }
+    .icon-indoor {
+      width: 16px;
+      height: 16px;
+      color: #e0e0e0;
       flex-shrink: 0;
     }
-    .status-item {
+    .indoor-temp {
+      font-size: 1.31rem;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    .indoor-humidity {
+      font-size: 0.75rem;
+      color: #666;
+    }
+    .icon-outdoor {
+      width: 13px;
+      height: 13px;
+      color: #666;
+      flex-shrink: 0;
+    }
+    .outdoor-temp {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    .status-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.1;
+    }
+    .status-time {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .status-date {
+      font-size: 0.7rem;
+      color: #888;
+    }
+    .status-right {
       display: flex;
       align-items: center;
       gap: 6px;
     }
-    .status-icon { font-size: 1.1rem; }
-    .status-value {
+    .forecast-icon {
       font-size: 1.2rem;
+    }
+    .forecast-range {
+      font-size: 0.9rem;
+      color: #aaa;
       font-weight: 600;
-      font-variant-numeric: tabular-nums;
     }
 
-    /* --- Sections --- */
-    .section {
-      flex-shrink: 0;
+    /* --- Scenes --- */
+    .scenes-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
     }
-
-    /* --- Scene Grid --- */
     .scene-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
+      width: 100%;
     }
     .scene-grid form { display: contents; }
 
@@ -79,75 +137,78 @@
       opacity: 0.7;
       transform: scale(0.95);
     }
-    /* htmx loading state — instant feedback */
     .tile.htmx-request {
       opacity: 0.5;
     }
 
     .scene-tile {
-      padding: 16px 8px;
-      min-height: 80px;
+      padding: 20px 8px;
+      min-height: 90px;
     }
-    .tile-icon { font-size: 1.8rem; margin-bottom: 4px; }
-    .tile-label { font-size: 0.85rem; font-weight: 600; }
+    .scene-tile.active {
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+    }
+    .tile-icon { font-size: 2rem; margin-bottom: 6px; }
+    .tile-label { font-size: 0.9rem; font-weight: 600; }
 
-    /* --- Climate --- */
-    .climate-section {
-      background: #1e1e1e;
-      border-radius: 14px;
-      padding: 12px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    /* --- Climate Bottom --- */
+    .climate-bottom {
+      flex-shrink: 0;
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 8px 10px;
     }
-    .climate-header {
+    .climate-info {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+      color: #888;
     }
-    .climate-name {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-    .climate-state {
-      font-size: 0.85rem;
-      padding: 3px 10px;
-      border-radius: 8px;
-      background: #2a2a2a;
+    .climate-status {
       text-transform: capitalize;
     }
-    .climate-state.heating {
-      background: #e65100;
-      color: #fff;
+    .climate-status.heating {
+      color: #ff8a65;
     }
-    .climate-controls {
+    .climate-water {
+      margin-left: auto;
+    }
+    .climate-buttons {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
+      gap: 3px;
     }
-    .climate-controls form { display: contents; }
-    .climate-btn {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: #2a2a2a;
-      font-size: 1.8rem;
-      font-weight: 300;
+    .climate-buttons form {
+      flex: 1;
+      display: flex;
     }
-    .climate-btn:disabled {
+    .climate-val-btn {
+      width: 100%;
+      padding: 10px 0;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.1s, transform 0.1s;
+      -webkit-user-select: none;
+      user-select: none;
+      opacity: 0.6;
+    }
+    .climate-val-btn.active {
+      opacity: 1;
+      outline: 2px solid #fff;
+      outline-offset: -2px;
+      transform: scale(1.05);
+    }
+    .climate-val-btn:active {
+      transform: scale(0.92);
+    }
+    .climate-val-btn.htmx-request {
       opacity: 0.3;
-      cursor: default;
-    }
-    .climate-display {
-      text-align: center;
-    }
-    .climate-target {
-      font-size: 2.5rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
     }
   </style>
 </head>

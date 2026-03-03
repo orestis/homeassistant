@@ -2,6 +2,7 @@
   "ha_url": "http://supervisor/core",
   "ha_token_env": "SUPERVISOR_TOKEN",
   "server_port": 5000,
+  "weather_entity": "weather.forecast_home",
 
   "sensors": {
     "indoor_temp": "sensor.bthome_sensor_47af_temperature",
@@ -14,24 +15,25 @@
     "name": "Heating Offset",
     "min": -10,
     "max": 10,
-    "step": 1
+    "step": 1,
+    "button_values": [-10, -7, -5, -3, 0, 3, 5, 7, 10]
   },
 
   "scenes": [
     {
-      "name": "Morning",
+      "name": "Πρωί",
       "icon": "☀️",
       "entity_id": "scene.morning",
       "color": "#FFA500"
     },
     {
-      "name": "Relax",
+      "name": "Χαλάρωση",
       "icon": "🌙",
       "entity_id": "scene.relax",
       "color": "#6A5ACD"
     },
     {
-      "name": "Lights Off",
+      "name": "Σβήσιμο",
       "icon": "⚫",
       "entity_id": "scene.lights_off",
       "color": "#333333"

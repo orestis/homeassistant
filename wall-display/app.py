@@ -1,8 +1,11 @@
 """Wall Display Dashboard — Flask application."""
 
+from __future__ import annotations
+
 import json
 import logging
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 
 from flask import Flask, redirect, render_template, request, url_for
@@ -46,6 +49,9 @@ def _get_dashboard_state() -> dict:
     entity_ids = list(sensors.values())
     if climate_cfg.get("entity_id"):
         entity_ids.append(climate_cfg["entity_id"])
+    scene_list = config.get("scenes", [])
+    scene_entity_ids = [s["entity_id"] for s in scene_list]
+    entity_ids.extend(scene_entity_ids)
 
     states = ha.get_states(entity_ids)
 
@@ -65,10 +71,89 @@ def _get_dashboard_state() -> dict:
         climate_current = attrs.get("current_temperature")
         climate_action = climate_state.get("state", "unknown")
 
+    # Generate offset button list with colors
+    min_val = climate_cfg.get("min", -10)
+    max_val = climate_cfg.get("max", 10)
+    button_values = climate_cfg.get("button_values", list(range(min_val, max_val + 1)))
+    offset_buttons = []
+    for v in button_values:
+        # Blue (cold) → grey (neutral) → orange (hot)
+        t = (v - min_val) / (max_val - min_val) if max_val != min_val else 0.5
+        if t < 0.5:
+            # Blue to grey: #2196F3 → #555
+            f = t * 2
+            r = int(33 + f * (85 - 33))
+            g = int(150 + f * (85 - 150))
+            b = int(243 + f * (85 - 243))
+        else:
+            # Grey to orange: #555 → #E65100
+            f = (t - 0.5) * 2
+            r = int(85 + f * (230 - 85))
+            g = int(85 + f * (81 - 85))
+            b = int(85 + f * (0 - 85))
+        offset_buttons.append({"value": v, "color": f"#{r:02x}{g:02x}{b:02x}"})
+
+    # Determine active scene (most recently changed)
+    active_scene = None
+    latest_time = None
+    for eid in scene_entity_ids:
+        scene_state = states.get(eid, {})
+        last_changed = scene_state.get("last_changed", "")
+        if last_changed:
+            try:
+                dt = datetime.fromisoformat(last_changed)
+                if latest_time is None or dt > latest_time:
+                    latest_time = dt
+                    active_scene = eid
+            except (ValueError, TypeError):
+                pass
+
+    # Weather forecast — summary for next 12 hours
+    weather_entity = config.get("weather_entity", "")
+    forecast_summary = None
+    if weather_entity:
+        try:
+            forecasts = ha.get_weather_forecast(weather_entity, "hourly")
+            now = datetime.now(timezone.utc)
+            temps: list[float] = []
+            conditions: list[str] = []
+
+            for fc in forecasts:
+                try:
+                    fc_dt = datetime.fromisoformat(fc.get("datetime", ""))
+                    hours_ahead = (fc_dt - now).total_seconds() / 3600
+                    if 0 <= hours_ahead <= 12:
+                        t = fc.get("temperature")
+                        if t is not None:
+                            temps.append(float(t))
+                        cond = fc.get("condition", "")
+                        if cond:
+                            conditions.append(cond)
+                except (ValueError, TypeError):
+                    continue
+
+            if temps:
+                # Pick the most "important" condition (worst weather wins)
+                condition_icon = _pick_forecast_icon(conditions)
+                forecast_summary = {
+                    "low": int(min(temps)),
+                    "high": int(max(temps)),
+                    "icon": condition_icon,
+                }
+        except Exception as e:
+            log.warning("Failed to fetch weather forecast: %s", e)
+
+    # Current date/time (local)
+    local_now = datetime.now()
+
     return {
         "indoor_temp": indoor_temp,
         "indoor_humidity": indoor_humidity,
         "outdoor_temp": outdoor_temp,
+        "now_time": local_now.strftime("%H:%M"),
+        "now_date": _format_date_greek(local_now),
+        "forecast": forecast_summary,
+        "active_scene": active_scene,
         "climate": {
             "entity_id": climate_cfg.get("entity_id", ""),
             "name": climate_cfg.get("name", "Climate"),
@@ -79,8 +164,54 @@ def _get_dashboard_state() -> dict:
             "max": climate_cfg.get("max", 10),
             "step": climate_cfg.get("step", 1),
         },
-        "scenes": config.get("scenes", []),
+        "offset_buttons": offset_buttons,
+        "scenes": scene_list,
     }
+
+
+# HA condition → display icon, ordered by severity (worst first)
+# clear-night is treated as equivalent to sunny (not "worse" weather)
+_CONDITION_PRIORITY = [
+    ("lightning-rainy", "⛈️"),
+    ("lightning", "🌩️"),
+    ("pouring", "🌧️"),
+    ("rainy", "🌧️"),
+    ("hail", "🌨️"),
+    ("snowy-rainy", "🌨️"),
+    ("snowy", "❄️"),
+    ("windy-variant", "💨"),
+    ("windy", "💨"),
+    ("fog", "🌫️"),
+    ("cloudy", "☁️"),
+    ("partlycloudy", "⛅"),
+    ("exceptional", "⚠️"),
+]
+
+
+def _pick_forecast_icon(conditions: list[str]) -> str:
+    """Pick the most severe weather icon from a list of HA conditions.
+
+    clear-night is mapped to sunny so nighttime hours don't
+    override actual weather information.
+    """
+    # Normalise night → day equivalent
+    cond_set = {("sunny" if c == "clear-night" else c) for c in conditions}
+    for cond, icon in _CONDITION_PRIORITY:
+        if cond in cond_set:
+            return icon
+    return "☀️"  # default: sunny
+
+
+_DAYS_EL = ["Δευ", "Τρι", "Τετ", "Πεμ", "Παρ", "Σαβ", "Κυρ"]
+_MONTHS_EL = [
+    "", "Ιαν", "Φεβ", "Μαρ", "Απρ", "Μαΐ", "Ιουν",
+    "Ιουλ", "Αυγ", "Σεπ", "Οκτ", "Νοε", "Δεκ",
+]
+
+
+def _format_date_greek(dt: datetime) -> str:
+    """Format a date in short Greek, e.g. 'Τρι 3 Μαρ'."""
+    return f"{_DAYS_EL[dt.weekday()]} {dt.day} {_MONTHS_EL[dt.month]}"
 
 
 def _parse_float(state_dict: dict) -> float | None:
@@ -124,22 +255,33 @@ def action_scene():
 def action_climate():
     """Adjust climate target temperature."""
     entity_id = request.form.get("entity_id") or ""
-    action = request.form.get("action") or ""
     climate_cfg = config.get("climate", {})
-    step = climate_cfg.get("step", 1)
     min_val = climate_cfg.get("min", -10)
     max_val = climate_cfg.get("max", 10)
 
-    if entity_id and action in ("up", "down"):
-        # Get current target
-        current_state = ha.get_state(entity_id)
-        if current_state:
-            current_target = current_state.get("attributes", {}).get("temperature")
-            if current_target is not None:
-                new_target = current_target + (step if action == "up" else -step)
+    # Accept direct value from slider, or up/down from buttons
+    value = request.form.get("value")
+    action = request.form.get("action") or ""
+
+    if entity_id:
+        if value is not None:
+            try:
+                new_target = int(float(value))
                 new_target = max(min_val, min(max_val, new_target))
-                log.info("Setting %s temperature: %s → %s", entity_id, current_target, new_target)
+                log.info("Setting %s temperature to %s (slider)", entity_id, new_target)
                 ha.set_climate_temperature(entity_id, new_target)
+            except (ValueError, TypeError):
+                log.warning("Invalid climate value: %s", value)
+        elif action in ("up", "down"):
+            step = climate_cfg.get("step", 1)
+            current_state = ha.get_state(entity_id)
+            if current_state:
+                current_target = current_state.get("attributes", {}).get("temperature")
+                if current_target is not None:
+                    new_target = current_target + (step if action == "up" else -step)
+                    new_target = max(min_val, min(max_val, new_target))
+                    log.info("Setting %s temperature: %s → %s", entity_id, current_target, new_target)
+                    ha.set_climate_temperature(entity_id, new_target)
 
     # htmx: return updated dashboard content
     if request.headers.get("HX-Request") == "true":
@@ -151,5 +293,6 @@ def action_climate():
 
 
 if __name__ == "__main__":
-    port = config.get("server_port", 5000)
-    app.run(host="0.0.0.0", port=port)
+    port = int(os.environ.get("PORT", config.get("server_port", 5000)))
+    debug = os.environ.get("FLASK_DEBUG", "0") == "1"
+    app.run(host="0.0.0.0", port=port, debug=debug)
