@@ -151,6 +151,86 @@
     .tile-icon { font-size: 2rem; margin-bottom: 6px; }
     .tile-label { font-size: 0.9rem; font-weight: 600; }
 
+    /* --- Water Heater Row --- */
+    .water-heater-row {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .wh-main-form {
+      flex: 1;
+    }
+    .wh-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.1s, transform 0.1s;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .wh-btn:active {
+      opacity: 0.7;
+      transform: scale(0.97);
+    }
+    .wh-btn.htmx-request {
+      opacity: 0.4;
+    }
+    .wh-btn.off {
+      background: #2a2a2a;
+      color: #888;
+    }
+    .wh-btn.on {
+      background: #1565c0;
+      color: #fff;
+    }
+    .wh-icon {
+      font-size: 1.3rem;
+    }
+    .wh-label {
+      flex: 1;
+    }
+    .wh-timer-info {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      font-variant-numeric: tabular-nums;
+    }
+    .wh-bypass-form {
+      display: flex;
+    }
+    .wh-bypass-btn {
+      width: 48px;
+      border: none;
+      border-radius: 12px;
+      background: #2a2a2a;
+      color: #666;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.1s, transform 0.1s;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .wh-bypass-btn.active {
+      background: #e65100;
+      color: #fff;
+    }
+    .wh-bypass-btn:active {
+      opacity: 0.7;
+      transform: scale(0.92);
+    }
+    .wh-bypass-btn.htmx-request {
+      opacity: 0.3;
+    }
+
     /* --- Climate Bottom --- */
     .climate-bottom {
       flex-shrink: 0;
@@ -215,5 +295,12 @@
 <body>
   {% include "partials/dashboard_content.html" %}
   <script src="/static/htmx.min.js" defer></script>
+  <script>
+    // Send app version on every htmx request so the server can
+    // force a full page reload when a new version is deployed.
+    document.addEventListener('htmx:configRequest', function(e) {
+      e.detail.headers['X-App-Version'] = '{{ app_version }}';
+    });
+  </script>
 </body>
 </html>

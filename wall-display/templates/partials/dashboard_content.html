@@ -48,6 +48,61 @@
     </div>
   </div>
 
+  {# --- Water Heater --- #}
+  {% if water_heater %}
+  <div class="water-heater-row">
+    {% if water_heater.switch_on %}
+    {# ON state — toggle off button + bypass button #}
+    <form method="POST" action="/action/water_heater" class="wh-main-form">
+      <input type="hidden" name="action" value="off">
+      <button
+        type="submit"
+        class="wh-btn on"
+        hx-post="/action/water_heater"
+        hx-vals='{"action": "off"}'
+        hx-target="#dashboard"
+        hx-swap="outerHTML"
+      >
+        <span class="wh-icon">{{ water_heater.icon }}</span>
+        <span class="wh-label">{{ water_heater.name }}</span>
+        {% if water_heater.bypass_on %}
+        <span class="wh-timer-info">∞</span>
+        {% elif water_heater.remaining_min is not none %}
+        <span class="wh-timer-info">{{ water_heater.remaining_min }}΄</span>
+        {% endif %}
+      </button>
+    </form>
+    <form method="POST" action="/action/water_heater" class="wh-bypass-form">
+      <input type="hidden" name="action" value="bypass">
+      <button
+        type="submit"
+        class="wh-bypass-btn{% if water_heater.bypass_on %} active{% endif %}"
+        hx-post="/action/water_heater"
+        hx-vals='{"action": "bypass"}'
+        hx-target="#dashboard"
+        hx-swap="outerHTML"
+      >∞</button>
+    </form>
+    {% else %}
+    {# OFF state — turn on button #}
+    <form method="POST" action="/action/water_heater" class="wh-main-form">
+      <input type="hidden" name="action" value="on">
+      <button
+        type="submit"
+        class="wh-btn off"
+        hx-post="/action/water_heater"
+        hx-vals='{"action": "on"}'
+        hx-target="#dashboard"
+        hx-swap="outerHTML"
+      >
+        <span class="wh-icon">{{ water_heater.icon }}</span>
+        <span class="wh-label">{{ water_heater.name }}</span>
+      </button>
+    </form>
+    {% endif %}
+  </div>
+  {% endif %}
+
   {# --- Climate (bottom) — only shown when heating is active --- #}
   {% if climate.action and climate.action not in ('off', 'idle') %}
   <div class="climate-bottom">

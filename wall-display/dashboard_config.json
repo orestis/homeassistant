@@ -19,6 +19,15 @@
     "button_values": [-10, -7, -5, -3, 0, 3, 5, 7, 10]
   },
 
+  "water_heater": {
+    "switch_entity": "switch.hot_water",
+    "timer_entity": "timer.hot_water_auto_off",
+    "bypass_entity": "input_boolean.hot_water_bypass",
+    "name": "Θερμοσίφων",
+    "icon": "🚿",
+    "timer_duration": "00:30:00"
+  },
+
   "scenes": [
     {
       "name": "Πρωί",

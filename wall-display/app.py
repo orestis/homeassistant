@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, make_response, redirect, render_template, request, url_for
 
 from ha_client import HAClient
 
@@ -35,6 +36,24 @@ if not ha_token:
 
 ha = HAClient(ha_url, ha_token)
 
+# --- App version (hash of templates + static files for cache-busting) ---
+
+def _compute_app_version() -> str:
+    """Hash all template and static files to detect deploys."""
+    h = hashlib.sha256()
+    root = Path(__file__).parent
+    for directory in (root / "templates", root / "static"):
+        if directory.is_dir():
+            for f in sorted(directory.rglob("*")):
+                if f.is_file():
+                    h.update(f.read_bytes())
+    # Also include app.py itself
+    h.update((root / "app.py").read_bytes())
+    return h.hexdigest()[:12]
+
+APP_VERSION = _compute_app_version()
+log.info("App version: %s", APP_VERSION)
+
 # --- Flask app ---
 
 app = Flask(__name__)
@@ -52,6 +71,13 @@ def _get_dashboard_state() -> dict:
     scene_list = config.get("scenes", [])
     scene_entity_ids = [s["entity_id"] for s in scene_list]
     entity_ids.extend(scene_entity_ids)
+
+    # Water heater entities
+    wh_cfg = config.get("water_heater", {})
+    for key in ("switch_entity", "timer_entity", "bypass_entity"):
+        eid = wh_cfg.get(key, "")
+        if eid:
+            entity_ids.append(eid)
 
     states = ha.get_states(entity_ids)
 
@@ -143,6 +169,44 @@ def _get_dashboard_state() -> dict:
         except Exception as e:
             log.warning("Failed to fetch weather forecast: %s", e)
 
+    # Water heater state
+    wh_cfg = config.get("water_heater", {})
+    water_heater = None
+    if wh_cfg.get("switch_entity"):
+        wh_switch = states.get(wh_cfg["switch_entity"], {})
+        wh_timer = states.get(wh_cfg.get("timer_entity", ""), {})
+        wh_bypass = states.get(wh_cfg.get("bypass_entity", ""), {})
+
+        switch_on = wh_switch.get("state") == "on"
+        timer_active = wh_timer.get("state") == "active"
+        bypass_on = wh_bypass.get("state") == "on"
+
+        # Compute remaining minutes from timer's finishes_at attribute
+        remaining_min = None
+        if timer_active:
+            finishes_at = wh_timer.get("attributes", {}).get("finishes_at", "")
+            if finishes_at:
+                try:
+                    finish_dt = datetime.fromisoformat(finishes_at)
+                    now_utc = datetime.now(timezone.utc)
+                    remaining_sec = (finish_dt - now_utc).total_seconds()
+                    remaining_min = max(0, int(remaining_sec / 60))
+                except (ValueError, TypeError):
+                    pass
+
+        water_heater = {
+            "switch_entity": wh_cfg["switch_entity"],
+            "timer_entity": wh_cfg.get("timer_entity", ""),
+            "bypass_entity": wh_cfg.get("bypass_entity", ""),
+            "name": wh_cfg.get("name", "Water Heater"),
+            "icon": wh_cfg.get("icon", "🚿"),
+            "switch_on": switch_on,
+            "timer_active": timer_active,
+            "bypass_on": bypass_on,
+            "remaining_min": remaining_min,
+            "timer_duration": wh_cfg.get("timer_duration", "00:30:00"),
+        }
+
     # Current date/time (local)
     local_now = datetime.now()
 
@@ -166,6 +230,7 @@ def _get_dashboard_state() -> dict:
         },
         "offset_buttons": offset_buttons,
         "scenes": scene_list,
+        "water_heater": water_heater,
     }
 
 
@@ -230,8 +295,16 @@ def index():
     state = _get_dashboard_state()
     is_htmx = request.headers.get("HX-Request") == "true"
     if is_htmx:
+        # If the client's version doesn't match, force a full page reload
+        # so new styles / scripts / layout changes are picked up.
+        client_version = request.headers.get("X-App-Version", "")
+        if client_version and client_version != APP_VERSION:
+            log.info("Version mismatch (client=%s, server=%s) — forcing full reload", client_version, APP_VERSION)
+            resp = make_response("", 200)
+            resp.headers["HX-Refresh"] = "true"
+            return resp
         return render_template("partials/dashboard_content.html", **state)
-    return render_template("dashboard.html", **state)
+    return render_template("dashboard.html", **state, app_version=APP_VERSION)
 
 
 @app.route("/action/scene", methods=["POST"])
@@ -282,6 +355,57 @@ def action_climate():
                     new_target = max(min_val, min(max_val, new_target))
                     log.info("Setting %s temperature: %s → %s", entity_id, current_target, new_target)
                     ha.set_climate_temperature(entity_id, new_target)
+
+    # htmx: return updated dashboard content
+    if request.headers.get("HX-Request") == "true":
+        state = _get_dashboard_state()
+        return render_template("partials/dashboard_content.html", **state)
+
+    # Fallback: POST-Redirect-GET
+    return redirect(url_for("index"))
+
+
+@app.route("/action/water_heater", methods=["POST"])
+def action_water_heater():
+    """Toggle the water heater switch, or toggle bypass mode."""
+    action = request.form.get("action", "")
+    wh_cfg = config.get("water_heater", {})
+    switch_eid = wh_cfg.get("switch_entity", "")
+    timer_eid = wh_cfg.get("timer_entity", "")
+    bypass_eid = wh_cfg.get("bypass_entity", "")
+    duration = wh_cfg.get("timer_duration", "00:30:00")
+
+    if action == "on" and switch_eid:
+        log.info("Water heater ON + timer start")
+        ha.call_service("switch", "turn_on", {"entity_id": switch_eid})
+        if bypass_eid:
+            ha.call_service("input_boolean", "turn_off", {"entity_id": bypass_eid})
+        if timer_eid:
+            ha.call_service("timer", "start", {"entity_id": timer_eid, "duration": duration})
+
+    elif action == "off" and switch_eid:
+        log.info("Water heater OFF")
+        ha.call_service("switch", "turn_off", {"entity_id": switch_eid})
+        if timer_eid:
+            ha.call_service("timer", "cancel", {"entity_id": timer_eid})
+        if bypass_eid:
+            ha.call_service("input_boolean", "turn_off", {"entity_id": bypass_eid})
+
+    elif action == "bypass":
+        # Toggle bypass: if enabling bypass → cancel timer; if disabling → restart timer
+        if bypass_eid:
+            bypass_state = ha.get_state(bypass_eid)
+            currently_on = bypass_state and bypass_state.get("state") == "on"
+            if currently_on:
+                log.info("Water heater bypass OFF — restarting timer")
+                ha.call_service("input_boolean", "turn_off", {"entity_id": bypass_eid})
+                if timer_eid:
+                    ha.call_service("timer", "start", {"entity_id": timer_eid, "duration": duration})
+            else:
+                log.info("Water heater bypass ON — cancelling timer")
+                ha.call_service("input_boolean", "turn_on", {"entity_id": bypass_eid})
+                if timer_eid:
+                    ha.call_service("timer", "cancel", {"entity_id": timer_eid})
 
     # htmx: return updated dashboard content
     if request.headers.get("HX-Request") == "true":
