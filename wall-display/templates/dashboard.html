@@ -14,6 +14,14 @@
       color: #e0e0e0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-size: 16px;
+
+      /* Type scale — major third (~1.25×) */
+      --text-xs:  0.70rem;   /* 11.2px — fine print */
+      --text-sm:  0.85rem;   /* 13.6px — secondary */
+      --text-md:  1.00rem;   /* 16.0px — body */
+      --text-lg:  1.25rem;   /* 20.0px — emphasis */
+      --text-xl:  1.50rem;   /* 24.0px — heading */
+      --text-2xl: 1.75rem;   /* 28.0px — display */
     }
 
     #dashboard {
@@ -43,28 +51,20 @@
     .status-left-main {
       display: flex;
       align-items: center;
-      gap: 8px;
     }
     .status-left-secondary {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding-left: 34px;
-    }
-    .icon-indoor {
-      width: 26px;
-      height: 26px;
-      color: #e0e0e0;
-      flex-shrink: 0;
     }
     .indoor-temp {
-      font-size: 2.1rem;
+      font-size: var(--text-md);
       font-weight: 700;
       line-height: 1.15;
     }
     .indoor-humidity {
-      font-size: 1.2rem;
-      color: #666;
+      font-size: var(--text-md);
+      color: #888;
     }
     .icon-outdoor {
       width: 21px;
@@ -73,64 +73,34 @@
       flex-shrink: 0;
     }
     .outdoor-temp {
-      font-size: 1.28rem;
+      font-size: var(--text-md);
       color: #666;
     }
     .status-center {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
-    }
-    .status-datetime {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
+      line-height: 1.1;
     }
     .status-time {
-      font-size: 1.76rem;
+      font-size: var(--text-xl);
       font-weight: 700;
-      line-height: 1;
-    }
-    .status-date-sep {
-      font-size: 1.1rem;
-      color: #555;
     }
     .status-date {
-      font-size: 1.12rem;
+      font-size: var(--text-md);
       color: #888;
-    }
-    .tariff-row {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 1.05rem;
-      color: #555;
-    }
-    .tariff-row.active {
-      color: #66bb6a;
-    }
-    .tariff-icon {
-      width: 14px;
-      height: 14px;
-      flex-shrink: 0;
-    }
-    .tariff-label {
-      font-weight: 600;
-    }
-    .tariff-detail {
-      font-variant-numeric: tabular-nums;
     }
     .status-right {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      white-space: nowrap;
     }
     .forecast-icon {
-      font-size: 1.9rem;
+      font-size: var(--text-2xl);
     }
     .forecast-range {
-      font-size: 1.44rem;
+      font-size: var(--text-md);
       color: #aaa;
       font-weight: 600;
     }
@@ -191,13 +161,52 @@
       width: 100%;
       height: 100%;
     }
-    .tile-label { font-size: 0.85rem; font-weight: 600; }
+    .tile-label { font-size: var(--text-sm); font-weight: 600; }
 
     /* --- Water Heater Row --- */
     .water-heater-row {
       display: flex;
       gap: 6px;
       flex-shrink: 0;
+    }
+    .tariff-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 6px 10px;
+      border-radius: 12px;
+      background: #1a1a1a;
+      color: #555;
+      font-size: var(--text-xs);
+      min-width: 52px;
+      font-variant-numeric: tabular-nums;
+    }
+    .tariff-badge.active {
+      background: #1b3a1b;
+      color: #66bb6a;
+    }
+    .tariff-icons {
+      display: flex;
+      align-items: center;
+      gap: 1px;
+    }
+    .tariff-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+    .tariff-euro {
+      font-size: var(--text-xs);
+      font-weight: 700;
+    }
+    .tariff-label {
+      font-weight: 600;
+      font-size: var(--text-xs);
+    }
+    .tariff-detail {
+      font-size: var(--text-xs);
     }
     .wh-main-form {
       flex: 1;
@@ -212,7 +221,7 @@
       border-radius: 12px;
       color: #fff;
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: var(--text-md);
       font-weight: 600;
       cursor: pointer;
       transition: opacity 0.1s, transform 0.1s;
@@ -235,13 +244,13 @@
       color: #fff;
     }
     .wh-icon {
-      font-size: 1.3rem;
+      font-size: var(--text-lg);
     }
     .wh-label {
       flex: 1;
     }
     .wh-timer-info {
-      font-size: 0.85rem;
+      font-size: var(--text-sm);
       opacity: 0.8;
       font-variant-numeric: tabular-nums;
     }
@@ -254,7 +263,7 @@
       border-radius: 12px;
       background: #2a2a2a;
       color: #666;
-      font-size: 1.2rem;
+      font-size: var(--text-lg);
       font-weight: 700;
       cursor: pointer;
       transition: opacity 0.1s, transform 0.1s;
@@ -285,7 +294,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 6px;
-      font-size: 0.8rem;
+      font-size: var(--text-sm);
       color: #888;
     }
     .climate-status {
@@ -312,7 +321,7 @@
       border-radius: 6px;
       color: #fff;
       font-family: inherit;
-      font-size: 0.7rem;
+      font-size: var(--text-xs);
       font-weight: 600;
       cursor: pointer;
       transition: opacity 0.1s, transform 0.1s;
