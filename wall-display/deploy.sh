@@ -4,21 +4,18 @@
 #
 # Mounts the Samba share if needed, copies all add-on files, then unmounts.
 # Credentials: set HA_SAMBA_USER and HA_SAMBA_PASS env vars,
-#   or reads from .samba-pass file. HA_SAMBA_USER defaults to homeassistant.
+#   or they default to homeassistant / tejhyd-zoqCab-wepgu2.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HA_HOST="${HA_HOST:-192.168.1.48}"
 HA_SAMBA_USER="${HA_SAMBA_USER:-homeassistant}"
-if [ -z "${HA_SAMBA_PASS:-}" ] && [ -f "$SCRIPT_DIR/.samba-pass" ]; then
-    HA_SAMBA_PASS="$(tr -d '\n' < "$SCRIPT_DIR/.samba-pass")"
-fi
-: "${HA_SAMBA_PASS:?Set HA_SAMBA_PASS env var or create wall-display/.samba-pass}"
+HA_SAMBA_PASS="${HA_SAMBA_PASS:-tejhyd-zoqCab-wepgu2}"
 MOUNT_POINT="$HOME/mnt/ha_addons"
 ADDON_DIR="wall_display"
 
-FILES=(app.py ha_client.py dashboard_config.json Dockerfile build.json config.json requirements.txt run.sh)
+FILES=(app.py ha_client.py dashboard_config.json Dockerfile build.json config.json requirements.txt run.sh setup-wd-correction.py)
 DIRS=(templates static)
 
 # Mount if not already

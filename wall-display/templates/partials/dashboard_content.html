@@ -137,6 +137,9 @@
       {% if climate.current is not none %}
       <span class="climate-water">Θερμ. Νερών: {{ "%.0f" | format(climate.current) }}°{% if climate.outdoor_unit is not none %} @ {{ "%.0f" | format(climate.outdoor_unit) }}°{% endif %}</span>
       {% endif %}
+      {% if solar_correction and solar_correction != 0 %}
+      <span class="solar-correction">☀️ {{ "%+d" | format(solar_correction) }}</span>
+      {% endif %}
     </div>
     <div class="climate-buttons">
       {% for btn in offset_buttons %}
@@ -145,7 +148,7 @@
         <input type="hidden" name="value" value="{{ btn.value }}">
         <button
           type="submit"
-          class="climate-val-btn{% if climate.target is not none and climate.target | int == btn.value %} active{% endif %}"
+          class="climate-val-btn{% if btn.value == base_offset %} active{% endif %}"
           style="background: {{ btn.color }}"
           hx-post="/action/climate"
           hx-vals='{"entity_id": "{{ climate.entity_id }}", "value": "{{ btn.value }}"}'

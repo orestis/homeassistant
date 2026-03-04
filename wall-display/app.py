@@ -81,6 +81,13 @@ def _get_dashboard_state() -> dict:
         if eid:
             entity_ids.append(eid)
 
+    # WD correction entities
+    wd_cfg = config.get("wd_correction", {})
+    for key in ("base_offset_entity", "solar_correction_entity"):
+        eid = wd_cfg.get(key, "")
+        if eid:
+            entity_ids.append(eid)
+
     # Night tariff sensor
     tariff_cfg = config.get("night_tariff", {})
     if tariff_cfg.get("entity_id"):
@@ -233,6 +240,22 @@ def _get_dashboard_state() -> dict:
     else:
         local_now = datetime.now()
 
+    # WD correction values
+    base_offset = 0
+    solar_correction = 0
+    if wd_cfg.get("base_offset_entity"):
+        bo_state = states.get(wd_cfg["base_offset_entity"], {})
+        try:
+            base_offset = int(float(bo_state.get("state", "0")))
+        except (ValueError, TypeError):
+            pass
+    if wd_cfg.get("solar_correction_entity"):
+        sc_state = states.get(wd_cfg["solar_correction_entity"], {})
+        try:
+            solar_correction = int(float(sc_state.get("state", "0")))
+        except (ValueError, TypeError):
+            pass
+
     return {
         "indoor_temp": indoor_temp,
         "indoor_humidity": indoor_humidity,
@@ -256,6 +279,8 @@ def _get_dashboard_state() -> dict:
         "offset_buttons": offset_buttons,
         "scenes": scene_list,
         "water_heater": water_heater,
+        "base_offset": base_offset,
+        "solar_correction": solar_correction,
     }
 
 
@@ -409,9 +434,15 @@ def action_scene():
 
 @app.route("/action/climate", methods=["POST"])
 def action_climate():
-    """Adjust climate target temperature."""
-    entity_id = request.form.get("entity_id") or ""
+    """Adjust base heating offset.
+
+    Writes to input_number.heating_base_offset instead of the climate
+    entity directly.  The HA automation picks up the change and applies
+    base + solar correction to the actual climate entity.
+    """
     climate_cfg = config.get("climate", {})
+    wd_cfg = config.get("wd_correction", {})
+    base_offset_entity = wd_cfg.get("base_offset_entity", "")
     min_val = climate_cfg.get("min", -10)
     max_val = climate_cfg.get("max", 10)
 
@@ -419,25 +450,27 @@ def action_climate():
     value = request.form.get("value")
     action = request.form.get("action") or ""
 
-    if entity_id:
+    if base_offset_entity:
         if value is not None:
             try:
                 new_target = int(float(value))
                 new_target = max(min_val, min(max_val, new_target))
-                log.info("Setting %s temperature to %s (slider)", entity_id, new_target)
-                ha.set_climate_temperature(entity_id, new_target)
+                log.info("Setting base offset %s to %s", base_offset_entity, new_target)
+                ha.set_input_number(base_offset_entity, new_target)
             except (ValueError, TypeError):
                 log.warning("Invalid climate value: %s", value)
         elif action in ("up", "down"):
             step = climate_cfg.get("step", 1)
-            current_state = ha.get_state(entity_id)
+            current_state = ha.get_state(base_offset_entity)
             if current_state:
-                current_target = current_state.get("attributes", {}).get("temperature")
-                if current_target is not None:
-                    new_target = current_target + (step if action == "up" else -step)
-                    new_target = max(min_val, min(max_val, new_target))
-                    log.info("Setting %s temperature: %s → %s", entity_id, current_target, new_target)
-                    ha.set_climate_temperature(entity_id, new_target)
+                try:
+                    current_val = int(float(current_state.get("state", "0")))
+                except (ValueError, TypeError):
+                    current_val = 0
+                new_target = current_val + (step if action == "up" else -step)
+                new_target = max(min_val, min(max_val, new_target))
+                log.info("Setting base offset: %s → %s", current_val, new_target)
+                ha.set_input_number(base_offset_entity, new_target)
 
     # htmx: return updated dashboard content
     if request.headers.get("HX-Request") == "true":

@@ -66,6 +66,13 @@ class HAClient:
             "temperature": temperature,
         })
 
+    def set_input_number(self, entity_id: str, value: float) -> bool:
+        """Set an input_number entity value."""
+        return self.call_service("input_number", "set_value", {
+            "entity_id": entity_id,
+            "value": value,
+        })
+
     def get_weather_forecast(self, entity_id: str, forecast_type: str = "hourly") -> list[dict]:
         """Get weather forecast entries via the weather.get_forecasts service."""
         result = self._request(
