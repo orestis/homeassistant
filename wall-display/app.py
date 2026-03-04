@@ -70,6 +70,8 @@ def _get_dashboard_state() -> dict:
         entity_ids.append(climate_cfg["entity_id"])
     if climate_cfg.get("outdoor_unit_temp"):
         entity_ids.append(climate_cfg["outdoor_unit_temp"])
+    if climate_cfg.get("daily_consumption"):
+        entity_ids.append(climate_cfg["daily_consumption"])
     scene_list = config.get("scenes", [])
     scene_entity_ids = [s["entity_id"] for s in scene_list]
     entity_ids.extend(scene_entity_ids)
@@ -114,6 +116,10 @@ def _get_dashboard_state() -> dict:
     if climate_cfg.get("outdoor_unit_temp"):
         climate_outdoor_unit = _parse_float(
             states.get(climate_cfg["outdoor_unit_temp"], {}))
+    climate_daily_kwh = None
+    if climate_cfg.get("daily_consumption"):
+        climate_daily_kwh = _parse_float(
+            states.get(climate_cfg["daily_consumption"], {}))
 
     # Generate offset button list with colors
     min_val = climate_cfg.get("min", -10)
@@ -271,6 +277,7 @@ def _get_dashboard_state() -> dict:
             "target": climate_target,
             "current": climate_current,
             "outdoor_unit": climate_outdoor_unit,
+            "daily_kwh": climate_daily_kwh,
             "action": climate_action,
             "min": climate_cfg.get("min", -10),
             "max": climate_cfg.get("max", 10),

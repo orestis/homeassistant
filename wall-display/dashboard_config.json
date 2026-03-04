@@ -19,6 +19,7 @@
     "entity_id": "climate.antlia_leaving_water_offset",
     "name": "Heating Offset",
     "outdoor_unit_temp": "sensor.antlia_climatecontrol_outdoor_temperature",
+    "daily_consumption": "sensor.antlia_climatecontrol_heating_daily_electrical_consumption",
     "min": -10,
     "max": 10,
     "step": 1,
