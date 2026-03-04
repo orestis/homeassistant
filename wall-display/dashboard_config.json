@@ -4,6 +4,11 @@
   "server_port": 5000,
   "weather_entity": "weather.forecast_home",
 
+  "night_tariff": {
+    "entity_id": "binary_sensor.nukhterine_periodos",
+    "name": "Νυχτ."
+  },
+
   "sensors": {
     "indoor_temp": "sensor.bthome_sensor_47af_temperature",
     "indoor_humidity": "sensor.bthome_sensor_47af_humidity",
@@ -13,6 +18,7 @@
   "climate": {
     "entity_id": "climate.antlia_leaving_water_offset",
     "name": "Heating Offset",
+    "outdoor_unit_temp": "sensor.antlia_climatecontrol_outdoor_temperature",
     "min": -10,
     "max": 10,
     "step": 1,

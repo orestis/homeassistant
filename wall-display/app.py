@@ -68,6 +68,8 @@ def _get_dashboard_state() -> dict:
     entity_ids = list(sensors.values())
     if climate_cfg.get("entity_id"):
         entity_ids.append(climate_cfg["entity_id"])
+    if climate_cfg.get("outdoor_unit_temp"):
+        entity_ids.append(climate_cfg["outdoor_unit_temp"])
     scene_list = config.get("scenes", [])
     scene_entity_ids = [s["entity_id"] for s in scene_list]
     entity_ids.extend(scene_entity_ids)
@@ -78,6 +80,11 @@ def _get_dashboard_state() -> dict:
         eid = wh_cfg.get(key, "")
         if eid:
             entity_ids.append(eid)
+
+    # Night tariff sensor
+    tariff_cfg = config.get("night_tariff", {})
+    if tariff_cfg.get("entity_id"):
+        entity_ids.append(tariff_cfg["entity_id"])
 
     states = ha.get_states(entity_ids)
 
@@ -91,11 +98,15 @@ def _get_dashboard_state() -> dict:
     climate_target = None
     climate_current = None
     climate_action = None
+    climate_outdoor_unit = None
     if climate_state:
         attrs = climate_state.get("attributes", {})
         climate_target = attrs.get("temperature")
         climate_current = attrs.get("current_temperature")
         climate_action = climate_state.get("state", "unknown")
+    if climate_cfg.get("outdoor_unit_temp"):
+        climate_outdoor_unit = _parse_float(
+            states.get(climate_cfg["outdoor_unit_temp"], {}))
 
     # Generate offset button list with colors
     min_val = climate_cfg.get("min", -10)
@@ -207,8 +218,20 @@ def _get_dashboard_state() -> dict:
             "timer_duration": wh_cfg.get("timer_duration", "00:30:00"),
         }
 
-    # Current date/time (local)
-    local_now = datetime.now()
+    # Night tariff info
+    night_tariff = None
+    if tariff_cfg.get("entity_id"):
+        tariff_state = states.get(tariff_cfg["entity_id"], {})
+        tariff_on = tariff_state.get("state") == "on"
+        local_now = datetime.now()
+        tariff_schedule = _get_tariff_schedule_info(local_now, tariff_on)
+        night_tariff = {
+            "active": tariff_on,
+            "name": tariff_cfg.get("name", "Νυχτ."),
+            **tariff_schedule,
+        }
+    else:
+        local_now = datetime.now()
 
     return {
         "indoor_temp": indoor_temp,
@@ -217,12 +240,14 @@ def _get_dashboard_state() -> dict:
         "now_time": local_now.strftime("%H:%M"),
         "now_date": _format_date_greek(local_now),
         "forecast": forecast_summary,
+        "night_tariff": night_tariff,
         "active_scene": active_scene,
         "climate": {
             "entity_id": climate_cfg.get("entity_id", ""),
             "name": climate_cfg.get("name", "Climate"),
             "target": climate_target,
             "current": climate_current,
+            "outdoor_unit": climate_outdoor_unit,
             "action": climate_action,
             "min": climate_cfg.get("min", -10),
             "max": climate_cfg.get("max", 10),
@@ -231,6 +256,59 @@ def _get_dashboard_state() -> dict:
         "offset_buttons": offset_buttons,
         "scenes": scene_list,
         "water_heater": water_heater,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Night tariff schedule computation
+# ---------------------------------------------------------------------------
+
+# Windows as (start_hour, end_hour_exclusive)
+_TARIFF_WINTER = [(3, 6), (12, 16)]   # Nov-Mar
+_TARIFF_SUMMER = [(2, 5), (11, 16)]   # Apr-Oct
+
+
+def _get_tariff_schedule_info(now: datetime, is_active: bool) -> dict:
+    """Compute next-window / remaining-time info for the night tariff.
+
+    Returns a dict with:
+      - remaining  : "H:MM" string if active (time left in window)
+      - next_start : "HH:MM" string if inactive (next window start)
+      - next_dur_h : int hours of the next window
+    """
+    month, hour, minute = now.month, now.hour, now.minute
+    windows = _TARIFF_WINTER if month in (11, 12, 1, 2, 3) else _TARIFF_SUMMER
+    now_minutes = hour * 60 + minute
+
+    if is_active:
+        # Find which window we're in and compute remaining time
+        for start_h, end_h in windows:
+            if start_h <= hour < end_h:
+                remaining = end_h * 60 - now_minutes
+                rh, rm = divmod(remaining, 60)
+                return {"remaining": f"{rh}:{rm:02d}"}
+        # Sensor says on but we can't match a window — just show active
+        return {"remaining": None}
+
+    # Inactive — find the next window
+    best_wait = None
+    best_dur = 0
+    best_start_h = 0
+    for start_h, end_h in windows:
+        start_min = start_h * 60
+        if start_min > now_minutes:
+            wait = start_min - now_minutes
+        else:
+            wait = (24 * 60 - now_minutes) + start_min  # wraps to tomorrow
+        if best_wait is None or wait < best_wait:
+            best_wait = wait
+            best_dur = end_h - start_h
+            best_start_h = start_h
+
+    return {
+        "remaining": None,
+        "next_start": f"{best_start_h:02d}:00",
+        "next_dur_h": best_dur,
     }
 
 

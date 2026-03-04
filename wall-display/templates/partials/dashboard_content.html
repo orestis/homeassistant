@@ -13,8 +13,22 @@
       </div>
     </div>
     <div class="status-center">
-      <span class="status-time">{{ now_time }}</span>
-      <span class="status-date">{{ now_date }}</span>
+      <span class="status-datetime">
+        <span class="status-time">{{ now_time }}</span>
+        <span class="status-date-sep">·</span>
+        <span class="status-date">{{ now_date }}</span>
+      </span>
+      {% if night_tariff %}
+      <div class="tariff-row{% if night_tariff.active %} active{% endif %}">
+        <svg class="tariff-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        {% if night_tariff.active %}
+        <span class="tariff-label">{{ night_tariff.name }}</span>
+        {% if night_tariff.remaining %}<span class="tariff-detail">−{{ night_tariff.remaining }}</span>{% endif %}
+        {% else %}
+        <span class="tariff-detail">{{ night_tariff.next_start }}{% if night_tariff.next_dur_h %} ({{ night_tariff.next_dur_h }}ω){% endif %}</span>
+        {% endif %}
+      </div>
+      {% endif %}
     </div>
     {% if forecast %}
     <div class="status-right">
@@ -123,7 +137,7 @@
       <span class="climate-status heating">🔥 Θέρμανση</span>
       {% endif %}
       {% if climate.current is not none %}
-      <span class="climate-water">Θερμ. Νερών: {{ "%.1f" | format(climate.current) }}°</span>
+      <span class="climate-water">Θερμ. Νερών: {{ "%.0f" | format(climate.current) }}°{% if climate.outdoor_unit is not none %} @ {{ "%.0f" | format(climate.outdoor_unit) }}°{% endif %}</span>
       {% endif %}
     </div>
     <div class="climate-buttons">
