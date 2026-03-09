@@ -121,11 +121,20 @@ def ws_create_helper(base_url: str, token: str,
 
 
 # ---------------------------------------------------------------------------
-# Entity creation
+# Entity creation (with existence guard)
 # ---------------------------------------------------------------------------
+
+def _entity_exists(base_url: str, token: str, entity_id: str) -> bool:
+    """Check if an entity already exists in HA."""
+    state = ha_request(base_url, token, "GET", f"/api/states/{entity_id}")
+    return state is not None
+
 
 def create_base_offset(base_url: str, token: str) -> bool:
     """Create input_number.heating_base_offset via WebSocket."""
+    if _entity_exists(base_url, token, BASE_OFFSET_ENTITY):
+        print(f"  ⏭ {BASE_OFFSET_ENTITY} already exists, skipping")
+        return True
     print(f"Creating {BASE_OFFSET_ENTITY} ...")
     result = ws_create_helper(base_url, token, "input_number", {
         "name": "Heating Base Offset",
@@ -145,6 +154,9 @@ def create_base_offset(base_url: str, token: str) -> bool:
 
 def create_solar_correction(base_url: str, token: str) -> bool:
     """Create input_number.wd_solar_correction via WebSocket."""
+    if _entity_exists(base_url, token, SOLAR_CORRECTION_ENTITY):
+        print(f"  ⏭ {SOLAR_CORRECTION_ENTITY} already exists, skipping")
+        return True
     print(f"Creating {SOLAR_CORRECTION_ENTITY} ...")
     result = ws_create_helper(base_url, token, "input_number", {
         "name": "WD Solar Correction",
@@ -164,7 +176,11 @@ def create_solar_correction(base_url: str, token: str) -> bool:
 
 def create_last_write(base_url: str, token: str) -> bool:
     """Create input_datetime.wd_last_write via WebSocket."""
+    if _entity_exists(base_url, token, LAST_WRITE_ENTITY):
+        print(f"  ⏭ {LAST_WRITE_ENTITY} already exists, skipping")
+        return True
     print(f"Creating {LAST_WRITE_ENTITY} ...")
+
     result = ws_create_helper(base_url, token, "input_datetime", {
         "name": "WD Last Write",
         "has_date": True,
@@ -223,7 +239,22 @@ def create_automation(base_url: str, token: str) -> bool:
             }
         ],
         "action": [
-            # --- Step 1: Compute variables ---
+            # --- Constants (WD curve params, thresholds) ---
+            {
+                "variables": {
+                    "wd_lwt_high": 50,
+                    "wd_temp_high": 2,
+                    "wd_lwt_low": 25,
+                    "wd_temp_low": 18,
+                    "wd_slope": "{{ (wd_lwt_high - wd_lwt_low) / (wd_temp_low - wd_temp_high) }}",
+                    "deadband": DEADBAND,
+                    "offset_min": -10,
+                    "offset_max": 10,
+                    "cooldown_sec": COOLDOWN_MINUTES * 60,
+                    "hysteresis_bypass": HYSTERESIS_BYPASS,
+                }
+            },
+            # --- Read current state ---
             {
                 "variables": {
                     "t_antlia": (
@@ -232,30 +263,27 @@ def create_automation(base_url: str, token: str) -> bool:
                     "t_accurate": (
                         "{{ states('" + DAIKIN_AP_OUTDOOR + "') | float(0) }}"
                     ),
-                    "delta": (
-                        "{{ (states('" + ANTLIA_OUTDOOR + "') | float(0))"
-                        " - (states('" + DAIKIN_AP_OUTDOOR + "') | float(0)) }}"
-                    ),
+                    "delta": "{{ t_antlia - t_accurate }}",
                     "base_offset": (
                         "{{ states('" + BASE_OFFSET_ENTITY + "') | int(0) }}"
                     ),
                     "current_target": (
                         "{{ state_attr('" + CLIMATE_ENTITY + "', 'temperature') | int(0) }}"
                     ),
+                }
+            },
+            # --- Compute correction ---
+            {
+                "variables": {
                     "solar_correction": (
-                        "{% set d = (states('" + ANTLIA_OUTDOOR + "') | float(0))"
-                        " - (states('" + DAIKIN_AP_OUTDOOR + "') | float(0)) %}"
-                        "{% if d > " + str(DEADBAND) + " %}"
-                        "{{ ((" + str(abs(WD_SLOPE)) + " * d) | round(0)) | int }}"
+                        "{% if delta > deadband %}"
+                        "{{ ((wd_slope | abs * delta) | round(0)) | int }}"
                         "{% else %}0{% endif %}"
                     ),
                     "final_offset": (
-                        "{% set d = (states('" + ANTLIA_OUTDOOR + "') | float(0))"
-                        " - (states('" + DAIKIN_AP_OUTDOOR + "') | float(0)) %}"
-                        "{% set corr = ((" + str(abs(WD_SLOPE)) + " * d) | round(0)) | int"
-                        " if d > " + str(DEADBAND) + " else 0 %}"
-                        "{% set base = states('" + BASE_OFFSET_ENTITY + "') | int(0) %}"
-                        "{{ [[-10, base + corr] | max, 10] | min }}"
+                        "{% set corr = ((wd_slope | abs * delta) | round(0)) | int"
+                        " if delta > deadband else 0 %}"
+                        "{{ [[offset_min, base_offset + corr] | max, offset_max] | min }}"
                     ),
                 }
             },
@@ -285,7 +313,7 @@ def create_automation(base_url: str, token: str) -> bool:
                         "condition": "template",
                         "value_template": (
                             "{{ (final_offset | int - current_target | int) | abs >= "
-                            + str(HYSTERESIS_BYPASS) + " }}"
+                            "hysteresis_bypass }}"
                         ),
                     },
                     {
@@ -296,7 +324,7 @@ def create_automation(base_url: str, token: str) -> bool:
                             "true"
                             "{% else %}"
                             "{{ (now() - last | as_datetime).total_seconds() > "
-                            + str(COOLDOWN_MINUTES * 60) + " }}"
+                            "cooldown_sec }}"
                             "{% endif %}"
                         ),
                     },
