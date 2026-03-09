@@ -45,6 +45,12 @@
     }
     .status-left {
       display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+    .status-left-temps {
+      display: flex;
       flex-direction: column;
       gap: 2px;
     }
@@ -72,6 +78,32 @@
       color: #666;
       flex-shrink: 0;
     }
+
+    /* --- Fan indicators --- */
+    .fan-indicators {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .fan-indicator {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: #333;
+      transition: color 0.3s;
+    }
+    .fan-indicator.auto {
+      color: var(--fan-color);
+      animation: fan-pulse 1.5s ease-in-out infinite;
+    }
+    .fan-indicator.manual {
+      color: var(--fan-color);
+    }
+    @keyframes fan-pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
     .outdoor-temp {
       font-size: var(--text-md);
       color: #666;

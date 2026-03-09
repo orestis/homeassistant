@@ -40,6 +40,21 @@
     "timer_duration": "00:30:00"
   },
 
+  "ventilation": [
+    {
+      "switch_entity": "switch.ventilation_pink",
+      "auto_flag_entity": "input_boolean.ventilation_pink_auto",
+      "name": "Ροζ",
+      "color": "#ff69b4"
+    },
+    {
+      "switch_entity": "switch.shelly2pmg3_8cbfea9e6e60_output_1",
+      "auto_flag_entity": "input_boolean.ventilation_master_auto",
+      "name": "Master",
+      "color": "#e0e0e0"
+    }
+  ],
+
   "scenes": [
     {
       "name": "Πρωί",

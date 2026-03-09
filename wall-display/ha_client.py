@@ -1,21 +1,30 @@
-"""Home Assistant REST API client."""
+"""Home Assistant REST + WebSocket API client."""
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import urllib.request
 import urllib.error
 
+import websockets
+
 log = logging.getLogger(__name__)
 
 
 class HAClient:
-    """Thin wrapper around the HA REST API."""
+    """Thin wrapper around the HA REST and WebSocket APIs."""
 
     def __init__(self, base_url: str, token: str):
         self.base_url = base_url.rstrip("/")
         self.token = token
+        self._ws_url = self.base_url.replace("http://", "ws://").replace("https://", "wss://") + "/api/websocket"
+        self._msg_id = 0
+
+    # ------------------------------------------------------------------
+    # REST helpers
+    # ------------------------------------------------------------------
 
     def _request(self, method: str, path: str, data: dict | None = None) -> dict | list | None:
         """Make an authenticated request to HA."""
@@ -35,6 +44,68 @@ class HAClient:
             return None
         except Exception as e:
             log.error("HA API %s %s → %s", method, path, e)
+            return None
+
+    # ------------------------------------------------------------------
+    # WebSocket helpers
+    # ------------------------------------------------------------------
+
+    def _next_id(self) -> int:
+        self._msg_id += 1
+        return self._msg_id
+
+    def ws_command(self, msg_type: str, **kwargs) -> dict | None:
+        """Send a single WebSocket command and return the result.
+
+        Connects, authenticates, sends the command, and disconnects.
+        Suitable for one-off operations (helper creation, config reads, etc.).
+        """
+        return asyncio.get_event_loop().run_until_complete(
+            self._ws_command_async(msg_type, **kwargs)
+        ) if asyncio.get_event_loop().is_running() is False else asyncio.run(
+            self._ws_command_async(msg_type, **kwargs)
+        )
+
+    def ws_command_sync(self, msg_type: str, **kwargs) -> dict | None:
+        """Synchronous wrapper for ws_command — always safe to call."""
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+        if loop and loop.is_running():
+            # We're inside an existing event loop (e.g. Jupyter) — use a thread
+            import concurrent.futures
+            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+                return pool.submit(asyncio.run, self._ws_command_async(msg_type, **kwargs)).result()
+        return asyncio.run(self._ws_command_async(msg_type, **kwargs))
+
+    async def _ws_command_async(self, msg_type: str, **kwargs) -> dict | None:
+        """Send a single command over a fresh WebSocket connection."""
+        try:
+            async with websockets.connect(self._ws_url) as ws:
+                # auth_required
+                msg = json.loads(await ws.recv())
+                if msg.get("type") != "auth_required":
+                    log.error("WS unexpected greeting: %s", msg)
+                    return None
+                # authenticate
+                await ws.send(json.dumps({"type": "auth", "access_token": self.token}))
+                msg = json.loads(await ws.recv())
+                if msg.get("type") != "auth_ok":
+                    log.error("WS auth failed: %s", msg)
+                    return None
+                # send command
+                cmd_id = self._next_id()
+                payload = {"id": cmd_id, "type": msg_type, **kwargs}
+                await ws.send(json.dumps(payload))
+                msg = json.loads(await ws.recv())
+                if not msg.get("success"):
+                    log.error("WS command %s failed: %s", msg_type,
+                              msg.get("error", {}).get("message", msg))
+                    return None
+                return msg.get("result")
+        except Exception as e:
+            log.error("WS %s → %s", msg_type, e)
             return None
 
     def get_state(self, entity_id: str) -> dict | None:

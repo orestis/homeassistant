@@ -83,6 +83,14 @@ def _get_dashboard_state() -> dict:
         if eid:
             entity_ids.append(eid)
 
+    # Ventilation entities
+    vent_cfg = config.get("ventilation", [])
+    for v in vent_cfg:
+        for key in ("switch_entity", "auto_flag_entity"):
+            eid = v.get(key, "")
+            if eid:
+                entity_ids.append(eid)
+
     # WD correction entities
     wd_cfg = config.get("wd_correction", {})
     for key in ("base_offset_entity", "solar_correction_entity"):
@@ -262,6 +270,22 @@ def _get_dashboard_state() -> dict:
         except (ValueError, TypeError):
             pass
 
+    # Ventilation fan status
+    ventilation = []
+    for v in vent_cfg:
+        sw = states.get(v.get("switch_entity", ""), {})
+        flag = states.get(v.get("auto_flag_entity", ""), {})
+        sw_on = sw.get("state") == "on"
+        auto_on = flag.get("state") == "on"
+        # off=dim, auto=teal pulse, manual=green static
+        if sw_on and auto_on:
+            status = "auto"
+        elif sw_on:
+            status = "manual"
+        else:
+            status = "off"
+        ventilation.append({"name": v.get("name", ""), "status": status, "color": v.get("color", "#e0e0e0")})
+
     return {
         "indoor_temp": indoor_temp,
         "indoor_humidity": indoor_humidity,
@@ -288,6 +312,7 @@ def _get_dashboard_state() -> dict:
         "water_heater": water_heater,
         "base_offset": base_offset,
         "solar_correction": solar_correction,
+        "ventilation": ventilation,
     }
 
 
