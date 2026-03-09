@@ -1,7 +1,7 @@
 [
   {
     "input_entity": "binary_sensor.lights_office_input_0",
-    "light_entity": "light.lampteras_14",
+    "light_entities": ["light.lampteras_14"],
     "input_friendly_name": "lights-office Input 0",
     "shelly_device_name": "shelly1g4-7c2c677f6410",
     "shelly_ip": "192.168.1.24",
@@ -9,7 +9,7 @@
   },
   {
     "input_entity": "binary_sensor.shelly2pmg4_7c2c677b4524_input_0",
-    "light_entity": "light.upnodomatio",
+    "light_entities": ["light.upnodomatio"],
     "input_friendly_name": "lights-kid-room Input 0",
     "shelly_device_name": "shelly2pmg4-7c2c677b4524",
     "shelly_ip": "192.168.1.5",
@@ -17,10 +17,40 @@
   },
   {
     "input_entity": "binary_sensor.shelly2pmg4_7c2c6779fe50_input_0",
-    "light_entity": "light.poluelaios_2",
+    "light_entities": ["light.poluelaios_2"],
     "input_friendly_name": "shelly2pmg4-7c2c6779fe50 Input 0",
     "shelly_device_name": "shelly2pmg4-7c2c6779fe50",
     "shelly_ip": "192.168.1.25",
     "light_friendly_name": "Αριστερά "
+  },
+  {
+    "input_entity": "binary_sensor.shelly2pmg4_7c2c677b223c_input_1",
+    "light_entities": [
+      "light.mpanio_roz_spot_eisodos",
+      "light.mpanio_roz_spot_ntouz"
+    ],
+    "input_friendly_name": "shelly2pmg4-7c2c677b223c Input 1",
+    "shelly_device_name": "shelly2pmg4-7c2c677b223c",
+    "shelly_ip": "192.168.1.181",
+    "light_friendly_name": "Μπάνιο ροζ σποτ"
+  },
+  {
+    "input_entity": "binary_sensor.shelly2pmg3_8cbfea9e6e60_input_0",
+    "light_entities": [
+      "light.master_mpanio_eisodos",
+      "light.master_mpanio_ntouz"
+    ],
+    "input_friendly_name": "shelly2pmg3-8cbfea9e6e60 Input 0",
+    "shelly_device_name": "shelly2pmg3-8cbfea9e6e60",
+    "shelly_ip": "192.168.1.194",
+    "light_friendly_name": "Μπάνιο μάστερ σποτ"
+  },
+  {
+    "input_entity": "binary_sensor.lights_dining_input_0",
+    "light_entities": ["light.trapezaria_toixos"],
+    "input_friendly_name": "lights-dining Input 0",
+    "shelly_device_name": "shelly1g4-a085e3ca3708",
+    "shelly_ip": "192.168.1.196",
+    "light_friendly_name": "Τραπεζαρία τοίχος "
   }
 ]
