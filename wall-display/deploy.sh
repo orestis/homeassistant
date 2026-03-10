@@ -49,6 +49,8 @@ done
 VERSION=$(python3 -c "import json; print(json.load(open('$SCRIPT_DIR/config.json'))['version'])")
 echo ""
 echo "Deployed v${VERSION}. Now in HA:"
-echo "  1. Uninstall the add-on (if installed)"
-echo "  2. Add-on Store → ⋮ → Check for updates"
-echo "  3. Install Wall Display Dashboard → Start"
+echo "  1. Add-on Store → ⋮ → Check for updates"
+echo "  2. Wall Display Dashboard → Update → Restart"
+echo ""
+echo "Note: Do NOT uninstall — that regenerates the ingress token"
+echo "and breaks the iframe URL in the Wall Display dashboard."
