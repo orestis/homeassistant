@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.27.0
+
+- **HA Ingress support**: All URLs are now dynamically prefixed with the
+  ingress base path (from `X-Ingress-Path` header), so the dashboard
+  works over HTTPS when accessed via the companion app or HA sidebar.
+  Direct HTTP access (e.g. from the wall display itself) continues to
+  work unchanged.
+
+## 0.26.0
+
+- **Ventilation fan indicators**: Two tiny fan icons in the status bar show
+  bathroom ventilation status (pink bathroom / master bathroom).
+  Dim grey when off, steady color when manually on, pulsing when
+  automation-triggered.
+- **WebSocket support in ha_client**: Added `ws_command_sync()` for
+  WebSocket API operations (helper creation, config commands, etc.).
+- **websockets** added to requirements.txt
+
 ## 0.23.0
 
 - **WD curve solar correction**: Automatically compensates for solar gain on

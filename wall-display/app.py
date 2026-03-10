@@ -59,6 +59,12 @@ log.info("App version: %s", APP_VERSION)
 app = Flask(__name__)
 
 
+@app.context_processor
+def _inject_base_path():
+    """Inject ingress base path into all templates."""
+    return {"base_path": request.headers.get("X-Ingress-Path", "")}
+
+
 def _get_dashboard_state() -> dict:
     """Fetch all entity states needed for the dashboard."""
     sensors = config.get("sensors", {})
@@ -447,6 +453,12 @@ def index():
     return render_template("dashboard.html", **state, app_version=APP_VERSION)
 
 
+def _redirect_index():
+    """Redirect to index, respecting the ingress base path."""
+    base = request.headers.get("X-Ingress-Path", "")
+    return redirect(base + url_for("index"))
+
+
 @app.route("/action/scene", methods=["POST"])
 def action_scene():
     """Activate a scene."""
@@ -461,7 +473,7 @@ def action_scene():
         return render_template("partials/dashboard_content.html", **state)
 
     # Fallback: POST-Redirect-GET
-    return redirect(url_for("index"))
+    return _redirect_index()
 
 
 @app.route("/action/climate", methods=["POST"])
@@ -510,7 +522,7 @@ def action_climate():
         return render_template("partials/dashboard_content.html", **state)
 
     # Fallback: POST-Redirect-GET
-    return redirect(url_for("index"))
+    return _redirect_index()
 
 
 @app.route("/action/water_heater", methods=["POST"])
@@ -561,7 +573,7 @@ def action_water_heater():
         return render_template("partials/dashboard_content.html", **state)
 
     # Fallback: POST-Redirect-GET
-    return redirect(url_for("index"))
+    return _redirect_index()
 
 
 if __name__ == "__main__":

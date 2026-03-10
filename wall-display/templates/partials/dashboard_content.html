@@ -1,4 +1,4 @@
-<div id="dashboard" hx-get="/" hx-trigger="every 30s" hx-target="#dashboard" hx-swap="outerHTML">
+<div id="dashboard" hx-get="{{ base_path }}/" hx-trigger="every 30s" hx-target="#dashboard" hx-swap="outerHTML">
   {# --- Status Bar --- #}
   <div class="status-bar">
     <div class="status-left">
@@ -34,16 +34,17 @@
   <div class="scenes-section">
     <div class="scene-grid">
       {% for scene in scenes %}
-      <form method="POST" action="/action/scene">
+      <form method="POST" action="{{ base_path }}/action/scene">
         <input type="hidden" name="entity_id" value="{{ scene.entity_id }}">
         <button
           type="submit"
           class="tile scene-tile{% if scene.entity_id == active_scene %} active{% endif %}"
           style="background: {{ scene.color }}"
-          hx-post="/action/scene"
+          hx-post="{{ base_path }}/action/scene"
           hx-vals='{"entity_id": "{{ scene.entity_id }}"}'
           hx-target="#dashboard"
           hx-swap="outerHTML"
+          hx-disabled-elt="this"
           hx-indicator="this"
         >
           <span class="tile-icon">
@@ -84,15 +85,16 @@
     {% endif %}
     {% if water_heater.switch_on %}
     {# ON state — toggle off button + bypass button #}
-    <form method="POST" action="/action/water_heater" class="wh-main-form">
+    <form method="POST" action="{{ base_path }}/action/water_heater" class="wh-main-form">
       <input type="hidden" name="action" value="off">
       <button
         type="submit"
         class="wh-btn on"
-        hx-post="/action/water_heater"
+        hx-post="{{ base_path }}/action/water_heater"
         hx-vals='{"action": "off"}'
         hx-target="#dashboard"
         hx-swap="outerHTML"
+        hx-disabled-elt="this"
       >
         <span class="wh-icon">{{ water_heater.icon }}</span>
         <span class="wh-label">{{ water_heater.name }}</span>
@@ -103,28 +105,30 @@
         {% endif %}
       </button>
     </form>
-    <form method="POST" action="/action/water_heater" class="wh-bypass-form">
+    <form method="POST" action="{{ base_path }}/action/water_heater" class="wh-bypass-form">
       <input type="hidden" name="action" value="bypass">
       <button
         type="submit"
         class="wh-bypass-btn{% if water_heater.bypass_on %} active{% endif %}"
-        hx-post="/action/water_heater"
+        hx-post="{{ base_path }}/action/water_heater"
         hx-vals='{"action": "bypass"}'
         hx-target="#dashboard"
         hx-swap="outerHTML"
-      >∞</button>
+        hx-disabled-elt="this"
+      ><span>∞</span></button>
     </form>
     {% else %}
     {# OFF state — turn on button #}
-    <form method="POST" action="/action/water_heater" class="wh-main-form">
+    <form method="POST" action="{{ base_path }}/action/water_heater" class="wh-main-form">
       <input type="hidden" name="action" value="on">
       <button
         type="submit"
         class="wh-btn off"
-        hx-post="/action/water_heater"
+        hx-post="{{ base_path }}/action/water_heater"
         hx-vals='{"action": "on"}'
         hx-target="#dashboard"
         hx-swap="outerHTML"
+        hx-disabled-elt="this"
       >
         <span class="wh-icon">{{ water_heater.icon }}</span>
         <span class="wh-label">{{ water_heater.name }}</span>
@@ -153,18 +157,19 @@
     </div>
     <div class="climate-buttons">
       {% for btn in offset_buttons %}
-      <form method="POST" action="/action/climate">
+      <form method="POST" action="{{ base_path }}/action/climate">
         <input type="hidden" name="entity_id" value="{{ climate.entity_id }}">
         <input type="hidden" name="value" value="{{ btn.value }}">
         <button
           type="submit"
           class="climate-val-btn{% if btn.value == base_offset %} active{% endif %}"
           style="background: {{ btn.color }}"
-          hx-post="/action/climate"
+          hx-post="{{ base_path }}/action/climate"
           hx-vals='{"entity_id": "{{ climate.entity_id }}", "value": "{{ btn.value }}"}'
           hx-target="#dashboard"
           hx-swap="outerHTML"
-        >{{ btn.value }}</button>
+          hx-disabled-elt="this"
+        ><span>{{ btn.value }}</span></button>
       </form>
       {% endfor %}
     </div>
