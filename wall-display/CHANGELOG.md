@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.28.0
+
+- **Button loading spinners**: All interactive buttons now show a visible
+  spinning ring indicator during HA API calls, replacing content with a
+  spinner. Buttons are disabled during requests to prevent double-presses.
+- **iPhone scroll fix**: Dashboard uses `dvh` viewport units and allows
+  vertical scrolling, so the climate section is reachable on mobile.
+
 ## 0.27.0
 
 - **HA Ingress support**: All URLs are now dynamically prefixed with the
