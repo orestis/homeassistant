@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.29.0
+
+- **Fix background refresh spinner**: The loading spinner no longer
+  replaces the entire dashboard during the 30-second auto-refresh.
+  Spinners are now scoped to buttons only.
+
 ## 0.28.0
 
 - **Button loading spinners**: All interactive buttons now show a visible

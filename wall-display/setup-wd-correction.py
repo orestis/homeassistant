@@ -4,6 +4,7 @@
 Creates (via WebSocket API for helpers, REST for automation):
   - input_number.heating_base_offset   (user's manual base offset -10..+10)
   - input_number.wd_solar_correction   (automation's computed correction)
+  - input_boolean.wd_solar_enabled     (enable/disable solar correction)
   - input_datetime.wd_last_write       (cooldown tracker)
   - automation.wd_solar_correction     (computes & applies correction)
 
@@ -43,11 +44,12 @@ CLIMATE_ENTITY = "climate.antlia_leaving_water_offset"
 
 BASE_OFFSET_ENTITY = "input_number.heating_base_offset"
 SOLAR_CORRECTION_ENTITY = "input_number.wd_solar_correction"
+SOLAR_ENABLED_ENTITY = "input_boolean.wd_solar_enabled"
 LAST_WRITE_ENTITY = "input_datetime.wd_last_write"
 AUTOMATION_ID = "wd_solar_correction"
 
-# WD curve: LWT = 53.125 - 1.5625 * T_outdoor
-WD_SLOPE = -1.5625
+# WD curve: LWT = 50 - 1.3889 * T_outdoor
+WD_SLOPE = -25 / 18  # ≈ -1.3889
 DEADBAND = 2.0
 COOLDOWN_MINUTES = 30
 HYSTERESIS_BYPASS = 2
@@ -174,6 +176,23 @@ def create_solar_correction(base_url: str, token: str) -> bool:
     return False
 
 
+def create_solar_enabled(base_url: str, token: str) -> bool:
+    """Create input_boolean.wd_solar_enabled via WebSocket."""
+    if _entity_exists(base_url, token, SOLAR_ENABLED_ENTITY):
+        print(f"  ⏭ {SOLAR_ENABLED_ENTITY} already exists, skipping")
+        return True
+    print(f"Creating {SOLAR_ENABLED_ENTITY} ...")
+    result = ws_create_helper(base_url, token, "input_boolean", {
+        "name": "WD Solar Enabled",
+        "initial": True,
+        "icon": "mdi:white-balance-sunny",
+    })
+    if result is not None:
+        print(f"  ✓ input_boolean entity created (id: {result.get('id', '?')})")
+        return True
+    return False
+
+
 def create_last_write(base_url: str, token: str) -> bool:
     """Create input_datetime.wd_last_write via WebSocket."""
     if _entity_exists(base_url, token, LAST_WRITE_ENTITY):
@@ -243,7 +262,7 @@ def create_automation(base_url: str, token: str) -> bool:
             {
                 "variables": {
                     "wd_lwt_high": 50,
-                    "wd_temp_high": 2,
+                    "wd_temp_high": 0,
                     "wd_lwt_low": 25,
                     "wd_temp_low": 18,
                     "wd_slope": "{{ (wd_lwt_high - wd_lwt_low) / (wd_temp_low - wd_temp_high) }}",
@@ -257,6 +276,9 @@ def create_automation(base_url: str, token: str) -> bool:
             # --- Read current state ---
             {
                 "variables": {
+                    "solar_enabled": (
+                        "{{ states('" + SOLAR_ENABLED_ENTITY + "') }}"
+                    ),
                     "t_antlia": (
                         "{{ states('" + ANTLIA_OUTDOOR + "') | float(0) }}"
                     ),
@@ -272,17 +294,17 @@ def create_automation(base_url: str, token: str) -> bool:
                     ),
                 }
             },
-            # --- Compute correction ---
+            # --- Compute correction (0 when disabled) ---
             {
                 "variables": {
                     "solar_correction": (
-                        "{% if delta > deadband %}"
+                        "{% if solar_enabled == 'on' and delta > deadband %}"
                         "{{ ((wd_slope | abs * delta) | round(0)) | int }}"
                         "{% else %}0{% endif %}"
                     ),
                     "final_offset": (
                         "{% set corr = ((wd_slope | abs * delta) | round(0)) | int"
-                        " if delta > deadband else 0 %}"
+                        " if solar_enabled == 'on' and delta > deadband else 0 %}"
                         "{{ [[offset_min, base_offset + corr] | max, offset_max] | min }}"
                     ),
                 }
@@ -380,6 +402,7 @@ def verify_entities(base_url: str, token: str) -> None:
         CLIMATE_ENTITY,
         BASE_OFFSET_ENTITY,
         SOLAR_CORRECTION_ENTITY,
+        SOLAR_ENABLED_ENTITY,
         LAST_WRITE_ENTITY,
     ]
     for eid in entities:
@@ -423,6 +446,7 @@ def main():
     ok = True
     ok = create_base_offset(base_url, token) and ok
     ok = create_solar_correction(base_url, token) and ok
+    ok = create_solar_enabled(base_url, token) and ok
     ok = create_last_write(base_url, token) and ok
     ok = create_automation(base_url, token) and ok
 

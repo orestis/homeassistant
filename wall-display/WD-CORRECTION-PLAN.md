@@ -28,10 +28,17 @@ final_offset = clamp(base_offset + solar_correction, -10, +10)
 
 ## WD Curve
 
-- 50°C LWT @ 2°C outdoor
+- 50°C LWT @ 0°C outdoor
 - 25°C LWT @ 18°C outdoor
-- Slope: -25/16 = -1.5625
-- Formula: LWT(T) = 53.125 - 1.5625 × T
+- Slope: -25/18 ≈ -1.3889
+- Formula: LWT(T) = 50 - 1.3889 × T
+
+### Curve Change History
+
+| Date       | LWT high | @ outdoor | LWT low | @ outdoor | Slope   | Notes                |
+| ---------- | -------- | --------- | ------- | --------- | ------- | -------------------- |
+| 2025-12    | 50°C     | 2°C       | 25°C    | 18°C      | -1.5625 | Initial setup        |
+| 2026-03-11 | 50°C     | 0°C       | 25°C    | 18°C      | -1.3889 | Shifted high point down to 0°C |
 
 ### Sensor Characteristics
 
@@ -74,18 +81,18 @@ Rationale:
   false positives (negative deltas) — virtually all are genuine solar events
 - Negative deltas (Antlia < Daikin) are NOT corrected: the heat pump
   producing slightly more heat than needed is the safe direction
-- Minimum meaningful correction at threshold: round(1.5625 × 2.0) = 3°C
+- Minimum meaningful correction at threshold: round(1.3889 × 2.0) = 3°C
   on LWT — below this, the error is within system noise
 
 ```
 if (T_antlia - T_accurate) > 2.0:
-    solar_correction = round(1.5625 × (T_antlia - T_accurate))
+    solar_correction = round(1.3889 × (T_antlia - T_accurate))
 else:
     solar_correction = 0
 ```
 
 Example: Antlia reads 10°C (solar gain), sheltered reads 7°C →
-delta = 3.0 > 2.0 → correction = round(1.5625 × 3) = +5°C offset.
+delta = 3.0 > 2.0 → correction = round(1.3889 × 3) = +4°C offset.
 
 Example: Antlia reads 14°C, sheltered reads 13.5°C →
 delta = 0.5 < 2.0 → correction = 0 (within noise).
@@ -145,7 +152,7 @@ Creates:
     - Climate entity state is not `off`
   - **Actions (Jinja templates):**
     1. Compute `delta = antlia - accurate`
-    2. If `delta > 2.0`: `solar_correction = round(1.5625 × delta)`, else `0`
+    2. If `delta > 2.0`: `solar_correction = round(1.3889 × delta)`, else `0`
     3. Set `input_number.wd_solar_correction` to the computed value
     4. Compute `final = clamp(base + correction, -10, 10)`
     5. **Write guard:** only proceed if `final ≠ current climate target`

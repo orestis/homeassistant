@@ -161,3 +161,38 @@ class HAClient:
             if isinstance(entity_data, dict):
                 return entity_data.get("forecast", [])
         return []
+
+    def get_statistics(
+        self,
+        entity_ids: list[str],
+        start: str,
+        end: str | None = None,
+        period: str = "hour",
+    ) -> dict[str, list[dict]]:
+        """Fetch long-term statistics via the WS API.
+
+        Uses ``recorder/statistics_during_period`` which stores hourly
+        aggregates far beyond the short-term history retention window.
+
+        Args:
+            entity_ids: List of entity IDs to query.
+            start: ISO-8601 start timestamp.
+            end: ISO-8601 end timestamp (optional).
+            period: One of "5minute", "hour", "day", "week", "month".
+
+        Returns:
+            ``{entity_id: [{start, end, mean, min, max, state, ...}, ...]}``
+        """
+        kwargs: dict = {
+            "statistic_ids": entity_ids,
+            "period": period,
+            "start_time": start,
+            "types": ["mean", "state"],
+        }
+        if end:
+            kwargs["end_time"] = end
+
+        result = self.ws_command_sync("recorder/statistics_during_period", **kwargs)
+        if not isinstance(result, dict):
+            return {}
+        return result

@@ -111,15 +111,15 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-    /* Shared spinner: hide children, show rotating ring */
-    .htmx-request > * {
+    /* Shared spinner: hide children, show rotating ring (buttons only) */
+    button.htmx-request > * {
       visibility: hidden;
     }
-    .htmx-request {
+    button.htmx-request {
       position: relative;
       pointer-events: none;
     }
-    .htmx-request::after {
+    button.htmx-request::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -376,6 +376,9 @@
       width: 16px;
       height: 16px;
       flex-shrink: 0;
+    }
+    .solar-correction {
+      color: #ffb74d;
     }
     .climate-buttons {
       display: flex;
