@@ -168,6 +168,7 @@ class HAClient:
         start: str,
         end: str | None = None,
         period: str = "hour",
+        types: list[str] | None = None,
     ) -> dict[str, list[dict]]:
         """Fetch long-term statistics via the WS API.
 
@@ -179,6 +180,7 @@ class HAClient:
             start: ISO-8601 start timestamp.
             end: ISO-8601 end timestamp (optional).
             period: One of "5minute", "hour", "day", "week", "month".
+            types: Stat types to fetch, e.g. ["mean", "state", "sum", "change"].
 
         Returns:
             ``{entity_id: [{start, end, mean, min, max, state, ...}, ...]}``
@@ -187,7 +189,7 @@ class HAClient:
             "statistic_ids": entity_ids,
             "period": period,
             "start_time": start,
-            "types": ["mean", "state"],
+            "types": types or ["mean", "state"],
         }
         if end:
             kwargs["end_time"] = end
@@ -196,3 +198,119 @@ class HAClient:
         if not isinstance(result, dict):
             return {}
         return result
+
+    def list_statistic_ids(self, statistic_type: str | None = None) -> list[dict]:
+        """List available statistic IDs.
+
+        Args:
+            statistic_type: Filter by "mean" or "sum". If None, returns both.
+
+        Returns:
+            List of dicts with keys like statistic_id, unit_of_measurement, source.
+        """
+        if statistic_type:
+            result = self.ws_command_sync(
+                "recorder/list_statistic_ids", statistic_type=statistic_type,
+            )
+            return result or []
+
+        all_stats = []
+        for st in ("mean", "sum"):
+            result = self.ws_command_sync(
+                "recorder/list_statistic_ids", statistic_type=st,
+            )
+            if result:
+                all_stats.extend(result)
+        return all_stats
+
+    def get_energy_consumption(
+        self,
+        entity_id: str,
+        start: str,
+        end: str,
+        period: str = "hour",
+    ) -> float | None:
+        """Get total energy consumption for a cumulative sensor over a period.
+
+        Uses the recorder's ``sum`` and ``change`` fields.  Returns
+        ``sum(change)`` which is the most accurate method for sensors
+        that periodically reset (daily/weekly/monthly counters).
+
+        Args:
+            entity_id: A cumulative energy sensor (e.g. daily/monthly consumption).
+            start: ISO-8601 start timestamp.
+            end: ISO-8601 end timestamp.
+            period: Granularity — "hour" (default) or "day".
+
+        Returns:
+            Total consumption in the sensor's unit (typically kWh), or None.
+        """
+        stats = self.get_statistics(
+            [entity_id], start, end, period=period, types=["sum", "change"],
+        )
+        rows = stats.get(entity_id, [])
+        if not rows:
+            return None
+
+        changes = [r["change"] for r in rows if r.get("change") is not None]
+        if changes:
+            return sum(changes)
+
+        # Fallback: sum field diff
+        first_sum = rows[0].get("sum")
+        last_sum = rows[-1].get("sum")
+        if first_sum is not None and last_sum is not None:
+            return last_sum - first_sum
+
+        return None
+
+    # ------------------------------------------------------------------
+    # Entity / device discovery
+    # ------------------------------------------------------------------
+
+    def get_all_states(self) -> list[dict]:
+        """Get states for all entities."""
+        return self._request("GET", "/api/states") or []
+
+    def get_device_entities(self, device_id: str) -> list[dict]:
+        """List all entity registry entries for a given device ID."""
+        entities = self.ws_command_sync("config/entity_registry/list")
+        if not entities:
+            return []
+        return [e for e in entities if e.get("device_id") == device_id]
+
+    def search_entities(
+        self,
+        keywords: list[str] | None = None,
+        device_class: str | None = None,
+    ) -> list[dict]:
+        """Search entities by keyword (in entity_id or friendly_name) and/or device_class.
+
+        Returns list of state dicts matching the criteria.
+        """
+        all_states = self.get_all_states()
+        results = all_states
+
+        if keywords:
+            kw_lower = [k.lower() for k in keywords]
+            results = [
+                s for s in results
+                if any(k in s["entity_id"].lower() for k in kw_lower)
+                or any(k in s["attributes"].get("friendly_name", "").lower() for k in kw_lower)
+            ]
+
+        if device_class:
+            results = [
+                s for s in results
+                if s["attributes"].get("device_class") == device_class
+            ]
+
+        return results
+
+    def get_config_entries(self, domain: str) -> list[dict]:
+        """List config entries (integrations) for a given domain.
+
+        Useful for checking if an integration is set up, e.g.
+        ``ha.get_config_entries("tplink")`` or ``ha.get_config_entries("tapo")``.
+        """
+        return self.ws_command_sync("config_entries/get", domain=domain) or []
