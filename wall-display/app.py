@@ -9,7 +9,7 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-from flask import Flask, make_response, redirect, render_template, request, url_for
+from flask import Flask, jsonify, make_response, redirect, render_template, request, send_from_directory, url_for
 
 try:
     from ha_tools.ha_client import HAClient
@@ -454,6 +454,36 @@ def index():
             return resp
         return render_template("partials/dashboard_content.html", **state)
     return render_template("dashboard.html", **state, app_version=APP_VERSION)
+
+
+@app.route("/manifest.json")
+def manifest():
+    """Serve PWA manifest with ingress-aware start_url."""
+    base = request.headers.get("X-Ingress-Path", "")
+    manifest_data = {
+        "name": "Wall Display",
+        "short_name": "Wall Display",
+        "description": "Home Assistant Wall Display Dashboard",
+        "start_url": base + "/",
+        "display": "standalone",
+        "orientation": "portrait",
+        "background_color": "#121212",
+        "theme_color": "#121212",
+        "icons": [
+            {"src": base + "/static/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any"},
+            {"src": base + "/static/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any"},
+            {"src": base + "/static/icon-maskable.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable"},
+        ],
+    }
+    resp = make_response(jsonify(manifest_data))
+    resp.headers["Content-Type"] = "application/manifest+json"
+    return resp
+
+
+@app.route("/sw.js")
+def service_worker():
+    """Serve service worker from root scope."""
+    return send_from_directory(app.static_folder, "sw.js", mimetype="application/javascript")
 
 
 def _redirect_index():

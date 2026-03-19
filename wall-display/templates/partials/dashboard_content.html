@@ -1,4 +1,4 @@
-<div id="dashboard" hx-get="{{ base_path }}/" hx-trigger="every 30s" hx-target="#dashboard" hx-swap="outerHTML">
+<div id="dashboard" hx-get="{{ base_path }}/" hx-trigger="every 30s, manualRefresh" hx-target="#dashboard" hx-swap="outerHTML">
   {# --- Status Bar --- #}
   <div class="status-bar">
     <div class="status-left">
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="status-center">
-      <span class="status-time">{{ now_time }}</span>
+      <span class="status-time">{{ now_time.split(':')[0] }}<span class="time-colon">:</span>{{ now_time.split(':')[1] }}</span>
       <span class="status-date">{{ now_date }}</span>
     </div>
     {% if forecast %}

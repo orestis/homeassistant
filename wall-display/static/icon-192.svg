@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+    <rect width="192" height="192" rx="32" fill="#1e1e1e"/>
+    <g transform="translate(32, 32)" fill="none" stroke="#e0e0e0" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+        <!-- House outline -->
+        <path d="M64 16 L8 56 L8 112 L120 112 L120 56 Z" fill="none"/>
+        <!-- Door -->
+        <rect x="48" y="72" width="32" height="40" rx="4" fill="#2196F3" stroke="#2196F3"/>
+        <!-- Window left -->
+        <rect x="18" y="68" width="20" height="18" rx="3" fill="none" stroke="#FFB74D"/>
+        <!-- Window right -->
+        <rect x="90" y="68" width="20" height="18" rx="3" fill="none" stroke="#FFB74D"/>
+        <!-- Chimney -->
+        <rect x="92" y="28" width="12" height="24" fill="none"/>
+    </g>
+</svg>

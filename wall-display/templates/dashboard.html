@@ -4,6 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Wall Display</title>
+  <link rel="manifest" href="{{ base_path }}/manifest.json">
+  <meta name="theme-color" content="#121212">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Wall Display">
+  <link rel="apple-touch-icon" href="{{ base_path }}/static/icon-192.svg">
+  <link rel="icon" href="{{ base_path }}/static/icon-192.svg" type="image/svg+xml">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
@@ -145,6 +152,17 @@
     .status-time {
       font-size: var(--text-xl);
       font-weight: 700;
+    }
+    .time-colon {
+      transition: opacity 0.3s;
+    }
+    .htmx-request .time-colon,
+    .loading .time-colon {
+      animation: colon-pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes colon-pulse {
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.5; }
     }
     .status-date {
       font-size: var(--text-md);
@@ -426,6 +444,20 @@
     document.addEventListener('htmx:configRequest', function(e) {
       e.detail.headers['X-App-Version'] = '{{ app_version }}';
     });
+
+    // Catch-all click: tap anywhere non-interactive to refresh state
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('button, a, input, select, textarea, form')) return;
+      var dash = document.getElementById('dashboard');
+      if (dash) htmx.trigger(dash, 'manualRefresh');
+    });
+
+    // Register service worker for PWA support
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('{{ base_path }}/sw.js')
+        .then(function(reg) { console.log('SW registered:', reg.scope); })
+        .catch(function(err) { console.warn('SW registration failed:', err); });
+    }
   </script>
 </body>
 </html>
