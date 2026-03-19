@@ -15,8 +15,11 @@ HA_SAMBA_PASS="${HA_SAMBA_PASS:-tejhyd-zoqCab-wepgu2}"
 MOUNT_POINT="$HOME/mnt/ha_addons"
 ADDON_DIR="wall_display"
 
-FILES=(app.py ha_client.py dashboard_config.json Dockerfile build.json config.json requirements.txt run.sh setup-wd-correction.py)
+FILES=(app.py dashboard_config.json Dockerfile build.json config.json requirements.txt run.sh setup-wd-correction.py)
 DIRS=(templates static)
+
+# ha_client.py lives in the shared package now
+HA_CLIENT_SRC="$SCRIPT_DIR/../src/ha_tools/ha_client.py"
 
 # Mount if not already
 if ! mount | grep -q "$MOUNT_POINT"; then
@@ -35,6 +38,14 @@ for f in "${FILES[@]}"; do
         echo "  ⚠ $f not found, skipping"
     fi
 done
+
+# Copy ha_client.py from shared package
+if [ -f "$HA_CLIENT_SRC" ]; then
+    cp "$HA_CLIENT_SRC" "$MOUNT_POINT/$ADDON_DIR/ha_client.py"
+    echo "  ✓ ha_client.py (from src/ha_tools/)"
+else
+    echo "  ⚠ ha_client.py not found at $HA_CLIENT_SRC"
+fi
 
 # Copy directories
 for d in "${DIRS[@]}"; do

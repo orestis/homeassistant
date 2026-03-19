@@ -42,7 +42,7 @@ import base64
 ROUTER_URL = "http://192.168.1.1"
 ROUTER_USER = os.environ.get("ZTE_USER", "user")
 ROUTER_PASS = os.environ.get("ZTE_PASS", "user")
-INVENTORY_FILE = Path(__file__).parent / "shelly-inventory.json"
+INVENTORY_FILE = Path(__file__).parent.parent / "shelly" / "shelly-inventory.json"
 
 # The URL for DHCP static binding data (GET to read, POST to write)
 DHCP_STATIC_URL = "/?_type=menuData&_tag=Localnet_LanMgrIpv4_DHCPStaticRule_lua.lua"

@@ -32,12 +32,8 @@ import os
 import sys
 from pathlib import Path
 
-# Add parent dirs so we can import ha_client and shelly_client
-sys.path.insert(0, str(Path(__file__).parent.parent / "wall-display"))
-sys.path.insert(0, str(Path(__file__).parent))
-
-from ha_client import HAClient
-import shelly_client
+from ha_tools.ha_client import HAClient
+from ha_tools import shelly_client
 
 # --- Config ---
 

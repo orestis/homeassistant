@@ -11,7 +11,10 @@ from pathlib import Path
 
 from flask import Flask, make_response, redirect, render_template, request, url_for
 
-from ha_client import HAClient
+try:
+    from ha_tools.ha_client import HAClient
+except ImportError:
+    from ha_client import HAClient
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)

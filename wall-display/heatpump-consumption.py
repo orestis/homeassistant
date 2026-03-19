@@ -22,8 +22,7 @@ import sys
 from datetime import datetime, timedelta, timezone, tzinfo
 from zoneinfo import ZoneInfo
 
-sys.path.insert(0, os.path.dirname(__file__))
-from ha_client import HAClient
+from ha_tools.ha_client import HAClient
 
 
 def get_client() -> HAClient:
