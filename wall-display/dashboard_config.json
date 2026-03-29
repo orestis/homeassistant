@@ -87,5 +87,35 @@
       "entity_id": "scene.lights_off",
       "color": "#333333"
     }
+  ],
+
+  "roller_groups": [
+    {
+      "name": "Δάφνη",
+      "entity_ids": ["cover.shelly2pmg4_ccba97d67960_0"]
+    },
+    {
+      "name": "Μπαμπάς",
+      "entity_ids": [
+        "cover.shelly2pmg4_ccba97dfe8fc_0",
+        "cover.shelly2pmg4_7c2c677b41d8_0"
+      ]
+    },
+    {
+      "name": "Ρολά",
+      "entity_ids": [
+        "cover.shelly2pmg4_7c2c677b3864_0",
+        "cover.shelly2pmg4_ccba97dc5b84_0",
+        "cover.shelly2pmg4_7c2c677b42c8_0",
+        "cover.shelly2pmg4_ccba97e048f8_0"
+      ]
+    }
+  ],
+
+  "roller_presets": [
+    {"name": "Ανοιχτό", "icon": "open", "position": 100},
+    {"name": "25%", "icon": "quarter", "position": 33},
+    {"name": "Pinhole", "icon": "pinhole", "position": 8},
+    {"name": "Κλειστό", "icon": "closed", "position": 0}
   ]
 }

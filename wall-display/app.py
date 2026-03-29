@@ -485,6 +485,71 @@ def _parse_float(state_dict: dict) -> float | None:
         return None
 
 
+# ---------------------------------------------------------------------------
+# Roller state helpers
+# ---------------------------------------------------------------------------
+
+# Position thresholds for visual state icons
+_ROLLER_OPEN_THRESHOLD = 90
+_ROLLER_QUARTER_THRESHOLD = 20
+# Below _ROLLER_QUARTER_THRESHOLD and above 0 → pinhole
+
+
+def _classify_roller_position(position: int | None) -> str:
+    """Map a cover position (0–100) to a visual state name."""
+    if position is None:
+        return "unknown"
+    if position >= _ROLLER_OPEN_THRESHOLD:
+        return "open"
+    if position >= _ROLLER_QUARTER_THRESHOLD:
+        return "quarter"
+    if position > 0:
+        return "pinhole"
+    return "closed"
+
+
+def _get_rollers_state() -> dict:
+    """Fetch all roller/cover entity states for the rollers screen."""
+    roller_groups_cfg = config.get("roller_groups", [])
+    roller_presets = config.get("roller_presets", [])
+
+    # Collect all entity IDs
+    all_entity_ids = []
+    for group in roller_groups_cfg:
+        all_entity_ids.extend(group.get("entity_ids", []))
+
+    states = ha.get_states(all_entity_ids) if all_entity_ids else {}
+
+    groups = []
+    for group in roller_groups_cfg:
+        entity_ids = group.get("entity_ids", [])
+        # Determine group position from first entity (they should be in sync)
+        group_position = None
+        for eid in entity_ids:
+            st = states.get(eid, {})
+            pos = st.get("attributes", {}).get("current_position")
+            if pos is not None:
+                try:
+                    group_position = int(pos)
+                except (ValueError, TypeError):
+                    pass
+                break
+
+        visual_state = _classify_roller_position(group_position)
+
+        groups.append({
+            "name": group.get("name", ""),
+            "entity_ids": entity_ids,
+            "position": group_position,
+            "visual_state": visual_state,
+        })
+
+    return {
+        "roller_groups": groups,
+        "roller_presets": roller_presets,
+    }
+
+
 @app.route("/")
 def index():
     """Render the full dashboard page."""
@@ -501,6 +566,21 @@ def index():
             return resp
         return render_template("partials/dashboard_content.html", **state)
     return render_template("dashboard.html", **state, app_version=APP_VERSION)
+
+
+@app.route("/rollers")
+def rollers():
+    """Render the rollers control page."""
+    state = _get_rollers_state()
+    is_htmx = request.headers.get("HX-Request") == "true"
+    if is_htmx:
+        client_version = request.headers.get("X-App-Version", "")
+        if client_version and client_version != APP_VERSION:
+            resp = make_response("", 200)
+            resp.headers["HX-Refresh"] = "true"
+            return resp
+        return render_template("partials/rollers_content.html", **state)
+    return render_template("rollers.html", **state, app_version=APP_VERSION)
 
 
 @app.route("/manifest.json")
@@ -537,6 +617,51 @@ def _redirect_index():
     """Redirect to index, respecting the ingress base path."""
     base = request.headers.get("X-Ingress-Path", "")
     return redirect(base + url_for("index"))
+
+
+def _redirect_rollers():
+    """Redirect to rollers page, respecting the ingress base path."""
+    base = request.headers.get("X-Ingress-Path", "")
+    return redirect(base + url_for("rollers"))
+
+
+@app.route("/action/cover", methods=["POST"])
+def action_cover():
+    """Set roller/cover position for a group of entities."""
+    entity_ids_raw = request.form.get("entity_ids", "")
+    position_raw = request.form.get("position", "")
+
+    entity_ids = [eid.strip() for eid in entity_ids_raw.split(",") if eid.strip()]
+    try:
+        position = int(position_raw)
+    except (ValueError, TypeError):
+        log.warning("Invalid cover position: %s", position_raw)
+        if request.headers.get("HX-Request") == "true":
+            state = _get_rollers_state()
+            return render_template("partials/rollers_content.html", **state)
+        return _redirect_rollers()
+
+    for eid in entity_ids:
+        if not eid.startswith("cover."):
+            continue
+        if position >= 100:
+            log.info("Opening cover: %s", eid)
+            ha.call_service("cover", "open_cover", {"entity_id": eid})
+        elif position <= 0:
+            log.info("Closing cover: %s", eid)
+            ha.call_service("cover", "close_cover", {"entity_id": eid})
+        else:
+            log.info("Setting cover %s to position %d", eid, position)
+            ha.call_service("cover", "set_cover_position", {
+                "entity_id": eid,
+                "position": position,
+            })
+
+    if request.headers.get("HX-Request") == "true":
+        state = _get_rollers_state()
+        return render_template("partials/rollers_content.html", **state)
+
+    return _redirect_rollers()
 
 
 @app.route("/action/scene", methods=["POST"])

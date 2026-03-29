@@ -1,0 +1,71 @@
+<div id="rollers-page" hx-get="{{ base_path }}/rollers" hx-trigger="every 30s" hx-target="#rollers-page" hx-swap="outerHTML">
+
+  {# --- Header with back button --- #}
+  <div class="rollers-header">
+    <a href="{{ base_path }}/" class="back-btn" onclick="clearAutoReturn()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <span class="rollers-title">Ρολά</span>
+    <div class="header-spacer"></div>
+  </div>
+
+  {# --- Roller Groups --- #}
+  <div class="roller-groups">
+    {% for group in roller_groups %}
+    <div class="roller-group">
+      <div class="roller-group-header">
+        <span class="roller-group-name">{{ group.name }}</span>
+        <span class="roller-state-icon">
+          {% if group.visual_state == 'open' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          {% elif group.visual_state == 'quarter' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="3" y="3" width="18" height="5" rx="2" fill="currentColor" opacity="0.5"/></svg>
+          {% elif group.visual_state == 'pinhole' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="3" y="3" width="18" height="15" rx="2" fill="currentColor" opacity="0.5"/></svg>
+          {% elif group.visual_state == 'closed' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" opacity="0.5"/></svg>
+          {% else %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7l10 10M17 7L7 17"/></svg>
+          {% endif %}
+        </span>
+      </div>
+      <div class="roller-presets">
+        {% for preset in roller_presets %}
+        <form method="POST" action="{{ base_path }}/action/cover">
+          <input type="hidden" name="entity_ids" value="{{ group.entity_ids | join(',') }}">
+          <input type="hidden" name="position" value="{{ preset.position }}">
+          <button
+            type="submit"
+            class="roller-preset-btn{% if group.visual_state == preset.icon %} active{% endif %}"
+            hx-post="{{ base_path }}/action/cover"
+            hx-vals='{"entity_ids": "{{ group.entity_ids | join(',') }}", "position": "{{ preset.position }}"}'
+            hx-target="#rollers-page"
+            hx-swap="outerHTML"
+            hx-disabled-elt="this"
+            onclick="resetAutoReturn()"
+          >
+            <span class="preset-icon">
+              {% if preset.icon == 'open' %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+              {% elif preset.icon == 'quarter' %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="3" y="3" width="18" height="5" rx="2" fill="currentColor" opacity="0.5"/></svg>
+              {% elif preset.icon == 'pinhole' %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="3" y="3" width="18" height="15" rx="2" fill="currentColor" opacity="0.5"/></svg>
+              {% elif preset.icon == 'closed' %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" opacity="0.5"/></svg>
+              {% endif %}
+            </span>
+            <span class="preset-label">{{ preset.name }}</span>
+          </button>
+        </form>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {# --- Auto-return progress bar --- #}
+  <div class="auto-return-bar" id="auto-return-bar">
+    <div class="auto-return-progress" id="auto-return-progress"></div>
+  </div>
+</div>
