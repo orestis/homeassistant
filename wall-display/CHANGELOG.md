@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.33.0
+
+- **Notify button**: New red phone-icon button for sending iOS push
+  notifications via HA Companion app. Includes confirmation overlay
+  with 3-second countdown and 60-second server-side cooldown to prevent
+  accidental or repeated presses.
+- **Layout reorder**: Water heater row moved above scenes (below status bar).
+- Auto-discovers `notify.mobile_app_*` service from HA.
+
 ## 0.29.0
 
 - **Fix background refresh spinner**: The loading spinner no longer

@@ -307,6 +307,15 @@ class HAClient:
 
         return results
 
+    def get_services(self) -> list[dict]:
+        """Get all available services from HA.
+
+        Returns a list of dicts, each with 'domain' and 'services' keys.
+        Useful for discovering available notify targets, etc.
+        """
+        result = self._request("GET", "/api/services")
+        return result if isinstance(result, list) else []
+
     def get_config_entries(self, domain: str) -> list[dict]:
         """List config entries (integrations) for a given domain.
 

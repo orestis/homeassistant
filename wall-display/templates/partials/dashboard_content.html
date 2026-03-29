@@ -30,44 +30,7 @@
     {% endif %}
   </div>
 
-  {# --- Scenes --- #}
-  <div class="scenes-section">
-    <div class="scene-grid">
-      {% for scene in scenes %}
-      <form method="POST" action="{{ base_path }}/action/scene">
-        <input type="hidden" name="entity_id" value="{{ scene.entity_id }}">
-        <button
-          type="submit"
-          class="tile scene-tile{% if scene.entity_id == active_scene %} active{% endif %}"
-          style="background: {{ scene.color }}"
-          hx-post="{{ base_path }}/action/scene"
-          hx-vals='{"entity_id": "{{ scene.entity_id }}"}'
-          hx-target="#dashboard"
-          hx-swap="outerHTML"
-          hx-disabled-elt="this"
-          hx-indicator="this"
-        >
-          <span class="tile-icon">
-            {% if scene.icon == 'sunrise' %}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
-            {% elif scene.icon == 'sunset' %}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 6-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
-            {% elif scene.icon == 'moon' %}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-            {% elif scene.icon == 'power-off' %}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></svg>
-            {% else %}
-            {{ scene.icon }}
-            {% endif %}
-          </span>
-          <span class="tile-label">{{ scene.name }}</span>
-        </button>
-      </form>
-      {% endfor %}
-    </div>
-  </div>
-
-  {# --- Water Heater --- #}
+  {# --- Water Heater (moved above scenes) --- #}
   {% if water_heater %}
   <div class="water-heater-row">
     {% if night_tariff %}
@@ -135,6 +98,90 @@
       </button>
     </form>
     {% endif %}
+  </div>
+  {% endif %}
+
+  {# --- Scenes --- #}
+  <div class="scenes-section">
+    <div class="scene-grid">
+      {% for scene in scenes %}
+      <form method="POST" action="{{ base_path }}/action/scene">
+        <input type="hidden" name="entity_id" value="{{ scene.entity_id }}">
+        <button
+          type="submit"
+          class="tile scene-tile{% if scene.entity_id == active_scene %} active{% endif %}"
+          style="background: {{ scene.color }}"
+          hx-post="{{ base_path }}/action/scene"
+          hx-vals='{"entity_id": "{{ scene.entity_id }}"}'
+          hx-target="#dashboard"
+          hx-swap="outerHTML"
+          hx-disabled-elt="this"
+          hx-indicator="this"
+        >
+          <span class="tile-icon">
+            {% if scene.icon == 'sunrise' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
+            {% elif scene.icon == 'sunset' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 6-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
+            {% elif scene.icon == 'moon' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            {% elif scene.icon == 'power-off' %}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></svg>
+            {% else %}
+            {{ scene.icon }}
+            {% endif %}
+          </span>
+          <span class="tile-label">{{ scene.name }}</span>
+        </button>
+      </form>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# --- Notify Button + Spacer --- #}
+  {% if notify_button and notify_button.available %}
+  <div class="notify-spacer-row">
+    <div class="notify-cell" id="notify-cell">
+      <button
+        type="button"
+        class="notify-btn{% if notify_button.cooldown_remaining > 0 %} cooldown{% endif %}"
+        id="notify-trigger"
+        {% if notify_button.cooldown_remaining > 0 %}disabled{% endif %}
+        onclick="notifyConfirmShow()"
+      >
+        <svg class="notify-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        {% if notify_button.cooldown_remaining > 0 %}
+        <span class="notify-cooldown-text" id="notify-cooldown-text">{{ notify_button.cooldown_remaining }}s</span>
+        {% endif %}
+      </button>
+      {# Confirmation state — replaces the button in-place #}
+      <form method="POST" action="{{ base_path }}/action/notify" class="notify-confirm-form" id="notify-confirm-form" style="display: none;">
+        <button
+          type="submit"
+          class="notify-confirm-btn"
+          id="notify-send-btn"
+          disabled
+          hx-post="{{ base_path }}/action/notify"
+          hx-target="#dashboard"
+          hx-swap="outerHTML"
+          hx-disabled-elt="this"
+        >
+          <div class="notify-countdown-ring" id="notify-countdown-ring">
+            <svg viewBox="0 0 60 60">
+              <circle cx="30" cy="30" r="26" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="4"/>
+              <circle id="notify-countdown-arc" cx="30" cy="30" r="26" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"
+                stroke-dasharray="163.36" stroke-dashoffset="163.36"
+                transform="rotate(-90 30 30)"/>
+            </svg>
+            <span class="notify-countdown-num" id="notify-countdown-num">3</span>
+          </div>
+        </button>
+        <button type="button" class="notify-cancel-x" onclick="notifyConfirmCancel()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+        </button>
+      </form>
+    </div>
+    <div class="spacer-btn">⋯</div>
   </div>
   {% endif %}
 

@@ -6,6 +6,7 @@ import hashlib
 import json
 import logging
 import os
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -38,6 +39,40 @@ if not ha_token:
     log.warning("No HA token found — set HA_TOKEN or SUPERVISOR_TOKEN env var")
 
 ha = HAClient(ha_url, ha_token)
+
+# --- Notify button state ---
+
+_last_notify_time: float = 0.0  # monotonic timestamp of last notification sent
+
+
+def _discover_notify_service() -> str:
+    """Find the first mobile_app notify service from HA."""
+    notify_cfg = config.get("notify_button", {})
+    explicit = notify_cfg.get("notify_service", "")
+    if explicit:
+        return explicit
+    try:
+        services = ha.get_services()
+        for svc in services:
+            if svc.get("domain") == "notify":
+                for name in svc.get("services", {}):
+                    if name.startswith("mobile_app_"):
+                        log.info("Auto-discovered notify service: notify.%s", name)
+                        return name
+    except Exception as e:
+        log.warning("Failed to discover notify service: %s", e)
+    return ""
+
+
+_notify_service: str = ""
+
+
+def _get_notify_service() -> str:
+    """Lazy-discover and cache the notify service name."""
+    global _notify_service
+    if not _notify_service:
+        _notify_service = _discover_notify_service()
+    return _notify_service
 
 # --- App version (hash of templates + static files for cache-busting) ---
 
@@ -295,6 +330,17 @@ def _get_dashboard_state() -> dict:
             status = "off"
         ventilation.append({"name": v.get("name", ""), "status": status, "color": v.get("color", "#e0e0e0")})
 
+    # Notify button state
+    notify_cfg = config.get("notify_button", {})
+    cooldown_secs = notify_cfg.get("cooldown_seconds", 60)
+    elapsed = time.monotonic() - _last_notify_time if _last_notify_time else cooldown_secs + 1
+    notify_cooldown_remaining = max(0, int(cooldown_secs - elapsed)) if _last_notify_time else 0
+    notify_button = {
+        "available": bool(_get_notify_service()),
+        "cooldown_remaining": notify_cooldown_remaining,
+        "message": notify_cfg.get("message", "Πάτησε το κουμπί!"),
+    }
+
     return {
         "indoor_temp": indoor_temp,
         "indoor_humidity": indoor_humidity,
@@ -322,6 +368,7 @@ def _get_dashboard_state() -> dict:
         "base_offset": base_offset,
         "solar_correction": solar_correction,
         "ventilation": ventilation,
+        "notify_button": notify_button,
     }
 
 
@@ -599,6 +646,53 @@ def action_water_heater():
                 ha.call_service("input_boolean", "turn_on", {"entity_id": bypass_eid})
                 if timer_eid:
                     ha.call_service("timer", "cancel", {"entity_id": timer_eid})
+
+    # htmx: return updated dashboard content
+    if request.headers.get("HX-Request") == "true":
+        state = _get_dashboard_state()
+        return render_template("partials/dashboard_content.html", **state)
+
+    # Fallback: POST-Redirect-GET
+    return _redirect_index()
+
+
+@app.route("/action/notify", methods=["POST"])
+def action_notify():
+    """Send a push notification to the parent's phone."""
+    global _last_notify_time
+    notify_cfg = config.get("notify_button", {})
+    cooldown_secs = notify_cfg.get("cooldown_seconds", 60)
+
+    # Enforce cooldown
+    elapsed = time.monotonic() - _last_notify_time if _last_notify_time else cooldown_secs + 1
+    if elapsed < cooldown_secs:
+        remaining = int(cooldown_secs - elapsed)
+        log.info("Notify cooldown active — %ds remaining", remaining)
+    else:
+        service_name = _get_notify_service()
+        if service_name:
+            message = notify_cfg.get("message", "Πάτησε το κουμπί!")
+            title = notify_cfg.get("title", "Wall Display")
+            log.info("Sending notification via notify.%s: %s", service_name, message)
+            success = ha.call_service("notify", service_name, {
+                "message": message,
+                "title": title,
+                "data": {
+                    "push": {
+                        "sound": {
+                            "name": "default",
+                            "critical": 1,
+                            "volume": 1.0,
+                        }
+                    }
+                },
+            })
+            if success:
+                _last_notify_time = time.monotonic()
+            else:
+                log.error("Failed to send notification via notify.%s", service_name)
+        else:
+            log.warning("No notify service available — notification not sent")
 
     # htmx: return updated dashboard content
     if request.headers.get("HX-Request") == "true":

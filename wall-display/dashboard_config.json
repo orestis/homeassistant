@@ -55,6 +55,13 @@
     }
   ],
 
+  "notify_button": {
+    "notify_service": "",
+    "message": "Πάτησε το κουμπί!",
+    "title": "Wall Display",
+    "cooldown_seconds": 60
+  },
+
   "scenes": [
     {
       "name": "Πρωί",

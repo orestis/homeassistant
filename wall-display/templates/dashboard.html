@@ -433,6 +433,158 @@
     .climate-val-btn.htmx-request {
       opacity: 0.6;
     }
+
+    /* --- Notify Button + Spacer Row --- */
+    .notify-spacer-row {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .notify-cell {
+      flex: 1;
+      position: relative;
+      min-height: 58px;
+    }
+    .spacer-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      border-radius: 14px;
+      background: #1e1e1e;
+      color: #444;
+      font-size: var(--text-xl);
+      letter-spacing: 2px;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .notify-btn {
+      width: 100%;
+      height: 100%;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 2px solid #c62828;
+      border-radius: 14px;
+      background: #1a1a1a;
+      color: #c62828;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .notify-btn:active {
+      opacity: 0.7;
+      transform: scale(0.97);
+    }
+    .notify-btn.cooldown {
+      border-color: #333;
+      background: #1a1a1a;
+      color: #444;
+      cursor: default;
+    }
+    .notify-btn.cooldown:active {
+      opacity: 1;
+      transform: none;
+    }
+    .notify-icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+    .notify-cooldown-text {
+      font-size: var(--text-sm);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Confirmation form — replaces button in-place */
+    .notify-confirm-form {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      animation: notify-confirm-in 0.3s ease-out;
+      z-index: 10;
+    }
+    @keyframes notify-confirm-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .notify-confirm-btn {
+      width: 100%;
+      height: 100%;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 14px;
+      background: #c62828;
+      color: #fff;
+      cursor: default;
+      -webkit-user-select: none;
+      user-select: none;
+      transition: border-color 0.3s;
+    }
+    .notify-confirm-btn:not(:disabled) {
+      border-color: #fff;
+      cursor: pointer;
+    }
+    .notify-confirm-btn:not(:disabled):active {
+      opacity: 0.7;
+      transform: scale(0.97);
+    }
+    .notify-confirm-btn.htmx-request {
+      opacity: 0.6;
+    }
+    .notify-cancel-x {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.4);
+      color: rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      z-index: 11;
+    }
+    .notify-cancel-x:active {
+      opacity: 0.7;
+    }
+    .notify-cancel-x svg {
+      width: 16px;
+      height: 16px;
+    }
+    .notify-countdown-ring {
+      position: relative;
+      width: 40px;
+      height: 40px;
+    }
+    .notify-countdown-ring svg {
+      width: 100%;
+      height: 100%;
+    }
+    .notify-countdown-num {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-md);
+      font-weight: 700;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
   </style>
 </head>
 <body>
@@ -458,6 +610,61 @@
         .then(function(reg) { console.log('SW registered:', reg.scope); })
         .catch(function(err) { console.warn('SW registration failed:', err); });
     }
+
+    // --- Notify button confirmation logic ---
+    var _notifyTimer = null;
+    var _notifyCountdown = 3;
+
+    function notifyConfirmShow() {
+      var form = document.getElementById('notify-confirm-form');
+      var trigger = document.getElementById('notify-trigger');
+      if (!form || !trigger) return;
+      if (trigger.disabled) return;
+      trigger.style.display = 'none';
+      form.style.display = '';
+      _notifyCountdown = 3;
+      var numEl = document.getElementById('notify-countdown-num');
+      var arcEl = document.getElementById('notify-countdown-arc');
+      var sendBtn = document.getElementById('notify-send-btn');
+      if (numEl) numEl.textContent = _notifyCountdown;
+      if (sendBtn) sendBtn.disabled = true;
+      // Reset arc
+      var circumference = 163.36;
+      if (arcEl) {
+        arcEl.style.transition = 'none';
+        arcEl.setAttribute('stroke-dashoffset', circumference);
+        arcEl.getBoundingClientRect();
+        arcEl.style.transition = 'stroke-dashoffset 3s linear';
+        arcEl.setAttribute('stroke-dashoffset', '0');
+      }
+      clearInterval(_notifyTimer);
+      _notifyTimer = setInterval(function() {
+        _notifyCountdown--;
+        if (numEl) numEl.textContent = Math.max(0, _notifyCountdown);
+        if (_notifyCountdown <= 0) {
+          clearInterval(_notifyTimer);
+          _notifyTimer = null;
+          if (sendBtn) sendBtn.disabled = false;
+          if (numEl) numEl.textContent = '✓';
+        }
+      }, 1000);
+    }
+
+    function notifyConfirmCancel() {
+      clearInterval(_notifyTimer);
+      _notifyTimer = null;
+      var form = document.getElementById('notify-confirm-form');
+      var trigger = document.getElementById('notify-trigger');
+      if (form) form.style.display = 'none';
+      if (trigger) trigger.style.display = '';
+    }
+
+    document.addEventListener('htmx:afterSwap', function(e) {
+      if (_notifyTimer) {
+        clearInterval(_notifyTimer);
+        _notifyTimer = null;
+      }
+    });
   </script>
 </body>
 </html>
