@@ -92,22 +92,22 @@
   "roller_groups": [
     {
       "name": "Δάφνη",
-      "entity_ids": ["cover.shelly2pmg4_ccba97d67960_0"]
+      "entity_ids": ["cover.roller_kid_room"]
     },
     {
       "name": "Μπαμπάς",
       "entity_ids": [
-        "cover.shelly2pmg4_ccba97dfe8fc_0",
-        "cover.shelly2pmg4_7c2c677b41d8_0"
+        "cover.roller_master_left",
+        "cover.roller_master_2"
       ]
     },
     {
       "name": "Ρολά",
       "entity_ids": [
-        "cover.shelly2pmg4_7c2c677b3864_0",
-        "cover.shelly2pmg4_ccba97dc5b84_0",
-        "cover.shelly2pmg4_7c2c677b42c8_0",
-        "cover.shelly2pmg4_ccba97e048f8_0"
+        "cover.roller_livingroom",
+        "cover.roller_kitchen",
+        "cover.roller_office",
+        "cover.roller_dining"
       ]
     }
   ],
