@@ -1,4 +1,4 @@
-<div id="rollers-page" hx-get="{{ base_path }}/rollers" hx-trigger="every 30s" hx-target="#rollers-page" hx-swap="outerHTML">
+<div id="rollers-page" hx-get="{{ base_path }}/rollers" hx-trigger="manualRefresh" hx-target="#rollers-page" hx-swap="outerHTML">
 
   {# --- Header with back button --- #}
   <div class="rollers-header">
@@ -12,52 +12,95 @@
   {# --- Roller Groups --- #}
   <div class="roller-groups">
     {% for group in roller_groups %}
-    <div class="roller-group">
+    <div class="roller-group" data-group="{{ group.name }}" data-moving="{{ 'true' if group.moving else 'false' }}" data-entities="{{ group.entity_ids | join(',') }}">
       <div class="roller-group-header">
         <span class="roller-group-name">{{ group.name }}</span>
-        <span class="roller-state-icon">
-          {% if group.visual_state == 'open' %}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-          {% elif group.visual_state == 'quarter' %}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="3" y="3" width="18" height="5" rx="2" fill="currentColor" opacity="0.5"/></svg>
-          {% elif group.visual_state == 'pinhole' %}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="3" y="3" width="18" height="15" rx="2" fill="currentColor" opacity="0.5"/></svg>
-          {% elif group.visual_state == 'closed' %}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" opacity="0.5"/></svg>
-          {% else %}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7l10 10M17 7L7 17"/></svg>
-          {% endif %}
+        {% if group.visual_state not in roller_presets | map(attribute='icon') | list and group.visual_state != 'unknown' %}
+        <span class="roller-state-icon roller-state-diverged">
+          <svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="0.8">
+            <rect x="1" y="1" width="12" height="20" rx="1"/>
+            <line x1="7" y1="1" x2="7" y2="21" stroke-opacity="0.4"/>
+            {% if group.position is not none %}
+            <rect x="1" y="1" width="12" height="{{ ((100 - group.position) * 20 / 100) | round(1) }}" rx="1" fill="currentColor" opacity="0.4"/>
+            {% endif %}
+          </svg>
         </span>
+        {% endif %}
       </div>
       <div class="roller-presets">
         {% for preset in roller_presets %}
-        <form method="POST" action="{{ base_path }}/action/cover">
-          <input type="hidden" name="entity_ids" value="{{ group.entity_ids | join(',') }}">
-          <input type="hidden" name="position" value="{{ preset.position }}">
-          <button
-            type="submit"
-            class="roller-preset-btn{% if group.visual_state == preset.icon %} active{% endif %}"
-            hx-post="{{ base_path }}/action/cover"
-            hx-vals='{"entity_ids": "{{ group.entity_ids | join(',') }}", "position": "{{ preset.position }}"}'
-            hx-target="#rollers-page"
-            hx-swap="outerHTML"
-            hx-disabled-elt="this"
-            onclick="resetAutoReturn()"
-          >
-            <span class="preset-icon">
-              {% if preset.icon == 'open' %}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-              {% elif preset.icon == 'quarter' %}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="3" y="3" width="18" height="5" rx="2" fill="currentColor" opacity="0.5"/></svg>
-              {% elif preset.icon == 'pinhole' %}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="3" y="3" width="18" height="15" rx="2" fill="currentColor" opacity="0.5"/></svg>
-              {% elif preset.icon == 'closed' %}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" opacity="0.5"/></svg>
-              {% endif %}
-            </span>
-            <span class="preset-label">{{ preset.name }}</span>
-          </button>
-        </form>
+        <button
+          type="button"
+          class="roller-preset-btn{% if group.visual_state == preset.icon %} active{% endif %}"
+          data-position="{{ preset.position }}"
+          onclick="onPresetClick(this)"
+        >
+          <span class="preset-icon">
+            {% if preset.icon == 'open' %}
+            <svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="0.8">
+              <circle cx="7" cy="9" r="3" fill="currentColor" opacity="0.25" stroke="none"/>
+              <line x1="7" y1="4" x2="7" y2="5.5" stroke-opacity="0.3" stroke-width="0.6"/>
+              <line x1="7" y1="12.5" x2="7" y2="14" stroke-opacity="0.3" stroke-width="0.6"/>
+              <line x1="2" y1="9" x2="3.5" y2="9" stroke-opacity="0.3" stroke-width="0.6"/>
+              <line x1="10.5" y1="9" x2="12" y2="9" stroke-opacity="0.3" stroke-width="0.6"/>
+              <line x1="3.5" y1="5.5" x2="4.5" y2="6.5" stroke-opacity="0.3" stroke-width="0.6"/>
+              <line x1="9.5" y1="11.5" x2="10.5" y2="12.5" stroke-opacity="0.3" stroke-width="0.6"/>
+              <line x1="9.5" y1="5.5" x2="10.5" y2="6.5" stroke-opacity="0.3" stroke-width="0.6"/>
+              <line x1="3.5" y1="11.5" x2="4.5" y2="12.5" stroke-opacity="0.3" stroke-width="0.6"/>
+              <rect x="1" y="1" width="12" height="20" rx="1"/>
+              <line x1="7" y1="1" x2="7" y2="21" stroke-opacity="0.4"/>
+            </svg>
+            {% elif preset.icon == 'quarter' %}
+            <svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="0.8">
+              <rect x="1" y="1" width="12" height="20" rx="1"/>
+              <line x1="7" y1="1" x2="7" y2="21" stroke-opacity="0.4"/>
+              <rect x="1" y="1" width="12" height="15" rx="1" fill="currentColor" opacity="0.4"/>
+              <circle cx="4" cy="3.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="7" cy="3.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="10" cy="3.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="4" cy="6.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="7" cy="6.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="10" cy="6.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="4" cy="9.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="7" cy="9.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="10" cy="9.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="4" cy="12.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="7" cy="12.5" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="10" cy="12.5" r="0.5" fill="currentColor" opacity="0.7"/>
+            </svg>
+            {% elif preset.icon == 'pinhole' %}
+            <svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="0.8">
+              <rect x="1" y="1" width="12" height="20" rx="1"/>
+              <line x1="7" y1="1" x2="7" y2="21" stroke-opacity="0.4"/>
+              <rect x="1" y="1" width="12" height="19" rx="1" fill="currentColor" opacity="0.4"/>
+              <circle cx="4" cy="3" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="7" cy="3" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="10" cy="3" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="4" cy="6" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="7" cy="6" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="10" cy="6" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="4" cy="9" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="7" cy="9" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="10" cy="9" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="4" cy="12" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="7" cy="12" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="10" cy="12" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="4" cy="15" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="7" cy="15" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="10" cy="15" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="4" cy="18" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="7" cy="18" r="0.5" fill="currentColor" opacity="0.7"/>
+              <circle cx="10" cy="18" r="0.5" fill="currentColor" opacity="0.7"/>
+            </svg>
+            {% elif preset.icon == 'closed' %}
+            <svg viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="0.8">
+              <rect x="1" y="1" width="12" height="20" rx="1"/>
+              <line x1="7" y1="1" x2="7" y2="21" stroke-opacity="0.4"/>
+              <rect x="1" y="1" width="12" height="20" rx="1" fill="currentColor" opacity="0.4"/>
+            </svg>
+            {% endif %}
+          </span>
+        </button>
         {% endfor %}
       </div>
     </div>

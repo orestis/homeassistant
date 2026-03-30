@@ -450,15 +450,26 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 6px;
       min-height: 58px;
       border-radius: 14px;
+      border: 2px solid #444;
       background: #1e1e1e;
-      color: #444;
+      color: #aaa;
       font-size: var(--text-xl);
       letter-spacing: 2px;
       text-decoration: none;
       -webkit-user-select: none;
       user-select: none;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .spacer-btn:active {
+      opacity: 0.7;
+      transform: scale(0.97);
+    }
+    .spacer-icon {
+      width: 26px;
+      height: 26px;
     }
     .notify-btn {
       width: 100%;
@@ -488,6 +499,16 @@
       cursor: default;
     }
     .notify-btn.cooldown:active {
+      opacity: 1;
+      transform: none;
+    }
+    .notify-btn.person-home {
+      border-color: #333;
+      background: #1a1a1a;
+      color: #444;
+      cursor: default;
+    }
+    .notify-btn.person-home:active {
       opacity: 1;
       transform: none;
     }

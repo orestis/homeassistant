@@ -59,7 +59,8 @@
     "notify_service": "",
     "message": "Πάτησε το κουμπί!",
     "title": "Wall Display",
-    "cooldown_seconds": 60
+    "cooldown_seconds": 60,
+    "person_entity": "person.orestis"
   },
 
   "scenes": [
@@ -103,12 +104,7 @@
     },
     {
       "name": "Ρολά",
-      "entity_ids": [
-        "cover.roller_livingroom",
-        "cover.roller_kitchen",
-        "cover.roller_office",
-        "cover.roller_dining"
-      ]
+      "entity_ids": ["cover.main_rollers"]
     }
   ],
 

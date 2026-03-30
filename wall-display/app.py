@@ -335,8 +335,18 @@ def _get_dashboard_state() -> dict:
     cooldown_secs = notify_cfg.get("cooldown_seconds", 60)
     elapsed = time.monotonic() - _last_notify_time if _last_notify_time else cooldown_secs + 1
     notify_cooldown_remaining = max(0, int(cooldown_secs - elapsed)) if _last_notify_time else 0
+
+    # Hide the button when the person is home
+    person_entity = notify_cfg.get("person_entity", "")
+    person_home = False
+    if person_entity:
+        person_state = ha.get_state(person_entity)
+        if person_state and person_state.get("state") == "home":
+            person_home = True
+
     notify_button = {
         "available": bool(_get_notify_service()),
+        "person_home": person_home,
         "cooldown_remaining": notify_cooldown_remaining,
         "message": notify_cfg.get("message", "Πάτησε το κουμπί!"),
     }
@@ -520,20 +530,24 @@ def _get_rollers_state() -> dict:
 
     states = ha.get_states(all_entity_ids) if all_entity_ids else {}
 
+    any_moving = False
     groups = []
     for group in roller_groups_cfg:
         entity_ids = group.get("entity_ids", [])
-        # Determine group position from first entity (they should be in sync)
         group_position = None
+        group_moving = False
         for eid in entity_ids:
             st = states.get(eid, {})
+            ha_state = st.get("state", "")
+            if ha_state in ("opening", "closing"):
+                group_moving = True
+                any_moving = True
             pos = st.get("attributes", {}).get("current_position")
-            if pos is not None:
+            if pos is not None and group_position is None:
                 try:
                     group_position = int(pos)
                 except (ValueError, TypeError):
                     pass
-                break
 
         visual_state = _classify_roller_position(group_position)
 
@@ -542,11 +556,13 @@ def _get_rollers_state() -> dict:
             "entity_ids": entity_ids,
             "position": group_position,
             "visual_state": visual_state,
+            "moving": group_moving,
         })
 
     return {
         "roller_groups": groups,
         "roller_presets": roller_presets,
+        "any_moving": any_moving,
     }
 
 
@@ -572,8 +588,7 @@ def index():
 def rollers():
     """Render the rollers control page."""
     state = _get_rollers_state()
-    is_htmx = request.headers.get("HX-Request") == "true"
-    if is_htmx:
+    if request.headers.get("HX-Request") == "true":
         client_version = request.headers.get("X-App-Version", "")
         if client_version and client_version != APP_VERSION:
             resp = make_response("", 200)
@@ -581,6 +596,24 @@ def rollers():
             return resp
         return render_template("partials/rollers_content.html", **state)
     return render_template("rollers.html", **state, app_version=APP_VERSION)
+
+
+@app.route("/rollers/state")
+def rollers_state():
+    """Return roller group states as JSON for JS-driven updates."""
+    state = _get_rollers_state()
+    return jsonify({
+        "groups": [
+            {
+                "name": g["name"],
+                "position": g["position"],
+                "visual_state": g["visual_state"],
+                "moving": g["moving"],
+            }
+            for g in state["roller_groups"]
+        ],
+        "version": APP_VERSION,
+    })
 
 
 @app.route("/manifest.json")
@@ -630,32 +663,40 @@ def action_cover():
     """Set roller/cover position for a group of entities."""
     entity_ids_raw = request.form.get("entity_ids", "")
     position_raw = request.form.get("position", "")
+    action = request.form.get("action", "")
 
     entity_ids = [eid.strip() for eid in entity_ids_raw.split(",") if eid.strip()]
-    try:
-        position = int(position_raw)
-    except (ValueError, TypeError):
-        log.warning("Invalid cover position: %s", position_raw)
-        if request.headers.get("HX-Request") == "true":
-            state = _get_rollers_state()
-            return render_template("partials/rollers_content.html", **state)
-        return _redirect_rollers()
 
-    for eid in entity_ids:
-        if not eid.startswith("cover."):
-            continue
-        if position >= 100:
-            log.info("Opening cover: %s", eid)
-            ha.call_service("cover", "open_cover", {"entity_id": eid})
-        elif position <= 0:
-            log.info("Closing cover: %s", eid)
-            ha.call_service("cover", "close_cover", {"entity_id": eid})
-        else:
-            log.info("Setting cover %s to position %d", eid, position)
-            ha.call_service("cover", "set_cover_position", {
-                "entity_id": eid,
-                "position": position,
-            })
+    if action == "stop":
+        for eid in entity_ids:
+            if eid.startswith("cover."):
+                log.info("Stopping cover: %s", eid)
+                ha.call_service("cover", "stop_cover", {"entity_id": eid})
+    else:
+        try:
+            position = int(position_raw)
+        except (ValueError, TypeError):
+            log.warning("Invalid cover position: %s", position_raw)
+            if request.headers.get("HX-Request") == "true":
+                state = _get_rollers_state()
+                return render_template("partials/rollers_content.html", **state)
+            return _redirect_rollers()
+
+        for eid in entity_ids:
+            if not eid.startswith("cover."):
+                continue
+            if position >= 100:
+                log.info("Opening cover: %s", eid)
+                ha.call_service("cover", "open_cover", {"entity_id": eid})
+            elif position <= 0:
+                log.info("Closing cover: %s", eid)
+                ha.call_service("cover", "close_cover", {"entity_id": eid})
+            else:
+                log.info("Setting cover %s to position %d", eid, position)
+                ha.call_service("cover", "set_cover_position", {
+                    "entity_id": eid,
+                    "position": position,
+                })
 
     if request.headers.get("HX-Request") == "true":
         state = _get_rollers_state()

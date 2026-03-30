@@ -41,25 +41,6 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-    button.htmx-request > * {
-      visibility: hidden;
-    }
-    button.htmx-request {
-      position: relative;
-      pointer-events: none;
-    }
-    button.htmx-request::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      margin: auto;
-      width: 22px;
-      height: 22px;
-      border: 3px solid rgba(255,255,255,0.2);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-    }
 
     /* --- Header --- */
     .rollers-header {
@@ -128,13 +109,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 24px;
-      height: 24px;
-      color: #666;
+      width: 18px;
+      height: 28px;
+      color: #888;
     }
     .roller-state-icon svg {
       width: 100%;
       height: 100%;
+    }
+    .roller-state-diverged {
+      opacity: 0.7;
     }
 
     /* --- Preset Buttons --- */
@@ -174,22 +158,38 @@
       background: #1565c0;
       color: #fff;
     }
-    .roller-preset-btn.htmx-request {
-      opacity: 0.6;
+    /* Pending = target button while motor is running */
+    .roller-preset-btn.pending > * {
+      visibility: hidden;
+    }
+    .roller-preset-btn.pending {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+      background: #1565c0;
+    }
+    .roller-preset-btn.pending::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 22px;
+      height: 22px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
     }
     .preset-icon {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 26px;
-      height: 26px;
+      width: 18px;
+      height: 28px;
     }
     .preset-icon svg {
       width: 100%;
       height: 100%;
-    }
-    .preset-label {
-      line-height: 1.1;
     }
 
     /* --- Auto-Return Bar --- */
@@ -219,15 +219,120 @@
   {% include "partials/rollers_content.html" %}
   <script src="{{ base_path }}/static/htmx.min.js" defer></script>
   <script>
+    var _basePath = '{{ base_path }}';
+    var _appVersion = '{{ app_version }}';
+
     // Send app version on every htmx request
     document.addEventListener('htmx:configRequest', function(e) {
-      e.detail.headers['X-App-Version'] = '{{ app_version }}';
+      e.detail.headers['X-App-Version'] = _appVersion;
     });
+
+    // --- Pending targets: { groupName: positionString } ---
+    var _pendingTargets = {};
+    var _fastPollTimer = null;
+    var _bgPollTimer = null;
+
+    // --- Button click: plain fetch, no htmx ---
+    function onPresetClick(btn) {
+      resetAutoReturn();
+      var group = btn.closest('.roller-group');
+      var groupName = group.getAttribute('data-group');
+      var entityIds = group.getAttribute('data-entities');
+      var position = btn.getAttribute('data-position');
+
+      // Same button pressed again while pending → stop
+      if (_pendingTargets[groupName] === position) {
+        delete _pendingTargets[groupName];
+        btn.classList.remove('pending');
+        sendCoverAction(entityIds, null, 'stop');
+        startFastPoll();
+        return;
+      }
+
+      // New command
+      _pendingTargets[groupName] = position;
+      group.querySelectorAll('.roller-preset-btn').forEach(function(b) {
+        b.classList.remove('pending', 'active');
+      });
+      btn.classList.add('pending');
+      sendCoverAction(entityIds, position, null);
+      startFastPoll();
+    }
+
+    function sendCoverAction(entityIds, position, action) {
+      var fd = new FormData();
+      fd.append('entity_ids', entityIds);
+      if (action) fd.append('action', action);
+      if (position !== null) fd.append('position', position);
+      fetch(_basePath + '/action/cover', { method: 'POST', body: fd });
+    }
+
+    // --- htmx beforeSwap: preserve pending groups ---
+    document.addEventListener('htmx:beforeSwap', function(evt) {
+      if (Object.keys(_pendingTargets).length === 0) return;
+
+      // Parse incoming HTML
+      var tmp = document.createElement('div');
+      tmp.innerHTML = evt.detail.serverResponse;
+      var newPage = tmp.querySelector('#rollers-page');
+      if (!newPage) return;
+
+      // For each pending group, check if still moving in new HTML
+      Object.keys(_pendingTargets).forEach(function(groupName) {
+        var newGroup = newPage.querySelector('.roller-group[data-group="' + groupName + '"]');
+        var oldGroup = document.querySelector('.roller-group[data-group="' + groupName + '"]');
+        if (!newGroup || !oldGroup) return;
+
+        var stillMoving = newGroup.getAttribute('data-moving') === 'true';
+        if (stillMoving) {
+          // Replace new group with current DOM version (preserves spinner)
+          newGroup.parentNode.replaceChild(oldGroup.cloneNode(true), newGroup);
+        } else {
+          // Motor stopped — let the new HTML through, clear pending
+          delete _pendingTargets[groupName];
+        }
+      });
+
+      // Write modified HTML back
+      evt.detail.serverResponse = tmp.innerHTML;
+    });
+
+    // After swap: stop fast poll if nothing pending
+    document.addEventListener('htmx:afterSettle', function() {
+      if (Object.keys(_pendingTargets).length === 0) {
+        // Check if any group is still moving (e.g. from external trigger)
+        var anyMoving = false;
+        document.querySelectorAll('.roller-group[data-moving="true"]').forEach(function() {
+          anyMoving = true;
+        });
+        if (!anyMoving) stopFastPoll();
+      }
+    });
+
+    // --- Polling: JS-driven intervals, htmx does the swap ---
+    function triggerRefresh() {
+      var page = document.getElementById('rollers-page');
+      if (page) htmx.trigger(page, 'manualRefresh');
+    }
+
+    function startFastPoll() {
+      if (_fastPollTimer) return;
+      _fastPollTimer = setInterval(triggerRefresh, 750);
+    }
+
+    function stopFastPoll() {
+      if (_fastPollTimer) {
+        clearInterval(_fastPollTimer);
+        _fastPollTimer = null;
+      }
+    }
+
+    // Background poll every 30s
+    _bgPollTimer = setInterval(triggerRefresh, 30000);
 
     // --- Auto-return timer (60s inactivity → back to home) ---
     var _autoReturnTimeout = null;
     var _autoReturnDuration = 60000;
-    var _basePath = '{{ base_path }}';
 
     function startAutoReturn() {
       var bar = document.getElementById('auto-return-progress');
@@ -255,11 +360,6 @@
 
     // Reset on any touch/click
     document.addEventListener('click', function() {
-      resetAutoReturn();
-    });
-
-    // Also reset on htmx swaps (e.g. after a preset button action)
-    document.addEventListener('htmx:afterSwap', function() {
       resetAutoReturn();
     });
   </script>
