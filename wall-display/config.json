@@ -1,6 +1,6 @@
 {
   "name": "Wall Display Dashboard",
-  "version": "0.36.0",
+  "version": "0.38.0",
   "slug": "wall_display",
   "description": "Lightweight server-rendered dashboard for Shelly Wall Display",
   "homeassistant_api": true,

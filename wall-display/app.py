@@ -584,6 +584,12 @@ def index():
     return render_template("dashboard.html", **state, app_version=APP_VERSION)
 
 
+@app.route("/audio-debug")
+def audio_debug():
+    """Audio/microphone capability debug page."""
+    return render_template("audio_debug.html")
+
+
 @app.route("/rollers")
 def rollers():
     """Render the rollers control page."""
@@ -711,7 +717,10 @@ def action_scene():
     entity_id = request.form.get("entity_id") or ""
     if entity_id.startswith("scene."):
         log.info("Activating scene: %s", entity_id)
-        ha.activate_scene(entity_id)
+        ha.call_service("scene", "turn_on", {
+            "entity_id": entity_id,
+            "transition": 0.8,
+        })
 
     # htmx: return updated dashboard content
     if request.headers.get("HX-Request") == "true":

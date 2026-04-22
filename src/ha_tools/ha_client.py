@@ -130,6 +130,51 @@ class HAClient:
         """Activate a scene."""
         return self.call_service("scene", "turn_on", {"entity_id": entity_id})
 
+    def get_scene_config(self, entity_id: str) -> dict | None:
+        """Get the full config for a UI-created scene (entities + metadata).
+
+        The entity_id should be e.g. 'scene.relax'. The internal scene ID
+        is looked up automatically from the entity state attributes.
+        """
+        state = self.get_state(entity_id)
+        if not state:
+            return None
+        scene_id = state.get("attributes", {}).get("id")
+        if not scene_id:
+            log.error("Scene %s has no internal id (may be YAML-defined)", entity_id)
+            return None
+        return self._request("GET", f"/api/config/scene/config/{scene_id}")
+
+    def update_scene_config(self, entity_id: str, config: dict) -> bool:
+        """Update a UI-created scene config.
+
+        Pass the full config dict (as returned by get_scene_config, modified).
+        The internal scene ID is looked up from the entity state.
+        """
+        state = self.get_state(entity_id)
+        if not state:
+            return False
+        scene_id = state.get("attributes", {}).get("id")
+        if not scene_id:
+            log.error("Scene %s has no internal id (may be YAML-defined)", entity_id)
+            return False
+        result = self._request("POST", f"/api/config/scene/config/{scene_id}", config)
+        return result is not None
+
+    def list_scenes(self) -> list[dict]:
+        """List all scenes with their entity_id, friendly_name, and internal id."""
+        all_states = self.get_all_states()
+        scenes = []
+        for s in all_states:
+            if s["entity_id"].startswith("scene."):
+                scenes.append({
+                    "entity_id": s["entity_id"],
+                    "friendly_name": s["attributes"].get("friendly_name", ""),
+                    "id": s["attributes"].get("id"),
+                    "entity_ids": s["attributes"].get("entity_id", []),
+                })
+        return scenes
+
     def set_climate_temperature(self, entity_id: str, temperature: float) -> bool:
         """Set climate target temperature."""
         return self.call_service("climate", "set_temperature", {

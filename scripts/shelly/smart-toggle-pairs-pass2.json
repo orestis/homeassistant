@@ -1,0 +1,64 @@
+[
+  {
+    "input_entity": "binary_sensor.lights_office_input_0",
+    "light_entities": [
+      "light.grapheio_toikhos"
+    ],
+    "input_friendly_name": "lights-office Input 0",
+    "shelly_device_name": "shelly1g4-7c2c677f6410",
+    "shelly_ip": "192.168.1.180",
+    "light_friendly_name": "Γραφείο τοίχος "
+  },
+  {
+    "input_entity": "binary_sensor.shelly2pmg4_7c2c677b4524_input_0",
+    "light_entities": [
+      "light.paidiko_1"
+    ],
+    "input_friendly_name": "lights-kid-room Input 0",
+    "shelly_device_name": "shelly2pmg4-7c2c677b4524",
+    "shelly_ip": "192.168.1.182",
+    "light_friendly_name": "Παιδικό 1"
+  },
+  {
+    "input_entity": "binary_sensor.shelly2pmg4_7c2c6779fe50_input_0",
+    "light_entities": [
+      "light.saloni_aristera"
+    ],
+    "input_friendly_name": "shelly2pmg4-7c2c6779fe50 Input 0",
+    "shelly_device_name": "shelly2pmg4-7c2c6779fe50",
+    "shelly_ip": "192.168.1.197",
+    "light_friendly_name": "Σαλόνι αριστερά "
+  },
+  {
+    "input_entity": "binary_sensor.shelly2pmg4_7c2c677b223c_input_1",
+    "light_entities": [
+      "light.mpanio_roz_1",
+      "light.pink_2"
+    ],
+    "input_friendly_name": "shelly2pmg4-7c2c677b223c Input 1",
+    "shelly_device_name": "shelly2pmg4-7c2c677b223c",
+    "shelly_ip": "192.168.1.181",
+    "light_friendly_name": "Μπάνιο ροζ 1"
+  },
+  {
+    "input_entity": "binary_sensor.shelly2pmg3_8cbfea9e6e60_input_1",
+    "light_entities": [
+      "light.mpanio_master_1",
+      "light.mpanio_master_2"
+    ],
+    "input_friendly_name": "shelly2pmg3-8cbfea9e6e60 Input 0",
+    "shelly_device_name": "shelly2pmg3-8cbfea9e6e60",
+    "shelly_ip": "192.168.1.194",
+    "light_friendly_name": "Μπάνιο μάστερ 1"
+  },
+  {
+    "input_entity": "binary_sensor.lights_dining_input_0",
+    "light_entities": [
+      "light.kajplats_e27_ws_globe_1055lm"
+    ],
+    "input_friendly_name": "lights-dining Input 0",
+    "shelly_device_name": "shelly1g4-a085e3ca3708",
+    "shelly_ip": "192.168.1.196",
+    "light_friendly_name": "Τραπεζαρία τοίχος"
+  }
+]

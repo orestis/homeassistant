@@ -687,6 +687,23 @@
         _notifyTimer = null;
       }
     });
+
+    // Hidden 5-tap gesture on clock → audio debug page
+    (function() {
+      var taps = 0, timer = null;
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.status-center')) return;
+        e.stopPropagation();
+        taps++;
+        clearTimeout(timer);
+        timer = setTimeout(function() { taps = 0; }, 2000);
+        if (taps >= 5) {
+          taps = 0;
+          clearTimeout(timer);
+          window.location.href = '{{ base_path }}/audio-debug';
+        }
+      }, true);
+    })();
   </script>
 </body>
 </html>

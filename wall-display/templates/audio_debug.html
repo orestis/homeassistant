@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Audio Debug</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      background: #121212;
+      color: #e0e0e0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      overflow-y: auto;
+    }
+    .page { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+
+    /* Back button */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; color: #888; font: inherit;
+      font-size: 14px; cursor: pointer; padding: 4px 0;
+    }
+    .back-btn:active { opacity: 0.6; }
+    .back-btn svg { width: 18px; height: 18px; }
+
+    h1 { font-size: 18px; font-weight: 700; }
+    h2 { font-size: 14px; font-weight: 600; color: #aaa; margin-bottom: 6px; }
+
+    /* Cards */
+    .card {
+      background: #1e1e1e; border-radius: 12px; padding: 12px;
+    }
+
+    /* Capability rows */
+    .cap-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 4px 0; font-size: 13px; border-bottom: 1px solid #2a2a2a;
+    }
+    .cap-row:last-child { border-bottom: none; }
+    .cap-label { color: #aaa; }
+    .cap-val { font-weight: 600; }
+    .cap-val.ok { color: #66bb6a; }
+    .cap-val.fail { color: #ef5350; }
+    .cap-val.na { color: #666; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px 16px; border: none; border-radius: 10px;
+      font: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer; color: #fff; transition: opacity 0.1s, transform 0.1s;
+      -webkit-user-select: none; user-select: none;
+    }
+    .btn:active { opacity: 0.7; transform: scale(0.96); }
+    .btn:disabled { opacity: 0.35; cursor: default; transform: none; }
+    .btn-primary { background: #1565c0; }
+    .btn-danger { background: #c62828; }
+    .btn-success { background: #2e7d32; }
+    .btn-secondary { background: #333; color: #aaa; }
+
+    /* Slider */
+    .slider-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+    .slider-row label { font-size: 13px; color: #888; white-space: nowrap; }
+    input[type="range"] {
+      flex: 1; -webkit-appearance: none; height: 6px;
+      background: #333; border-radius: 3px; outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 20px; height: 20px;
+      background: #1565c0; border-radius: 50%; cursor: pointer;
+    }
+    .slider-val { font-size: 13px; color: #aaa; min-width: 36px; text-align: right; }
+
+    /* Level meter */
+    .meter-container {
+      height: 20px; background: #2a2a2a; border-radius: 4px;
+      overflow: hidden; margin-top: 8px;
+    }
+    .meter-bar {
+      height: 100%; width: 0%; border-radius: 4px;
+      background: linear-gradient(90deg, #66bb6a, #ffee58, #ef5350);
+      transition: width 0.05s linear;
+    }
+    .mic-info { font-size: 12px; color: #666; margin-top: 4px; }
+
+    /* Recording */
+    .rec-status {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: #aaa; margin-top: 8px;
+    }
+    .rec-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #c62828; animation: rec-pulse 1s ease-in-out infinite;
+    }
+    @keyframes rec-pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* Audio element */
+    audio { width: 100%; margin-top: 8px; border-radius: 8px; }
+
+    /* Log console */
+    .log-console {
+      background: #0d0d0d; border-radius: 8px; padding: 8px;
+      font-family: "SF Mono", "Menlo", "Consolas", monospace;
+      font-size: 11px; color: #888; max-height: 180px;
+      overflow-y: auto; line-height: 1.5;
+    }
+    .log-console .log-error { color: #ef5350; }
+    .log-console .log-ok { color: #66bb6a; }
+    .log-console .log-info { color: #64b5f6; }
+    .log-console .log-warn { color: #ffb74d; }
+
+    /* User agent */
+    .ua-text { font-size: 11px; color: #555; word-break: break-all; margin-top: 4px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div>
+    <a class="back-btn" href="{{ base_path }}/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      Dashboard
+    </a>
+    <h1>🔊 Audio Debug</h1>
+  </div>
+
+  <!-- Browser Capabilities -->
+  <div class="card">
+    <h2>Browser Capabilities</h2>
+    <div id="caps"></div>
+    <div class="ua-text" id="ua"></div>
+  </div>
+
+  <!-- Speaker Test -->
+  <div class="card">
+    <h2>Speaker Test</h2>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-tone" onclick="playTone()">▶ Play Test Tone</button>
+    </div>
+    <div class="slider-row">
+      <label>Volume</label>
+      <input type="range" id="volume" min="0" max="100" value="50">
+      <span class="slider-val" id="vol-val">50%</span>
+    </div>
+  </div>
+
+  <!-- Microphone Test -->
+  <div class="card">
+    <h2>Microphone Access</h2>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-mic" onclick="accessMic()">🎤 Access Microphone</button>
+      <button class="btn btn-secondary" id="btn-mic-stop" onclick="stopMic()" disabled>Stop</button>
+    </div>
+    <div class="meter-container"><div class="meter-bar" id="mic-meter"></div></div>
+    <div class="mic-info" id="mic-info"></div>
+  </div>
+
+  <!-- Record & Playback -->
+  <div class="card">
+    <h2>Record &amp; Playback</h2>
+    <div class="btn-row">
+      <button class="btn btn-danger" id="btn-rec" onclick="startRec()" disabled>⏺ Record</button>
+      <button class="btn btn-secondary" id="btn-rec-stop" onclick="stopRec()" disabled>⏹ Stop</button>
+      <button class="btn btn-success" id="btn-play" onclick="playRec()" disabled>▶ Play</button>
+    </div>
+    <div class="rec-status" id="rec-status" style="display:none">
+      <div class="rec-dot"></div>
+      <span id="rec-timer">0.0s</span>
+    </div>
+    <audio id="audio-playback" controls style="display:none"></audio>
+  </div>
+
+  <!-- Log Console -->
+  <div class="card">
+    <h2>Log</h2>
+    <div class="log-console" id="log"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // --- Logging ---
+  var logEl = document.getElementById('log');
+  function log(msg, cls) {
+    cls = cls || 'log-info';
+    var t = new Date().toLocaleTimeString('en-GB', {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    var line = document.createElement('div');
+    line.className = cls;
+    line.textContent = t + '  ' + msg;
+    logEl.appendChild(line);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+  window._dbgLog = log;
+
+  // --- Browser Capabilities ---
+  var caps = [
+    ['Secure context', function() { return window.isSecureContext; }],
+    ['AudioContext', function() { return !!(window.AudioContext || window.webkitAudioContext); }],
+    ['navigator.mediaDevices', function() { return !!navigator.mediaDevices; }],
+    ['getUserMedia', function() { return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia); }],
+    ['MediaRecorder', function() { return !!window.MediaRecorder; }],
+    ['enumerateDevices', function() { return !!(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices); }],
+  ];
+  var capsEl = document.getElementById('caps');
+  caps.forEach(function(c) {
+    var ok;
+    try { ok = c[1](); } catch(e) { ok = false; }
+    var row = document.createElement('div');
+    row.className = 'cap-row';
+    row.innerHTML = '<span class="cap-label">' + c[0] + '</span>' +
+      '<span class="cap-val ' + (ok ? 'ok' : 'fail') + '">' + (ok ? '✅ Yes' : '❌ No') + '</span>';
+    capsEl.appendChild(row);
+    log(c[0] + ': ' + (ok ? 'available' : 'NOT available'), ok ? 'log-ok' : 'log-error');
+  });
+
+  // Enumerate devices
+  if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+    navigator.mediaDevices.enumerateDevices().then(function(devices) {
+      var audio_in = devices.filter(function(d) { return d.kind === 'audioinput'; });
+      var audio_out = devices.filter(function(d) { return d.kind === 'audiooutput'; });
+      log('Audio inputs: ' + audio_in.length + ', outputs: ' + audio_out.length, 'log-info');
+      audio_in.forEach(function(d, i) { log('  mic[' + i + ']: ' + (d.label || '(no label — permission needed)'), 'log-info'); });
+      audio_out.forEach(function(d, i) { log('  spk[' + i + ']: ' + (d.label || '(no label)'), 'log-info'); });
+    }).catch(function(e) { log('enumerateDevices error: ' + e.message, 'log-error'); });
+  }
+
+  document.getElementById('ua').textContent = navigator.userAgent;
+
+  // --- Audio Context (lazy) ---
+  var audioCtx = null;
+  function getAudioCtx() {
+    if (!audioCtx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AC();
+      log('AudioContext created (sampleRate: ' + audioCtx.sampleRate + ')', 'log-ok');
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    return audioCtx;
+  }
+
+  // --- Volume ---
+  var volSlider = document.getElementById('volume');
+  var volVal = document.getElementById('vol-val');
+  volSlider.addEventListener('input', function() {
+    volVal.textContent = volSlider.value + '%';
+  });
+
+  // --- Speaker Test ---
+  var toneBtn = document.getElementById('btn-tone');
+  window.playTone = function() {
+    try {
+      var ctx = getAudioCtx();
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 440;
+      gain.gain.value = volSlider.value / 100;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 1);
+      toneBtn.disabled = true;
+      toneBtn.textContent = '🔊 Playing...';
+      log('Playing 440Hz tone for 1s (volume: ' + volSlider.value + '%)', 'log-info');
+      osc.onended = function() {
+        toneBtn.disabled = false;
+        toneBtn.textContent = '▶ Play Test Tone';
+        log('Tone finished', 'log-ok');
+      };
+    } catch(e) {
+      log('Speaker error: ' + e.message, 'log-error');
+    }
+  };
+
+  // --- Microphone ---
+  var micStream = null;
+  var micAnalyser = null;
+  var micAnimFrame = null;
+  var micMeter = document.getElementById('mic-meter');
+  var micInfo = document.getElementById('mic-info');
+  var btnMic = document.getElementById('btn-mic');
+  var btnMicStop = document.getElementById('btn-mic-stop');
+  var btnRec = document.getElementById('btn-rec');
+
+  window.accessMic = function() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      log('getUserMedia not available', 'log-error');
+      return;
+    }
+    btnMic.disabled = true;
+    btnMic.textContent = '🎤 Requesting...';
+    log('Requesting microphone access...', 'log-info');
+
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+      micStream = stream;
+      log('Microphone access GRANTED', 'log-ok');
+
+      var track = stream.getAudioTracks()[0];
+      var settings = track.getSettings();
+      var infoText = 'Track: ' + track.label +
+        ' | Rate: ' + (settings.sampleRate || '?') +
+        ' | Channels: ' + (settings.channelCount || '?');
+      micInfo.textContent = infoText;
+      log(infoText, 'log-info');
+
+      // Re-enumerate to get labels now that permission is granted
+      navigator.mediaDevices.enumerateDevices().then(function(devices) {
+        var audio_in = devices.filter(function(d) { return d.kind === 'audioinput'; });
+        audio_in.forEach(function(d, i) { log('  mic[' + i + ']: ' + (d.label || '(unnamed)'), 'log-info'); });
+      });
+
+      var ctx = getAudioCtx();
+      var source = ctx.createMediaStreamSource(stream);
+      micAnalyser = ctx.createAnalyser();
+      micAnalyser.fftSize = 256;
+      source.connect(micAnalyser);
+
+      // Live level meter
+      var buf = new Uint8Array(micAnalyser.frequencyBinCount);
+      function updateMeter() {
+        micAnalyser.getByteFrequencyData(buf);
+        var sum = 0;
+        for (var i = 0; i < buf.length; i++) sum += buf[i];
+        var avg = sum / buf.length;
+        var pct = Math.min(100, (avg / 128) * 100);
+        micMeter.style.width = pct + '%';
+        micAnimFrame = requestAnimationFrame(updateMeter);
+      }
+      updateMeter();
+
+      btnMic.textContent = '🎤 Mic Active';
+      btnMicStop.disabled = false;
+      btnRec.disabled = false;
+    }).catch(function(e) {
+      log('Microphone access DENIED: ' + e.message, 'log-error');
+      btnMic.disabled = false;
+      btnMic.textContent = '🎤 Access Microphone';
+      micInfo.textContent = 'Permission denied: ' + e.message;
+    });
+  };
+
+  window.stopMic = function() {
+    if (micAnimFrame) { cancelAnimationFrame(micAnimFrame); micAnimFrame = null; }
+    if (micStream) {
+      micStream.getTracks().forEach(function(t) { t.stop(); });
+      micStream = null;
+    }
+    micMeter.style.width = '0%';
+    micInfo.textContent = '';
+    btnMic.disabled = false;
+    btnMic.textContent = '🎤 Access Microphone';
+    btnMicStop.disabled = true;
+    btnRec.disabled = true;
+    log('Microphone stopped', 'log-info');
+  };
+
+  // --- Record & Playback ---
+  var mediaRecorder = null;
+  var recordedChunks = [];
+  var recStartTime = 0;
+  var recTimerInterval = null;
+  var MAX_REC_SECONDS = 10;
+  var recStatus = document.getElementById('rec-status');
+  var recTimer = document.getElementById('rec-timer');
+  var btnRecStop = document.getElementById('btn-rec-stop');
+  var btnPlay = document.getElementById('btn-play');
+  var audioPlayback = document.getElementById('audio-playback');
+
+  window.startRec = function() {
+    if (!micStream) { log('No mic stream — access mic first', 'log-warn'); return; }
+
+    recordedChunks = [];
+    // Find a supported MIME type
+    var mimeType = '';
+    var candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus', 'audio/mp4', ''];
+    for (var i = 0; i < candidates.length; i++) {
+      if (!candidates[i] || MediaRecorder.isTypeSupported(candidates[i])) {
+        mimeType = candidates[i];
+        break;
+      }
+    }
+    log('Starting recording (format: ' + (mimeType || 'default') + ')', 'log-info');
+
+    try {
+      var options = mimeType ? { mimeType: mimeType } : {};
+      mediaRecorder = new MediaRecorder(micStream, options);
+    } catch(e) {
+      log('MediaRecorder error: ' + e.message, 'log-error');
+      return;
+    }
+
+    mediaRecorder.ondataavailable = function(e) {
+      if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+    };
+    mediaRecorder.onstop = function() {
+      clearInterval(recTimerInterval);
+      recStatus.style.display = 'none';
+      btnRec.disabled = false;
+      btnRecStop.disabled = true;
+
+      if (recordedChunks.length === 0) {
+        log('Recording empty — no data captured', 'log-warn');
+        return;
+      }
+
+      var blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+      var url = URL.createObjectURL(blob);
+      audioPlayback.src = url;
+      audioPlayback.style.display = '';
+      btnPlay.disabled = false;
+
+      var dur = ((Date.now() - recStartTime) / 1000).toFixed(1);
+      log('Recording stopped — ' + dur + 's, ' + (blob.size / 1024).toFixed(1) + ' KB', 'log-ok');
+    };
+    mediaRecorder.onerror = function(e) {
+      log('MediaRecorder error: ' + (e.error ? e.error.message : 'unknown'), 'log-error');
+    };
+
+    mediaRecorder.start(100); // collect data every 100ms
+    recStartTime = Date.now();
+    recStatus.style.display = 'flex';
+    btnRec.disabled = true;
+    btnRecStop.disabled = false;
+    btnPlay.disabled = true;
+
+    recTimerInterval = setInterval(function() {
+      var elapsed = (Date.now() - recStartTime) / 1000;
+      recTimer.textContent = elapsed.toFixed(1) + 's';
+      if (elapsed >= MAX_REC_SECONDS) {
+        log('Max recording time (' + MAX_REC_SECONDS + 's) reached', 'log-warn');
+        stopRec();
+      }
+    }, 100);
+  };
+
+  window.stopRec = function() {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
+    }
+  };
+
+  window.playRec = function() {
+    if (audioPlayback.src) {
+      audioPlayback.play();
+      log('Playing back recording...', 'log-info');
+    }
+  };
+
+  log('Audio debug page loaded', 'log-ok');
+})();
+</script>
+</body>
+</html>

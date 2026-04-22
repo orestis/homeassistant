@@ -1,0 +1,58 @@
+{
+  "scene.morning": {
+    "name": "Morning",
+    "lights": {
+      "light.dimmer_saloni": { "state": "on", "brightness": 178 },
+      "light.photagogos": { "state": "on", "brightness": 178, "color_temp_kelvin": 3000 },
+      "light.khruso_portatiph": { "state": "on", "brightness": 178, "color_temp_kelvin": 3000 },
+      "light.grapheio_toikhos": { "state": "on", "brightness": 178, "color_temp_kelvin": 3000 },
+      "light.mpoumpka_grapheio": { "state": "on", "brightness": 178, "color_temp_kelvin": 3000 },
+      "light.mpoumpka_teleorase": { "state": "on", "brightness": 178, "color_temp_kelvin": 3000 },
+      "light.saloni_aristera": { "state": "on", "brightness": 178, "color_temp_kelvin": 3000 },
+      "light.toikhos_eisodou": { "state": "on", "brightness": 178 },
+      "light.kajplats_e27_ws_globe_1055lm": { "state": "on", "brightness": 178, "color_temp_kelvin": 3000 }
+    }
+  },
+  "scene.afternoon": {
+    "name": "Afternoon",
+    "lights": {
+      "light.dimmer_saloni": { "state": "off" },
+      "light.photagogos": { "state": "on", "brightness": 128, "color_temp_kelvin": 2400 },
+      "light.khruso_portatiph": { "state": "on", "brightness": 128, "color_temp_kelvin": 2400 },
+      "light.grapheio_toikhos": { "state": "on", "brightness": 128, "color_temp_kelvin": 2400 },
+      "light.mpoumpka_grapheio": { "state": "on", "brightness": 128, "color_temp_kelvin": 2400 },
+      "light.mpoumpka_teleorase": { "state": "on", "brightness": 128, "color_temp_kelvin": 2400 },
+      "light.saloni_aristera": { "state": "on", "brightness": 128, "color_temp_kelvin": 2400 },
+      "light.toikhos_eisodou": { "state": "off" },
+      "light.kajplats_e27_ws_globe_1055lm": { "state": "on", "brightness": 128, "color_temp_kelvin": 2400 }
+    }
+  },
+  "scene.relax": {
+    "name": "Relax",
+    "lights": {
+      "light.dimmer_saloni": { "state": "off" },
+      "light.photagogos": { "state": "on", "brightness": 77, "color_temp_kelvin": 2202 },
+      "light.khruso_portatiph": { "state": "on", "brightness": 77, "color_temp_kelvin": 2202 },
+      "light.grapheio_toikhos": { "state": "on", "brightness": 77, "color_temp_kelvin": 2202 },
+      "light.mpoumpka_grapheio": { "state": "on", "brightness": 77, "color_temp_kelvin": 2202 },
+      "light.mpoumpka_teleorase": { "state": "on", "brightness": 77, "color_temp_kelvin": 2202 },
+      "light.saloni_aristera": { "state": "on", "brightness": 77, "color_temp_kelvin": 2202 },
+      "light.toikhos_eisodou": { "state": "off" },
+      "light.kajplats_e27_ws_globe_1055lm": { "state": "on", "brightness": 77, "color_temp_kelvin": 2202 }
+    }
+  },
+  "scene.lights_off": {
+    "name": "Lights off",
+    "lights": {
+      "light.dimmer_saloni": { "state": "off" },
+      "light.photagogos": { "state": "off" },
+      "light.khruso_portatiph": { "state": "off" },
+      "light.grapheio_toikhos": { "state": "off" },
+      "light.mpoumpka_grapheio": { "state": "off" },
+      "light.mpoumpka_teleorase": { "state": "off" },
+      "light.saloni_aristera": { "state": "off" },
+      "light.toikhos_eisodou": { "state": "off" },
+      "light.kajplats_e27_ws_globe_1055lm": { "state": "off" }
+    }
+  }
+}
