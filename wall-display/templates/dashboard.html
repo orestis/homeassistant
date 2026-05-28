@@ -381,6 +381,43 @@
     .climate-status.heating {
       color: #ff8a65;
     }
+    .climate-status.cooling {
+      color: #4fc3f7;
+    }
+    .cooling-unit-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 6px 0;
+      border-radius: 6px;
+      background: #1e88e5;
+      color: #fff;
+      font-family: inherit;
+      line-height: 1.1;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .cooling-unit-btn.off {
+      background: #2a2a2a;
+      color: #777;
+    }
+    .cooling-unit-name {
+      font-size: var(--text-xs);
+      font-weight: 500;
+      opacity: 0.85;
+    }
+    .cooling-unit-setpoint {
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+    .cooling-unit-missing {
+      margin-left: 3px;
+      color: #ffb74d;
+      font-size: var(--text-xs);
+    }
     .climate-water {
       margin-left: auto;
     }

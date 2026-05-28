@@ -135,6 +135,15 @@ def _get_dashboard_state() -> dict:
             if eid:
                 entity_ids.append(eid)
 
+    # Cooling fleet (split AC units)
+    cooling_cfg = config.get("cooling_fleet", {})
+    cooling_units_cfg = cooling_cfg.get("units", [])
+    for u in cooling_units_cfg:
+        if u.get("climate"):
+            entity_ids.append(u["climate"])
+        if u.get("daily_kwh"):
+            entity_ids.append(u["daily_kwh"])
+
     # WD correction entities
     wd_cfg = config.get("wd_correction", {})
     for key in ("base_offset_entity", "solar_correction_entity"):
@@ -172,6 +181,33 @@ def _get_dashboard_state() -> dict:
     if climate_cfg.get("daily_consumption"):
         climate_daily_kwh = _parse_float(
             states.get(climate_cfg["daily_consumption"], {}))
+
+    # Parse cooling fleet state
+    cooling_units = []
+    cooling_total_kwh = 0.0
+    cooling_any_on = False
+    _ACTIVE_MODES = {"cool", "dry", "fan_only", "heat", "heat_cool", "auto"}
+    for u in cooling_units_cfg:
+        cs = states.get(u.get("climate", ""), {})
+        mode = cs.get("state") if cs else None
+        attrs = cs.get("attributes", {}) if cs else {}
+        setpoint = attrs.get("temperature")
+        kwh_state = states.get(u.get("daily_kwh", ""), {}) if u.get("daily_kwh") else {}
+        kwh_val = _parse_float(kwh_state)
+        kwh_raw = kwh_state.get("state") if kwh_state else None
+        kwh_missing = u.get("daily_kwh") and (kwh_val is None or kwh_raw in ("unavailable", "unknown"))
+        is_on = mode in _ACTIVE_MODES
+        if is_on:
+            cooling_any_on = True
+        if kwh_val is not None:
+            cooling_total_kwh += kwh_val
+        cooling_units.append({
+            "name": u.get("name", ""),
+            "mode": mode,
+            "setpoint": setpoint,
+            "is_on": is_on,
+            "kwh_missing": bool(kwh_missing),
+        })
 
     # Generate offset button list with colors
     min_val = climate_cfg.get("min", -10)
@@ -371,6 +407,11 @@ def _get_dashboard_state() -> dict:
             "min": climate_cfg.get("min", -10),
             "max": climate_cfg.get("max", 10),
             "step": climate_cfg.get("step", 1),
+        },
+        "cooling_fleet": {
+            "units": cooling_units,
+            "any_on": cooling_any_on,
+            "total_daily_kwh": cooling_total_kwh,
         },
         "offset_buttons": offset_buttons,
         "scenes": scene_list,

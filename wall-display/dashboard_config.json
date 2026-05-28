@@ -26,6 +26,31 @@
     "button_values": [-10, -7, -5, -3, 0, 3, 5, 7, 10]
   },
 
+  "cooling_fleet": {
+    "units": [
+      {
+        "name": "Μάστερ",
+        "climate": "climate.daikinap68496_room_temperature",
+        "daily_kwh": "sensor.daikinap68496_climatecontrol_cooling_daily_electrical_consumption"
+      },
+      {
+        "name": "Παιδικό",
+        "climate": "climate.paidiko_room_temperature",
+        "daily_kwh": "sensor.paidiko_climatecontrol_cooling_daily_electrical_consumption"
+      },
+      {
+        "name": "Γραφείο",
+        "climate": "climate.grapheio_room_temperature",
+        "daily_kwh": "sensor.grapheio_climatecontrol_cooling_daily_electrical_consumption"
+      },
+      {
+        "name": "Σαλόνι",
+        "climate": "climate.daikinap79601_room_temperature",
+        "daily_kwh": "sensor.daikinap79601_climatecontrol_cooling_daily_electrical_consumption"
+      }
+    ]
+  },
+
   "wd_correction": {
     "base_offset_entity": "input_number.heating_base_offset",
     "solar_correction_entity": "input_number.wd_solar_correction"

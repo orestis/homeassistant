@@ -231,4 +231,25 @@
     </div>
   </div>
   {% endif %}
+
+  {# --- Cooling fleet (bottom) — only shown when any split AC is on --- #}
+  {% if cooling_fleet and cooling_fleet.any_on %}
+  <div class="climate-bottom">
+    <div class="climate-info">
+      <span class="climate-status cooling">❄️ Ψύξη</span>
+      <span class="climate-consumption"><svg class="icon-consumption" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M13 6l-5 6h4.5l-.5 6 5-7h-4.5L13 6z" fill="currentColor" stroke="none"/></svg>{{ "%.1f" | format(cooling_fleet.total_daily_kwh) }} kWh</span>
+    </div>
+    <div class="climate-buttons">
+      {% for u in cooling_fleet.units %}
+      <div class="cooling-unit-btn{% if not u.is_on %} off{% endif %}">
+        <span class="cooling-unit-name">{{ u.name }}</span>
+        <span class="cooling-unit-setpoint">
+          {% if u.setpoint is not none %}{{ "%.0f" | format(u.setpoint) }}°{% else %}—{% endif %}
+          {% if u.kwh_missing %}<span class="cooling-unit-missing" title="No consumption data">⚠</span>{% endif %}
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
 </div>
