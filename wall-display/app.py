@@ -686,6 +686,14 @@ def _get_ac_unit_state(unit_id: str) -> dict | None:
     kwh_val = _parse_float(ha.get_state(unit["daily_kwh"])) if unit.get("daily_kwh") else None
 
     default_setpoint = cooling_cfg.get("sleep_setpoint", 26)
+    setpoint = attrs.get("temperature")
+    lo = attrs.get("min_temp", _AC_MIN)
+    hi = attrs.get("max_temp", _AC_MAX)
+    temp_buttons = [
+        {"value": v, "active": (setpoint is not None and round(setpoint) == v)}
+        for v in cooling_cfg.get("temp_buttons", [22, 23, 24, 25, 26, 27, 28])
+        if lo <= v <= hi
+    ]
     return {
         "id": unit_id,
         "name": unit.get("name", ""),
@@ -693,11 +701,12 @@ def _get_ac_unit_state(unit_id: str) -> dict | None:
         "available": available,
         "is_on": available and mode in _AC_ACTIVE_MODES,
         "mode": mode,
-        "setpoint": attrs.get("temperature"),
+        "setpoint": setpoint,
         "current": attrs.get("current_temperature"),
-        "min": attrs.get("min_temp", _AC_MIN),
-        "max": attrs.get("max_temp", _AC_MAX),
+        "min": lo,
+        "max": hi,
         "step": attrs.get("target_temp_step", _AC_STEP),
+        "temp_buttons": temp_buttons,
         "fan": attrs.get("fan_mode"),
         "swing": attrs.get("swing_mode"),
         "daily_kwh": kwh_val,

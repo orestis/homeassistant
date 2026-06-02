@@ -163,6 +163,42 @@
     .ac-temp-target { font-size: var(--text-2xl); font-weight: 800; color: #fff; }
     .ac-temp-current { font-size: var(--text-sm); color: #888; margin-top: 2px; }
 
+    /* --- Temperature presets --- */
+    .ac-temp-buttons {
+      display: flex;
+      gap: 3px;
+    }
+    .ac-temp-buttons .climate-val-btn {
+      flex: 1;
+    }
+    .climate-val-btn {
+      padding: 14px 0;
+      border: none;
+      border-radius: 8px;
+      background: #2a2a2a;
+      color: #fff;
+      font-family: inherit;
+      font-size: var(--text-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.1s, transform 0.1s;
+      -webkit-user-select: none;
+      user-select: none;
+      opacity: 0.6;
+    }
+    .climate-val-btn.active {
+      opacity: 1;
+      outline: 2px solid #fff;
+      outline-offset: -2px;
+      transform: scale(1.05);
+    }
+    .climate-val-btn:active {
+      transform: scale(0.92);
+    }
+    .climate-val-btn.htmx-request {
+      opacity: 0.6;
+    }
+
     /* --- Sections (timer) --- */
     .ac-section {
       background: #1a1a1a;

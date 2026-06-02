@@ -55,6 +55,23 @@
     ><span>+</span></button>
   </div>
 
+  {# --- Temperature presets (fast jump to a whole-degree target) --- #}
+  {% if ac.temp_buttons %}
+  <div class="ac-temp-buttons">
+    {% for btn in ac.temp_buttons %}
+    <button
+      type="button"
+      class="climate-val-btn{% if btn.active %} active{% endif %}"
+      hx-post="{{ base_path }}/action/ac"
+      hx-vals='{"unit_id": "{{ ac.id }}", "action": "temp", "value": "{{ btn.value }}"}'
+      hx-target="#ac-page"
+      hx-swap="outerHTML"
+      hx-disabled-elt="this"
+    ><span>{{ btn.value }}°</span></button>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   {# --- Off-timer --- #}
   <div class="ac-section{% if not ac.is_on %} disabled{% endif %}">
     <div class="ac-section-title">
