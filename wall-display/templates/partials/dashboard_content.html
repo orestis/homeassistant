@@ -232,22 +232,26 @@
   </div>
   {% endif %}
 
-  {# --- Cooling fleet (bottom) — only shown when any split AC is on --- #}
-  {% if cooling_fleet and cooling_fleet.any_on %}
+  {# --- Cooling fleet (bottom) — shown when the heat pump is not heating; #}
+  {#     each unit links to its own control page (on/off, temp, timer, sleep) --- #}
+  {% if show_cooling and cooling_fleet and cooling_fleet.units %}
   <div class="climate-bottom">
     <div class="climate-info">
       <span class="climate-status cooling">❄️ Ψύξη</span>
+      {% if cooling_fleet.any_on %}
       <span class="climate-consumption"><svg class="icon-consumption" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M13 6l-5 6h4.5l-.5 6 5-7h-4.5L13 6z" fill="currentColor" stroke="none"/></svg>{{ "%.1f" | format(cooling_fleet.total_daily_kwh) }} kWh</span>
+      {% endif %}
     </div>
     <div class="climate-buttons">
       {% for u in cooling_fleet.units %}
-      <div class="cooling-unit-btn{% if not u.is_on %} off{% endif %}">
+      <a href="{{ base_path }}/ac/{{ u.id }}" class="cooling-unit-btn{% if not u.is_on %} off{% endif %}">
         <span class="cooling-unit-name">{{ u.name }}</span>
         <span class="cooling-unit-setpoint">
-          {% if u.setpoint is not none %}{{ "%.0f" | format(u.setpoint) }}°{% else %}—{% endif %}
+          {% if not u.available %}—{% elif u.is_on and u.setpoint is not none %}{{ "%.0f" | format(u.setpoint) }}°{% elif u.is_on %}On{% else %}Off{% endif %}
+          {% if u.timer_active and u.timer_remaining_min is not none %}<span class="cooling-unit-timer">⏱{{ u.timer_remaining_min }}΄</span>{% endif %}
           {% if u.kwh_missing %}<span class="cooling-unit-missing" title="No consumption data">⚠</span>{% endif %}
         </span>
-      </div>
+      </a>
       {% endfor %}
     </div>
   </div>

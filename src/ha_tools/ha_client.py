@@ -182,6 +182,27 @@ class HAClient:
             "temperature": temperature,
         })
 
+    def set_hvac_mode(self, entity_id: str, hvac_mode: str) -> bool:
+        """Set climate HVAC mode (e.g. 'cool', 'off')."""
+        return self.call_service("climate", "set_hvac_mode", {
+            "entity_id": entity_id,
+            "hvac_mode": hvac_mode,
+        })
+
+    def set_fan_mode(self, entity_id: str, fan_mode: str) -> bool:
+        """Set climate fan mode (e.g. 'quiet', 'auto')."""
+        return self.call_service("climate", "set_fan_mode", {
+            "entity_id": entity_id,
+            "fan_mode": fan_mode,
+        })
+
+    def set_swing_mode(self, entity_id: str, swing_mode: str) -> bool:
+        """Set climate swing mode (e.g. 'windnice' = Comfort Airflow)."""
+        return self.call_service("climate", "set_swing_mode", {
+            "entity_id": entity_id,
+            "swing_mode": swing_mode,
+        })
+
     def set_input_number(self, entity_id: str, value: float) -> bool:
         """Set an input_number entity value."""
         return self.call_service("input_number", "set_value", {

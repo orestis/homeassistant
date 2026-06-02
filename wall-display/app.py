@@ -143,6 +143,8 @@ def _get_dashboard_state() -> dict:
             entity_ids.append(u["climate"])
         if u.get("daily_kwh"):
             entity_ids.append(u["daily_kwh"])
+        if u.get("timer"):
+            entity_ids.append(u["timer"])
 
     # WD correction entities
     wd_cfg = config.get("wd_correction", {})
@@ -182,30 +184,41 @@ def _get_dashboard_state() -> dict:
         climate_daily_kwh = _parse_float(
             states.get(climate_cfg["daily_consumption"], {}))
 
+    # Heating is "active" → show heating row; otherwise show the cooling row.
+    # The two are seasonally mutually exclusive on this system.
+    heating_active = bool(climate_action and climate_action not in ("off", "idle"))
+    show_cooling = not heating_active
+
     # Parse cooling fleet state
     cooling_units = []
     cooling_total_kwh = 0.0
     cooling_any_on = False
-    _ACTIVE_MODES = {"cool", "dry", "fan_only", "heat", "heat_cool", "auto"}
     for u in cooling_units_cfg:
         cs = states.get(u.get("climate", ""), {})
         mode = cs.get("state") if cs else None
         attrs = cs.get("attributes", {}) if cs else {}
         setpoint = attrs.get("temperature")
+        available = mode not in (None, "unavailable", "unknown")
         kwh_state = states.get(u.get("daily_kwh", ""), {}) if u.get("daily_kwh") else {}
         kwh_val = _parse_float(kwh_state)
         kwh_raw = kwh_state.get("state") if kwh_state else None
         kwh_missing = u.get("daily_kwh") and (kwh_val is None or kwh_raw in ("unavailable", "unknown"))
-        is_on = mode in _ACTIVE_MODES
+        is_on = available and mode in _AC_ACTIVE_MODES
         if is_on:
             cooling_any_on = True
         if kwh_val is not None:
             cooling_total_kwh += kwh_val
+        timer_state = states.get(u.get("timer", ""), {}) if u.get("timer") else {}
         cooling_units.append({
+            "id": u.get("id", ""),
             "name": u.get("name", ""),
             "mode": mode,
             "setpoint": setpoint,
             "is_on": is_on,
+            "available": available,
+            "sleep": bool(u.get("sleep")),
+            "timer_active": timer_state.get("state") == "active",
+            "timer_remaining_min": _timer_remaining_min(timer_state),
             "kwh_missing": bool(kwh_missing),
         })
 
@@ -294,17 +307,7 @@ def _get_dashboard_state() -> dict:
         bypass_on = wh_bypass.get("state") == "on"
 
         # Compute remaining minutes from timer's finishes_at attribute
-        remaining_min = None
-        if timer_active:
-            finishes_at = wh_timer.get("attributes", {}).get("finishes_at", "")
-            if finishes_at:
-                try:
-                    finish_dt = datetime.fromisoformat(finishes_at)
-                    now_utc = datetime.now(timezone.utc)
-                    remaining_sec = (finish_dt - now_utc).total_seconds()
-                    remaining_min = max(0, int(remaining_sec / 60))
-                except (ValueError, TypeError):
-                    pass
+        remaining_min = _timer_remaining_min(wh_timer)
 
         water_heater = {
             "switch_entity": wh_cfg["switch_entity"],
@@ -408,6 +411,7 @@ def _get_dashboard_state() -> dict:
             "max": climate_cfg.get("max", 10),
             "step": climate_cfg.get("step", 1),
         },
+        "show_cooling": show_cooling,
         "cooling_fleet": {
             "units": cooling_units,
             "any_on": cooling_any_on,
@@ -536,6 +540,25 @@ def _parse_float(state_dict: dict) -> float | None:
         return None
 
 
+# HVAC modes that count as "the unit is doing something" (i.e. powered on).
+_AC_ACTIVE_MODES = {"cool", "dry", "fan_only", "heat", "heat_cool", "auto"}
+
+
+def _timer_remaining_min(timer_state: dict) -> int | None:
+    """Minutes left on an active HA timer, from its ``finishes_at`` attribute."""
+    if not timer_state or timer_state.get("state") != "active":
+        return None
+    finishes_at = timer_state.get("attributes", {}).get("finishes_at", "")
+    if not finishes_at:
+        return None
+    try:
+        finish_dt = datetime.fromisoformat(finishes_at)
+        remaining_sec = (finish_dt - datetime.now(timezone.utc)).total_seconds()
+        return max(0, int(remaining_sec / 60))
+    except (ValueError, TypeError):
+        return None
+
+
 # ---------------------------------------------------------------------------
 # Roller state helpers
 # ---------------------------------------------------------------------------
@@ -607,6 +630,86 @@ def _get_rollers_state() -> dict:
     }
 
 
+# ---------------------------------------------------------------------------
+# Single AC unit control page
+# ---------------------------------------------------------------------------
+
+# Defaults if the climate entity doesn't advertise its own limits.
+_AC_MIN, _AC_MAX, _AC_STEP = 18.0, 32.0, 0.5
+
+
+def _find_ac_unit(unit_id: str) -> dict | None:
+    """Look up a cooling-fleet unit config by its short id."""
+    for u in config.get("cooling_fleet", {}).get("units", []):
+        if u.get("id") == unit_id:
+            return u
+    return None
+
+
+def _minutes_to_duration(minutes: int) -> str:
+    """Render minutes as an HH:MM:SS string for timer.start."""
+    return f"{minutes // 60:02d}:{minutes % 60:02d}:00"
+
+
+def _ac_timer_options(cooling_cfg: dict) -> list[dict]:
+    """Build the list of selectable off-timer durations."""
+    step = int(cooling_cfg.get("timer_step_minutes", 30))
+    max_min = int(cooling_cfg.get("timer_max_hours", 8)) * 60
+    options = []
+    for minutes in range(step, max_min + 1, step):
+        hours = minutes / 60
+        label = (f"{hours:.1f}" if minutes % 60 else f"{minutes // 60}") + "ω"
+        options.append({
+            "minutes": minutes,
+            "label": label,
+            "duration": _minutes_to_duration(minutes),
+        })
+    return options
+
+
+def _get_ac_unit_state(unit_id: str) -> dict | None:
+    """Fetch a single split AC unit's state for its control page."""
+    unit = _find_ac_unit(unit_id)
+    if not unit:
+        return None
+
+    cooling_cfg = config.get("cooling_fleet", {})
+    climate_eid = unit.get("climate", "")
+    timer_eid = unit.get("timer", "")
+
+    cs = ha.get_state(climate_eid) if climate_eid else None
+    attrs = cs.get("attributes", {}) if cs else {}
+    mode = cs.get("state") if cs else None
+    available = mode not in (None, "unavailable", "unknown")
+
+    timer_state = ha.get_state(timer_eid) if timer_eid else None
+    kwh_val = _parse_float(ha.get_state(unit["daily_kwh"])) if unit.get("daily_kwh") else None
+
+    default_setpoint = cooling_cfg.get("sleep_setpoint", 26)
+    return {
+        "id": unit_id,
+        "name": unit.get("name", ""),
+        "climate_entity": climate_eid,
+        "available": available,
+        "is_on": available and mode in _AC_ACTIVE_MODES,
+        "mode": mode,
+        "setpoint": attrs.get("temperature"),
+        "current": attrs.get("current_temperature"),
+        "min": attrs.get("min_temp", _AC_MIN),
+        "max": attrs.get("max_temp", _AC_MAX),
+        "step": attrs.get("target_temp_step", _AC_STEP),
+        "fan": attrs.get("fan_mode"),
+        "swing": attrs.get("swing_mode"),
+        "daily_kwh": kwh_val,
+        "sleep": bool(unit.get("sleep")),
+        "sleep_setpoint": unit.get("sleep_setpoint", default_setpoint),
+        "timer_active": (timer_state or {}).get("state") == "active",
+        "timer_remaining_min": _timer_remaining_min(timer_state or {}),
+        "timer_options": _ac_timer_options(cooling_cfg),
+        "timer_default": cooling_cfg.get("timer_default", "02:00:00"),
+    }
+
+
 @app.route("/")
 def index():
     """Render the full dashboard page."""
@@ -643,6 +746,22 @@ def rollers():
             return resp
         return render_template("partials/rollers_content.html", **state)
     return render_template("rollers.html", **state, app_version=APP_VERSION)
+
+
+@app.route("/ac/<unit_id>")
+def ac_unit(unit_id: str):
+    """Render the control page for a single split AC unit."""
+    state = _get_ac_unit_state(unit_id)
+    if state is None:
+        return _redirect_index()
+    if request.headers.get("HX-Request") == "true":
+        client_version = request.headers.get("X-App-Version", "")
+        if client_version and client_version != APP_VERSION:
+            resp = make_response("", 200)
+            resp.headers["HX-Refresh"] = "true"
+            return resp
+        return render_template("partials/ac_content.html", ac=state)
+    return render_template("ac.html", ac=state, app_version=APP_VERSION)
 
 
 @app.route("/rollers/state")
@@ -703,6 +822,12 @@ def _redirect_rollers():
     """Redirect to rollers page, respecting the ingress base path."""
     base = request.headers.get("X-Ingress-Path", "")
     return redirect(base + url_for("rollers"))
+
+
+def _redirect_ac(unit_id: str):
+    """Redirect to an AC unit page, respecting the ingress base path."""
+    base = request.headers.get("X-Ingress-Path", "")
+    return redirect(base + url_for("ac_unit", unit_id=unit_id))
 
 
 @app.route("/action/cover", methods=["POST"])
@@ -870,6 +995,93 @@ def action_water_heater():
 
     # Fallback: POST-Redirect-GET
     return _redirect_index()
+
+
+@app.route("/action/ac", methods=["POST"])
+def action_ac():
+    """Control a single split AC unit: power / temperature / timer / sleep.
+
+    Onecta cloud writes take several seconds to reflect back in HA state, so
+    we apply optimistic overrides to the re-rendered state for instant feedback;
+    the 30s background poll then settles to the real value.
+    """
+    unit_id = request.form.get("unit_id", "")
+    action = request.form.get("action", "")
+    unit = _find_ac_unit(unit_id)
+    if not unit:
+        return _redirect_index()
+
+    climate_eid = unit.get("climate", "")
+    timer_eid = unit.get("timer", "")
+    cooling_cfg = config.get("cooling_fleet", {})
+    optimistic: dict = {}
+
+    if action == "power":
+        if request.form.get("to") == "on":
+            log.info("AC %s ON (cool)", unit_id)
+            ha.set_hvac_mode(climate_eid, "cool")
+            optimistic = {"is_on": True, "mode": "cool"}
+        else:
+            log.info("AC %s OFF", unit_id)
+            ha.set_hvac_mode(climate_eid, "off")
+            if timer_eid:
+                ha.call_service("timer", "cancel", {"entity_id": timer_eid})
+            optimistic = {"is_on": False, "mode": "off",
+                          "timer_active": False, "timer_remaining_min": None}
+
+    elif action == "temp":
+        st = _get_ac_unit_state(unit_id) or {}
+        lo, hi = float(st.get("min", _AC_MIN)), float(st.get("max", _AC_MAX))
+        step = float(st.get("step", _AC_STEP))
+        target = None
+        value = request.form.get("value")
+        direction = request.form.get("dir", "")
+        if value is not None:
+            try:
+                target = float(value)
+            except (ValueError, TypeError):
+                target = None
+        elif direction in ("up", "down") and st.get("setpoint") is not None:
+            target = float(st["setpoint"]) + (step if direction == "up" else -step)
+        if target is not None:
+            target = max(lo, min(hi, round(target / step) * step))
+            log.info("AC %s set temp %s°", unit_id, target)
+            ha.set_climate_temperature(climate_eid, target)
+            optimistic = {"setpoint": target}
+
+    elif action == "timer":
+        if request.form.get("cancel") and timer_eid:
+            log.info("AC %s timer cancel", unit_id)
+            ha.call_service("timer", "cancel", {"entity_id": timer_eid})
+            optimistic = {"timer_active": False, "timer_remaining_min": None}
+        elif timer_eid:
+            duration = request.form.get("duration") or cooling_cfg.get("timer_default", "02:00:00")
+            log.info("AC %s timer start %s", unit_id, duration)
+            ha.call_service("timer", "start", {"entity_id": timer_eid, "duration": duration})
+            h, m, _ = (duration.split(":") + ["0", "0", "0"])[:3]
+            optimistic = {"timer_active": True, "timer_remaining_min": int(h) * 60 + int(m)}
+
+    elif action == "sleep" and unit.get("sleep"):
+        setpoint = unit.get("sleep_setpoint", cooling_cfg.get("sleep_setpoint", 26))
+        duration = cooling_cfg.get("timer_default", "02:00:00")
+        log.info("AC %s SLEEP (cool %s°, quiet, windnice, timer %s)",
+                 unit_id, setpoint, duration)
+        ha.set_hvac_mode(climate_eid, "cool")
+        ha.set_climate_temperature(climate_eid, setpoint)
+        ha.set_fan_mode(climate_eid, "quiet")
+        ha.set_swing_mode(climate_eid, "windnice")
+        if timer_eid:
+            ha.call_service("timer", "start", {"entity_id": timer_eid, "duration": duration})
+        h, m, _ = (duration.split(":") + ["0", "0", "0"])[:3]
+        optimistic = {"is_on": True, "mode": "cool", "setpoint": setpoint,
+                      "fan": "quiet", "swing": "windnice",
+                      "timer_active": True, "timer_remaining_min": int(h) * 60 + int(m)}
+
+    if request.headers.get("HX-Request") == "true":
+        state = _get_ac_unit_state(unit_id) or {}
+        state.update(optimistic)
+        return render_template("partials/ac_content.html", ac=state)
+    return _redirect_ac(unit_id)
 
 
 @app.route("/action/notify", methods=["POST"])

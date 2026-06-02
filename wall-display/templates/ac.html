@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>{{ ac.name }} — Wall Display</title>
+  <link rel="manifest" href="{{ base_path }}/manifest.json">
+  <meta name="theme-color" content="#121212">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="{{ base_path }}/static/icon-192.svg">
+  <link rel="icon" href="{{ base_path }}/static/icon-192.svg" type="image/svg+xml">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      height: 100%;
+      overflow-y: auto;
+      background: #121212;
+      color: #e0e0e0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+
+      --text-xs:  0.70rem;
+      --text-sm:  0.85rem;
+      --text-md:  1.00rem;
+      --text-lg:  1.25rem;
+      --text-xl:  1.50rem;
+      --text-2xl: 1.75rem;
+      --accent: #1e88e5;
+    }
+
+    #ac-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 8px;
+      gap: 10px;
+    }
+
+    /* Shared spinner: hide children, show rotating ring while a request is
+       in flight (htmx adds .htmx-request to the button issuing the call). */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    button.htmx-request > * {
+      visibility: hidden;
+    }
+    button.htmx-request {
+      position: relative;
+      pointer-events: none;
+    }
+    button.htmx-request::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 22px;
+      height: 22px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    /* --- Header --- */
+    .ac-header {
+      display: flex;
+      align-items: center;
+      padding: 10px 6px;
+      flex-shrink: 0;
+    }
+    .back-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #1e1e1e;
+      color: #aaa;
+      text-decoration: none;
+      -webkit-user-select: none;
+      user-select: none;
+      transition: opacity 0.1s;
+    }
+    .back-btn:active { opacity: 0.6; }
+    .back-btn svg { width: 22px; height: 22px; }
+    .ac-title {
+      flex: 1;
+      text-align: center;
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: #ccc;
+    }
+    .header-spacer { width: 40px; }
+
+    .ac-unavailable {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      font-size: var(--text-lg);
+    }
+
+    /* --- Power toggle --- */
+    .ac-power {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background: #1e1e1e;
+      color: #777;
+      font-family: inherit;
+      font-size: var(--text-lg);
+      font-weight: 700;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      transition: opacity 0.1s, transform 0.1s;
+    }
+    .ac-power svg { width: 26px; height: 26px; }
+    .ac-power.on { background: var(--accent); color: #fff; }
+    .ac-power:active { opacity: 0.8; transform: scale(0.98); }
+
+    /* --- Temperature --- */
+    .ac-temp {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #1a1a1a;
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .ac-temp-btn {
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+      border: none;
+      border-radius: 12px;
+      background: #2a2a2a;
+      color: #fff;
+      font-family: inherit;
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.1s, transform 0.1s;
+    }
+    .ac-temp-btn:active { opacity: 0.7; transform: scale(0.93); }
+    .ac-temp-btn[disabled] { opacity: 0.3; pointer-events: none; }
+    .ac-temp-readout {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.1;
+    }
+    .ac-temp-target { font-size: var(--text-2xl); font-weight: 800; color: #fff; }
+    .ac-temp-current { font-size: var(--text-sm); color: #888; margin-top: 2px; }
+
+    /* --- Sections (timer) --- */
+    .ac-section {
+      background: #1a1a1a;
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .ac-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+    .ac-timer-remaining {
+      margin-left: auto;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: var(--text-md);
+    }
+    .ac-timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .ac-chip {
+      padding: 12px 0;
+      border: none;
+      border-radius: 10px;
+      background: #2a2a2a;
+      color: #ddd;
+      font-family: inherit;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.1s, transform 0.1s;
+    }
+    .ac-chip:active { opacity: 0.7; transform: scale(0.93); }
+    .ac-section.disabled { opacity: 0.4; pointer-events: none; }
+    .ac-cancel {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #3a1f1f;
+      color: #ff8a80;
+      font-family: inherit;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .ac-cancel:active { opacity: 0.7; }
+
+    /* --- Sleep --- */
+    .ac-sleep {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background: #2a2150;
+      color: #d7c8ff;
+      font-family: inherit;
+      font-size: var(--text-md);
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.1s, transform 0.1s;
+    }
+    .ac-sleep:active { opacity: 0.8; transform: scale(0.98); }
+
+    /* --- Auto-Return Bar --- */
+    .auto-return-bar {
+      flex-shrink: 0;
+      margin-top: auto;
+      height: 3px;
+      background: #1e1e1e;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .auto-return-progress {
+      height: 100%;
+      background: #444;
+      border-radius: 2px;
+      width: 100%;
+      transform-origin: left;
+    }
+    @keyframes auto-return-shrink {
+      from { transform: scaleX(1); }
+      to { transform: scaleX(0); }
+    }
+  </style>
+</head>
+<body>
+  {% include "partials/ac_content.html" %}
+  <script src="{{ base_path }}/static/htmx.min.js" defer></script>
+  <script>
+    var _basePath = '{{ base_path }}';
+    var _appVersion = '{{ app_version }}';
+
+    // Send app version on every htmx request
+    document.addEventListener('htmx:configRequest', function(e) {
+      e.detail.headers['X-App-Version'] = _appVersion;
+    });
+
+    // --- Background poll (keeps timer countdown + state fresh) ---
+    function triggerRefresh() {
+      var page = document.getElementById('ac-page');
+      if (page) htmx.trigger(page, 'manualRefresh');
+    }
+    setInterval(triggerRefresh, 15000);
+
+    // --- Auto-return to dashboard after inactivity ---
+    var _autoReturnTimeout = null;
+    var _autoReturnDuration = 60000;
+
+    function startAutoReturn() {
+      var bar = document.getElementById('auto-return-progress');
+      if (bar) {
+        bar.style.animation = 'none';
+        bar.offsetHeight; // force reflow
+        bar.style.animation = 'auto-return-shrink ' + (_autoReturnDuration / 1000) + 's linear forwards';
+      }
+      clearTimeout(_autoReturnTimeout);
+      _autoReturnTimeout = setTimeout(function() {
+        window.location.href = _basePath + '/';
+      }, _autoReturnDuration);
+    }
+    function resetAutoReturn() { startAutoReturn(); }
+    function clearAutoReturn() { clearTimeout(_autoReturnTimeout); }
+
+    // Snappy back: restore the dashboard from the bfcache instead of a slow
+    // server re-render. Falls back to the href if the page was opened directly.
+    function goBack(e) {
+      clearAutoReturn();
+      if (history.length > 1) {
+        e.preventDefault();
+        history.back();
+      }
+    }
+
+    startAutoReturn();
+    document.addEventListener('click', function() { resetAutoReturn(); });
+  </script>
+</body>
+</html>

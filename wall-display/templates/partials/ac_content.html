@@ -1,0 +1,115 @@
+<div id="ac-page" hx-get="{{ base_path }}/ac/{{ ac.id }}" hx-trigger="manualRefresh" hx-target="#ac-page" hx-swap="outerHTML">
+
+  {# --- Header with back button --- #}
+  <div class="ac-header">
+    <a href="{{ base_path }}/" class="back-btn" onclick="goBack(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <span class="ac-title">{{ ac.name }}</span>
+    <div class="header-spacer"></div>
+  </div>
+
+  {% if not ac.available %}
+  <div class="ac-unavailable">Μη διαθέσιμο</div>
+  {% else %}
+
+  {# --- Power toggle (off ↔ cool) --- #}
+  <button
+    type="button"
+    class="ac-power{% if ac.is_on %} on{% endif %}"
+    hx-post="{{ base_path }}/action/ac"
+    hx-vals='{"unit_id": "{{ ac.id }}", "action": "power", "to": "{{ 'off' if ac.is_on else 'on' }}"}'
+    hx-target="#ac-page"
+    hx-swap="outerHTML"
+    hx-disabled-elt="this"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></svg>
+    <span>{{ 'Αναμμένο' if ac.is_on else 'Σβηστό' }}</span>
+  </button>
+
+  {# --- Temperature stepper (works whether on or off) --- #}
+  <div class="ac-temp">
+    <button
+      type="button"
+      class="ac-temp-btn"
+      {% if ac.setpoint is none %}disabled{% endif %}
+      hx-post="{{ base_path }}/action/ac"
+      hx-vals='{"unit_id": "{{ ac.id }}", "action": "temp", "dir": "down"}'
+      hx-target="#ac-page"
+      hx-swap="outerHTML"
+      hx-disabled-elt="this"
+    ><span>−</span></button>
+    <div class="ac-temp-readout">
+      <span class="ac-temp-target">{% if ac.setpoint is not none %}{{ "%.1f" | format(ac.setpoint) | replace(".0", "") }}°{% else %}—{% endif %}</span>
+      {% if ac.current is not none %}<span class="ac-temp-current">τρέχ. {{ "%.0f" | format(ac.current) }}°</span>{% endif %}
+    </div>
+    <button
+      type="button"
+      class="ac-temp-btn"
+      {% if ac.setpoint is none %}disabled{% endif %}
+      hx-post="{{ base_path }}/action/ac"
+      hx-vals='{"unit_id": "{{ ac.id }}", "action": "temp", "dir": "up"}'
+      hx-target="#ac-page"
+      hx-swap="outerHTML"
+      hx-disabled-elt="this"
+    ><span>+</span></button>
+  </div>
+
+  {# --- Off-timer --- #}
+  <div class="ac-section{% if not ac.is_on %} disabled{% endif %}">
+    <div class="ac-section-title">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>
+      Σβήσιμο μετά από
+      {% if ac.timer_active and ac.timer_remaining_min is not none %}
+      <span class="ac-timer-remaining">{{ ac.timer_remaining_min }}΄</span>
+      {% endif %}
+    </div>
+    <div class="ac-timer-grid">
+      {% for opt in ac.timer_options %}
+      <button
+        type="button"
+        class="ac-chip"
+        hx-post="{{ base_path }}/action/ac"
+        hx-vals='{"unit_id": "{{ ac.id }}", "action": "timer", "duration": "{{ opt.duration }}"}'
+        hx-target="#ac-page"
+        hx-swap="outerHTML"
+        hx-disabled-elt="this"
+      ><span>{{ opt.label }}</span></button>
+      {% endfor %}
+    </div>
+    {% if ac.timer_active %}
+    <button
+      type="button"
+      class="ac-cancel"
+      hx-post="{{ base_path }}/action/ac"
+      hx-vals='{"unit_id": "{{ ac.id }}", "action": "timer", "cancel": "1"}'
+      hx-target="#ac-page"
+      hx-swap="outerHTML"
+      hx-disabled-elt="this"
+    ><span>Ακύρωση χρονοδιακόπτη</span></button>
+    {% endif %}
+  </div>
+
+  {# --- Sleep macro (bedrooms only): cool + setpoint + quiet + comfort airflow + timer --- #}
+  {% if ac.sleep %}
+  <button
+    type="button"
+    class="ac-sleep"
+    hx-post="{{ base_path }}/action/ac"
+    hx-vals='{"unit_id": "{{ ac.id }}", "action": "sleep"}'
+    hx-target="#ac-page"
+    hx-swap="outerHTML"
+    hx-disabled-elt="this"
+  >
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    <span>Sleep · {{ ac.sleep_setpoint }}° · αθόρυβο</span>
+  </button>
+  {% endif %}
+
+  {% endif %}
+
+  {# --- Auto-return progress bar --- #}
+  <div class="auto-return-bar">
+    <div class="auto-return-progress" id="auto-return-progress"></div>
+  </div>
+</div>

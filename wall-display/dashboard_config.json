@@ -27,26 +27,40 @@
   },
 
   "cooling_fleet": {
+    "timer_max_hours": 8,
+    "timer_step_minutes": 30,
+    "timer_default": "02:00:00",
+    "sleep_setpoint": 26,
     "units": [
       {
+        "id": "master",
         "name": "Μάστερ",
         "climate": "climate.daikinap68496_room_temperature",
-        "daily_kwh": "sensor.daikinap68496_climatecontrol_cooling_daily_electrical_consumption"
+        "daily_kwh": "sensor.daikinap68496_climatecontrol_cooling_daily_electrical_consumption",
+        "timer": "timer.ac_master_auto_off",
+        "sleep": true
       },
       {
+        "id": "kids",
         "name": "Παιδικό",
         "climate": "climate.paidiko_room_temperature",
-        "daily_kwh": "sensor.paidiko_climatecontrol_cooling_daily_electrical_consumption"
+        "daily_kwh": "sensor.paidiko_climatecontrol_cooling_daily_electrical_consumption",
+        "timer": "timer.ac_kids_auto_off",
+        "sleep": true
       },
       {
+        "id": "office",
         "name": "Γραφείο",
         "climate": "climate.grapheio_room_temperature",
-        "daily_kwh": "sensor.grapheio_climatecontrol_cooling_daily_electrical_consumption"
+        "daily_kwh": "sensor.grapheio_climatecontrol_cooling_daily_electrical_consumption",
+        "timer": "timer.ac_office_auto_off"
       },
       {
+        "id": "living",
         "name": "Σαλόνι",
         "climate": "climate.daikinap79601_room_temperature",
-        "daily_kwh": "sensor.daikinap79601_climatecontrol_cooling_daily_electrical_consumption"
+        "daily_kwh": null,
+        "timer": "timer.ac_living_auto_off"
       }
     ]
   },

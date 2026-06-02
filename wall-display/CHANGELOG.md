@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.39.2
+
+- **AC button loading state**: AC control-page buttons now show the shared
+  spinner while their request is in flight (the `htmx-request` spinner CSS was
+  only in the dashboard template, not the AC page).
+
+## 0.39.1
+
+- **Split AC control pages**: Each cooling-fleet unit on the dashboard is now a
+  tappable card opening a per-unit control page (`/ac/<id>`) with power (off ↔
+  cool), a 0.5° temperature stepper, and an auto-off timer (0.5–8h, 0.5h steps).
+  60s inactivity auto-returns to the dashboard. The back button uses
+  `history.back()` for an instant return (no full dashboard re-render).
+- **Seasonal visibility**: The cooling row now shows whenever the heat pump is
+  **not** heating (instead of only when an AC is already running), so units can
+  be turned on from the UI. Heating and cooling rows are mutually exclusive.
+- **Sleep mode (bedrooms)**: Master & Kids get a Sleep button — a macro that sets
+  cool + 26° + quiet fan + Comfort Airflow (`windnice`) + a 2h off-timer.
+  (Onecta exposes no native sleep/econo/comfort preset on these units.)
+- Timers are backed by per-unit `timer.ac_<id>_auto_off` helpers + auto-off
+  automations (see `setup-ac-timers.py`).
+
 ## 0.33.0
 
 - **Notify button**: New red phone-icon button for sending iOS push
