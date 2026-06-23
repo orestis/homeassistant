@@ -1,17 +1,24 @@
 #!/usr/bin/env python3
 """
-Heat pump consumption calculator for arbitrary date ranges.
+Heat pump + AC consumption calculator for arbitrary date ranges.
 
-The Daikin Antlia heat pump reports daily/weekly/monthly consumption that
-resets at cycle boundaries.  The utility company meters on arbitrary dates
-(e.g. 13 Feb → 12 Mar).
+The Daikin Antlia heat pump and the split AC units report daily/weekly/
+monthly/yearly consumption counters that reset at cycle boundaries.  The
+utility company meters on arbitrary dates (e.g. 13 Feb → 12 Mar).
 
 This script uses HA long-term statistics (hourly aggregates kept by the
-recorder) to sum consumption over any user-specified date range.
+recorder) to sum consumption over any user-specified date range.  Each split
+AC reports separate cooling and heating counters; the script sums both to get
+the unit's total electrical use.  Three AC units report consumption (master,
+kids, office); the living-room unit no longer does and is omitted.
 
 Usage:
     HA_URL=http://... HA_TOKEN=... python heatpump-consumption.py --discover
     HA_URL=http://... HA_TOKEN=... python heatpump-consumption.py --start 2025-02-13 --end 2025-03-12
+    # AC fleet only (cooling + heating per unit):
+    HA_URL=http://... HA_TOKEN=... python heatpump-consumption.py --start 2026-05-15 --end 2026-06-17 --ac
+    # Full breakdown (heat pump + AC fleet + AV stack):
+    HA_URL=http://... HA_TOKEN=... python heatpump-consumption.py --start 2026-05-15 --end 2026-06-17 --circuit
 """
 
 from __future__ import annotations
@@ -117,9 +124,67 @@ AV_ENERGY_TODAY = "sensor.av_console_plug_today_s_consumption"
 AV_ENERGY_MONTH = "sensor.av_console_plug_this_month_s_consumption"
 AV_POWER = "sensor.av_console_plug_current_consumption"
 
+# Split AC fleet (Daikin).  Each unit reports separate cooling and heating
+# cumulative counters (daily/weekly/monthly/yearly) that reset the same way
+# the heat pump's do, so total electrical use per unit = cooling + heating.
+# The living-room unit (daikinap79601) no longer reports consumption, so it
+# is omitted here.
+AC_UNITS = [
+    ("master", "Master", "daikinap68496"),
+    ("kids", "Kids", "paidiko"),
+    ("office", "Office", "grapheio"),
+]
+
+
+def _ac_stat(prefix: str, mode: str, period: str) -> str:
+    """Build a Daikin AC consumption statistic id.
+
+    mode: "cooling" | "heating";  period: "daily"|"weekly"|"monthly"|"yearly".
+    """
+    return f"sensor.{prefix}_climatecontrol_{mode}_{period}_electrical_consumption"
+
 
 def compute_consumption_smart(
     ha: HAClient,
+    start_dt: datetime,
+    end_dt: datetime,
+) -> float | None:
+    """Heat pump consumption over a period (Antlia yearly/weekly entities)."""
+    return _compute_smart(ha, YEARLY_ENTITY, WEEKLY_ENTITY, start_dt, end_dt)
+
+
+def compute_ac_consumption(
+    ha: HAClient,
+    prefix: str,
+    start_dt: datetime,
+    end_dt: datetime,
+) -> float | None:
+    """Total electrical consumption of one AC unit over a period.
+
+    Sums the unit's cooling and heating counters (a reversible AC may run in
+    either mode across a billing period).  Returns None only if neither mode
+    has any data; a mode with no data contributes 0.
+    """
+    total = 0.0
+    got_any = False
+    for mode in ("cooling", "heating"):
+        val = _compute_smart(
+            ha,
+            _ac_stat(prefix, mode, "yearly"),
+            _ac_stat(prefix, mode, "weekly"),
+            start_dt,
+            end_dt,
+        )
+        if val is not None:
+            total += val
+            got_any = True
+    return total if got_any else None
+
+
+def _compute_smart(
+    ha: HAClient,
+    yearly_entity: str,
+    weekly_entity: str,
     start_dt: datetime,
     end_dt: datetime,
 ) -> float | None:
@@ -143,11 +208,11 @@ def compute_consumption_smart(
 
     if not jan1_dates:
         # No yearly reset in range — yearly entity is perfect
-        val = ha.get_energy_consumption(YEARLY_ENTITY, start_dt.isoformat(), end_dt.isoformat())
+        val = ha.get_energy_consumption(yearly_entity, start_dt.isoformat(), end_dt.isoformat())
         if val is not None:
             return val
         # Fallback to weekly if yearly has no data
-        return ha.get_energy_consumption(WEEKLY_ENTITY, start_dt.isoformat(), end_dt.isoformat())
+        return ha.get_energy_consumption(weekly_entity, start_dt.isoformat(), end_dt.isoformat())
 
     # Period crosses Jan 1 — stitch segments together
     total = 0.0
@@ -180,7 +245,7 @@ def compute_consumption_smart(
         segments.append(("yearly", cursor, end_dt))
 
     for entity_key, seg_start, seg_end in segments:
-        entity = YEARLY_ENTITY if entity_key == "yearly" else WEEKLY_ENTITY
+        entity = yearly_entity if entity_key == "yearly" else weekly_entity
         val = ha.get_energy_consumption(entity, seg_start.isoformat(), seg_end.isoformat())
         if val is None:
             print(f"  Warning: no data for {entity_key} segment {seg_start.date()}→{seg_end.date()}")
@@ -284,12 +349,17 @@ def av_status(ha: HAClient) -> None:
         print(f"  This month's consump.: {month['state']:>8} {month['attributes'].get('unit_of_measurement', '')}")
 
 
-def circuit_report(ha: HAClient, start_dt: datetime, end_dt: datetime, daily: bool = False) -> None:
-    """Show billing period breakdown: heat pump + AV stack (P110).
+def _av_consumption(ha: HAClient, start: str, end: str) -> float | None:
+    """AV stack (P110) consumption — monthly counter first, then today's."""
+    for entity in (AV_ENERGY_MONTH, AV_ENERGY_TODAY):
+        val = ha.get_energy_consumption(entity, start, end)
+        if val is not None:
+            return val
+    return None
 
-    Once the P110 has accumulated historical data, this will show the
-    breakdown for any billing period.
-    """
+
+def circuit_report(ha: HAClient, start_dt: datetime, end_dt: datetime, daily: bool = False) -> None:
+    """Show billing period breakdown: heat pump + split AC fleet + AV stack."""
     print(f"Period:  {start_dt.strftime('%Y-%m-%d')} → {end_dt.strftime('%Y-%m-%d')}")
     days = (end_dt - start_dt).days + 1
     print()
@@ -297,59 +367,86 @@ def circuit_report(ha: HAClient, start_dt: datetime, end_dt: datetime, daily: bo
     # Heat pump (from Daikin Antlia statistics)
     hp_kwh = compute_consumption_smart(ha, start_dt, end_dt)
 
+    # Split AC fleet (cooling + heating per unit)
+    ac_kwh = {
+        uid: compute_ac_consumption(ha, prefix, start_dt, end_dt)
+        for uid, name, prefix in AC_UNITS
+    }
+    ac_total = sum(v for v in ac_kwh.values() if v is not None) \
+        if any(v is not None for v in ac_kwh.values()) else None
+
     # AV stack (from P110 energy sensor statistics)
-    # The P110 today's consumption resets daily; try monthly first.
-    av_kwh = None
-    for entity in (AV_ENERGY_MONTH, AV_ENERGY_TODAY):
-        av_kwh = ha.get_energy_consumption(
-            entity, start_dt.isoformat(), end_dt.isoformat()
-        )
-        if av_kwh is not None:
-            break
+    av_kwh = _av_consumption(ha, start_dt.isoformat(), end_dt.isoformat())
 
-    hp_str = f"{hp_kwh:.1f} kWh" if hp_kwh is not None else "n/a"
-    av_str = f"{av_kwh:.1f} kWh" if av_kwh is not None else "n/a (no historical data yet)"
+    def fmt(v: float | None, suffix: str = "") -> str:
+        return f"{v:.1f} kWh" if v is not None else f"n/a{suffix}"
 
-    print(f"  Heat pump (Antlia):       {hp_str}")
-    print(f"  AV stack (P110):          {av_str}")
+    print(f"  Heat pump (Antlia):       {fmt(hp_kwh)}")
+    for uid, name, prefix in AC_UNITS:
+        print(f"    AC {name:<10}            {fmt(ac_kwh[uid])}")
+    print(f"  AC fleet subtotal:        {fmt(ac_total)}")
+    print(f"  AV stack (P110):          {fmt(av_kwh, ' (no historical data yet)')}")
 
-    if hp_kwh is not None and av_kwh is not None:
-        total = hp_kwh + av_kwh
-        print(f"  ────────────────────────────────")
-        print(f"  Measured total:           {total:.1f} kWh")
-        print(f"  Daily average:            {total / days:.1f} kWh/day  ({days} days)")
-    elif hp_kwh is not None:
-        print(f"  Daily avg (HP only):      {hp_kwh / days:.1f} kWh/day  ({days} days)")
+    total = sum(v for v in (hp_kwh, ac_total, av_kwh) if v is not None)
+    print(f"  ────────────────────────────────")
+    print(f"  Measured total:           {total:.1f} kWh")
+    print(f"  Daily average:            {total / days:.1f} kWh/day  ({days} days)")
 
     if daily:
         has_av = av_kwh is not None
-        header = f"{'Date':<12} {'HP':>6}" + (f" {'AV':>6} {'Total':>7}" if has_av else "")
+        header = f"{'Date':<12} {'HP':>6} {'AC':>6}" + (f" {'AV':>6}" if has_av else "") + f" {'Total':>7}"
         print(f"\n{header}")
         print("-" * len(header))
         current = start_dt
         while current.date() <= end_dt.date():
             day_start = current.replace(hour=0, minute=0, second=0)
             day_end = current.replace(hour=23, minute=59, second=59)
+            ds, de = day_start.isoformat(), day_end.isoformat()
             d_hp = compute_consumption_smart(ha, day_start, day_end)
-            hp_v = f"{d_hp:.1f}" if d_hp is not None else "n/a"
-            line = f"{current.strftime('%Y-%m-%d'):<12} {hp_v:>6}"
+            d_ac_vals = [compute_ac_consumption(ha, p, day_start, day_end) for _, _, p in AC_UNITS]
+            d_ac = sum(v for v in d_ac_vals if v is not None) \
+                if any(v is not None for v in d_ac_vals) else None
+            day_parts = [d_hp, d_ac]
+            line = f"{current.strftime('%Y-%m-%d'):<12} " \
+                   f"{(f'{d_hp:.1f}' if d_hp is not None else 'n/a'):>6} " \
+                   f"{(f'{d_ac:.1f}' if d_ac is not None else 'n/a'):>6}"
             if has_av:
-                d_av = None
-                for entity in (AV_ENERGY_MONTH, AV_ENERGY_TODAY):
-                    d_av = ha.get_energy_consumption(
-                        entity, day_start.isoformat(), day_end.isoformat()
-                    )
-                    if d_av is not None:
-                        break
-                a_v = f"{d_av:.1f}" if d_av is not None else "n/a"
-                t_v = f"{d_hp + d_av:.1f}" if d_hp is not None and d_av is not None else "n/a"
-                line += f" {a_v:>6} {t_v:>7}"
+                d_av = _av_consumption(ha, ds, de)
+                day_parts.append(d_av)
+                line += f" {(f'{d_av:.1f}' if d_av is not None else 'n/a'):>6}"
+            d_total = sum(v for v in day_parts if v is not None)
+            line += f" {d_total:>7.1f}"
             print(line)
             current += timedelta(days=1)
 
 
+def ac_report(ha: HAClient, start_dt: datetime, end_dt: datetime) -> None:
+    """Split AC fleet breakdown: cooling + heating per unit over a period."""
+    print(f"Period:  {start_dt.strftime('%Y-%m-%d')} → {end_dt.strftime('%Y-%m-%d')}")
+    days = (end_dt - start_dt).days + 1
+    print()
+    print(f"  {'Unit':<10} {'Cool':>7} {'Heat':>7} {'Total':>7}")
+    print(f"  {'-' * 33}")
+
+    fleet_total = 0.0
+    for uid, name, prefix in AC_UNITS:
+        cool = _compute_smart(ha, _ac_stat(prefix, "cooling", "yearly"),
+                              _ac_stat(prefix, "cooling", "weekly"), start_dt, end_dt)
+        heat = _compute_smart(ha, _ac_stat(prefix, "heating", "yearly"),
+                              _ac_stat(prefix, "heating", "weekly"), start_dt, end_dt)
+        unit_total = (cool or 0.0) + (heat or 0.0)
+        fleet_total += unit_total
+        cs = f"{cool:.1f}" if cool is not None else "n/a"
+        hs = f"{heat:.1f}" if heat is not None else "n/a"
+        print(f"  {name:<10} {cs:>7} {hs:>7} {unit_total:>7.1f}")
+
+    print(f"  {'-' * 33}")
+    print(f"  {'Fleet':<10} {'':>7} {'':>7} {fleet_total:>7.1f} kWh")
+    print(f"  Daily average:                {fleet_total / days:.1f} kWh/day  ({days} days)")
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Heat pump consumption for arbitrary periods")
+    parser = argparse.ArgumentParser(description="Heat pump + AC consumption for arbitrary periods")
     parser.add_argument("--discover", action="store_true",
                         help="List available antlia statistic IDs")
     parser.add_argument("--probe", type=str, metavar="ENTITY_ID",
@@ -359,7 +456,9 @@ def main() -> None:
     parser.add_argument("--verify", action="store_true",
                         help="Cross-check calculated vs reported consumption")
     parser.add_argument("--circuit", action="store_true",
-                        help="Show breakdown (heat pump + AV stack via P110)")
+                        help="Show full breakdown (heat pump + AC fleet + AV stack)")
+    parser.add_argument("--ac", action="store_true",
+                        help="Show split AC fleet breakdown (cooling + heating per unit)")
     parser.add_argument("--start", type=str,
                         help="Start date YYYY-MM-DD (inclusive)")
     parser.add_argument("--end", type=str,
@@ -397,6 +496,10 @@ def main() -> None:
 
         if args.circuit:
             circuit_report(ha, start_dt, end_dt, daily=args.daily)
+            return
+
+        if args.ac:
+            ac_report(ha, start_dt, end_dt)
             return
 
         print(f"Period:  {args.start} → {args.end}")
